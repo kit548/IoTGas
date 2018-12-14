@@ -1,8 +1,6 @@
 # IoTGas
 IoT-kaasumittari 
 
-(later here: 'front-end' service of a full-stack 'IoT gage') 
-
 Gage
 Sensor and back end
 - hw: HS-135 - Gas sensor - Sencera Co Ltd, Raspberry Pi 3+, and ADC Pi Plus
@@ -15,4 +13,8 @@ Front end and Displays for browsers
 
 Done: 1st measurement with this full-stack system
 - see raspberry_eka_savu.jpg
-- need a little bit re-writing before upload
+
+ToDo
+- 1st learn to use GitHub with the team: kit, Aapo, and Lassi 
+- later here: 1st 'front end' service of a full-stack 'IoT gage', then 'back end' 
+- need re-writing 'front end' before upload
