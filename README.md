@@ -1,5 +1,7 @@
 # IoTGas
-IoT-kaasumittari (at 1st a front-end of a full-stack 'IoT gage') 
+IoT-kaasumittari 
+
+(later here: 'front-end' service of a full-stack 'IoT gage') 
 
 Gage
 Sensor and back end
@@ -11,3 +13,6 @@ Front end and Displays for browsers
 - hw: a laptop
 - sw, used services & engines (windows pc): windows 10, Node.js, ReactJS, axios, react-chartjs-2, moment, python, javaScript   
 
+Done: 1st measurement with this full-stack system
+- see raspberry_eka_savu.jpg
+- need a little bit re-writing before upload
