@@ -38,32 +38,7 @@ export default class Container extends React.Component {
 		console.log(this.state.gases);
 	}
 
-    getLastMesosOfGases = () => { 
-		console.log(this.state.gases[0]);
-		let gasestofind = this.state.gases
-		let lastmesos = [];
-		let index;  
-		for (index in gasestofind) {
-			console.log("hae viimeisin: " + gasestofind[index]); 
-			ReactServices.readGasLast('Savu')
-				.then(response => { 
-					lastmesos.push({response}); 
-					console.log(response);
-					//console.log(this.state.mesoList);
-				})
-				.catch(error => {
-					console.log("ERROR in Container / componentDidMount");
-					console.log(error);
-				});
-
-			console.log('lastmesos'); 
-			console.log(lastmesos); 
-		};
-
-		this.setState.mesoList = lastmesos ;
-		console.log("haetut kaasut, viimeisimmät mittauset"); 
-		console.log(this.state.mesoList);  
-	};
+    
 
 	fetchDetails = (event) => {
 		this.setState({piirtokaasu: event});
