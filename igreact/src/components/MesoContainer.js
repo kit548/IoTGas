@@ -38,8 +38,6 @@ export default class Container extends React.Component {
 		console.log(this.state.gases);
 	}
 
-    
-
 	fetchDetails = (event) => {
 		this.setState({piirtokaasu: event});
 		console.log('MesoContainer this: ' + this.state.piirtokaasu);
@@ -54,6 +52,7 @@ export default class Container extends React.Component {
 		//console.log(this.state.mesoList.length) ;
 		//console.log(this.state.mesoList) ;
 		/*
+		
 		let listItems = this.state.mesoList.map((item) => 
 		<tr key={item._id} onClick={() => this.fetchDetails(item.kaasunimi)}>
 			<td>{item.kaasunimi}</td>
