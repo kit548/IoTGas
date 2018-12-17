@@ -14,8 +14,10 @@ Gauge
   - Node.js, ReactJS, axios, react-chartjs-2, moment, python, JavaScript   
 
 ### ToDo
-- 1st learn to use GitHub with the team: kit, Aapo, and Lassi 
-- later here: 1st 'front end' service of a full-stack 'IoT gauge', then 'back end' 
+- gas measurements to see what we can measure and after this "lock" the features 
+
 
 ### Done: 1st measurement with this full-stack system
 - see raspberry_eka_savu.jpg
+- 1st learn to use GitHub with the team: kit, Aapo, and Lassi 
+- later here: 1st 'front end' service of a full-stack 'IoT gauge', then 'back end' 
