@@ -1,20 +1,24 @@
 # IoTGas
-IoT-kaasumittari 
+## IoT-kaasumittari 
 
-Gage
-Sensor and back end
-- hw: HS-135 - Gas sensor - Sencera Co Ltd, Raspberry Pi 3+, and ADC Pi Plus
-- sw, used services & engines etc. (Raspberry): Raspbian GNU/Linux 9, Python, pymongo, MongoDB, Node.js, Express, javaScript 
--> back end and REST web service (to get data from Raspberry via wlan) 
+Gauge
+### Sensor and backend
+- Hardware: MQ-2 Gas sensor, Raspberry Pi 3+, and ADC Pi Plus
+- Software:
+  - Raspberry Pi 3+: 
+      1. Raspbian GNU/Linux 9, Python, pymongo, MongoDB, Node.js, Express, JavaScript backend and REST webservice (to get data from Raspberry via wlan) 
 
-Front end and Displays for browsers 
-- hw: a laptop
-- sw, used services & engines (windows pc): windows 10, Node.js, ReactJS, axios, react-chartjs-2, moment, python, javaScript   
+### Frontend and Displays for browsers 
+- Hardware: Laptops
+- Software: 
+  - Windows 10
+  - GNU/Linux
+  - Node.js, ReactJS, axios, react-chartjs-2, moment, python, JavaScript   
 
-Done: 1st measurement with this full-stack system
-- see raspberry_eka_savu.jpg
-
-ToDo
+### ToDo
 - 1st learn to use GitHub with the team: kit, Aapo, and Lassi 
-- later here: 1st 'front end' service of a full-stack 'IoT gage', then 'back end' 
+- later here: 1st 'front end' service of a full-stack 'IoT gauge', then 'back end' 
 - need re-writing 'front end' before upload
+
+### Done: 1st measurement with this full-stack system
+- see raspberry_eka_savu.jpg
