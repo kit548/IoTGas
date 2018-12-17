@@ -13,11 +13,17 @@ Gauge
   - GNU/Linux
   - Node.js, ReactJS, axios, react-chartjs-2, moment, python, JavaScript   
 
+
 ### ToDo
-- gas measurements to see what we can measure and after this "lock" the features 
+- do real gas measurements to see what we can measure with MQ-2 Gas sensor and after this "lock" the features 
+- calibration, only draft calibration, we don't need accurate values
+- add temperature sensor to Raspberry 
+- sensor data to MongoDB via REST (just training)
+- use of MQTT for the sensor data 
+- if time: put front end also to Raspberry Pi and measure use of Pi's cpu usage  
 
 
-### Done: 1st measurement with this full-stack system
-- see raspberry_eka_savu.jpg
-- 1st learn to use GitHub with the team: kit, Aapo, and Lassi 
-- later here: 1st 'front end' service of a full-stack 'IoT gauge', then 'back end' 
+### Done: 
+- 1st measurement with this full-stack system, see raspberry_eka_savu.jpg (used pymongo)
+- learned to use GitHub with the team: kit, Aapo, and Lassi 
+- 'front end' and 'back end' are here 
