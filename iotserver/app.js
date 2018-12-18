@@ -19,18 +19,19 @@ app.use(helmet());
 
 // Set up mongoose connection
 var mongoose = require('mongoose');
-// Read mongodb authentication from a file
-var secrets = JSON.parse(fs.readFileSync('secrets', 'utf8'));
-// Mongoose options
-const options = {
-  user: secrets.user,
-  pass: secrets.pass
-};
-
+// Read mongodb database information from a file
+if (fs.existsSync('secrets')) {
+    var secrets = JSON.parse(fs.readFileSync('secrets', 'utf8'));
+    var databaseUri = `mongodb://${secrets.user}:${secrets.pass}@${secrets.host}:${secrets.port}/${secrets.database}`;
+}
+else
+{
+  var databaseUri = `mongodb://localhost:27017/IoTGas`;
+}
 //1 var dev_db_url = 'mongodb://cooluser:coolpassword@ds119748.mlab.com:19748/local_library'
 //1 var mongoDB = process.env.MONGODB_URI || dev_db_url;
 //mongoose.connect(mongoDB);
-mongoose.connect('mongodb://144.76.218.169:27017/IoTGas', options);
+mongoose.connect(databaseUri);
 mongoose.Promise = global.Promise;
 var db = mongoose.connection; 
 
