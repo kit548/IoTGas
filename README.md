@@ -19,6 +19,7 @@ Gauge
 - add temperature sensor to Raspberry 
 - sensor data to MongoDB via REST (just training)
 - use of MQTT for the sensor data 
+- move mongodb to separate x86 Linux-server and store measurements from Raspberry Pi to that
 - if time: put front end also to Raspberry Pi and measure use of Pi's cpu usage  
 
 
