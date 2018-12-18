@@ -1,0 +1,215 @@
+[33mcommit 20f9c38ccafa6ddf6a7a9d12987efb51a89b307d[m[33m ([m[1;36mHEAD -> [m[1;32mauthentication[m[33m)[m
+Author: Lassi Eloranta <lassi.eloranta@gmail.com>
+Date:   Tue Dec 18 14:26:44 2018 +0200
+
+    Autentikaatio (user/pass) haetaan nyt JSON-tiedostosta.
+
+[33mcommit 3f314732af8acbee0657272af9834320712acad0[m[33m ([m[1;31morigin/authentication[m[33m)[m
+Author: Lassi Eloranta <lassi.eloranta@gmail.com>
+Date:   Tue Dec 18 14:25:38 2018 +0200
+
+    Autentikaatio (user/pass) haetaan nyt JSON-tiedostosta.
+
+[33mcommit 10b1736c609f7ea5363d8e15d096c4e604916850[m
+Author: Lassi Eloranta <lassi.eloranta@gmail.com>
+Date:   Tue Dec 18 14:18:57 2018 +0200
+
+    Lisätty autentikointitiedot sisältävä tiedosto .gitignoreen
+
+[33mcommit 439a63b1b05cb2349a38c9211a93a7ed3df7056e[m
+Author: Lassi Eloranta <lassi.eloranta@gmail.com>
+Date:   Tue Dec 18 13:59:07 2018 +0200
+
+    Unohtui lisätä connectiin options.
+
+[33mcommit 7a88fc4b40ef933d0895d8fb3fcba1d88b510d6b[m
+Author: Lassi Eloranta <lassi.eloranta@gmail.com>
+Date:   Tue Dec 18 13:57:46 2018 +0200
+
+    Lisätty autentikaatio iotserveriin.
+
+[33mcommit a8e07b7a793087f0bb82e49e4cb95ec0d80f0eef[m[33m ([m[1;31morigin/master[m[33m, [m[1;32mmaster[m[33m)[m
+Merge: 0c79414 e6cd126
+Author: Lassi Eloranta <lassi.eloranta@gmail.com>
+Date:   Tue Dec 18 12:52:15 2018 +0200
+
+    Merge branch 'master' of https://github.com/kit548/IoTGas
+
+[33mcommit 0c79414c710414b55e474a5af193bf0cbee53e81[m
+Author: Lassi Eloranta <lassi.eloranta@gmail.com>
+Date:   Tue Dec 18 12:51:51 2018 +0200
+
+    Päivitetty README:n todo.
+
+[33mcommit e6cd1264eed2744b80db3d8522fd1ce67d2977b0[m
+Author: Lassi Eloranta <lassi.eloranta@gmail.com>
+Date:   Tue Dec 18 12:09:20 2018 +0200
+
+    Korjattu tietoturva-korjauksen mukana tullut versiointibugi.
+
+[33mcommit 5827d4c992e2f80f33413aaa2588017357c2771d[m
+Merge: 7edf201 04cf3cd
+Author: Lassi Eloranta <lassi.eloranta@gmail.com>
+Date:   Tue Dec 18 12:01:53 2018 +0200
+
+    Merge branch 'master' of https://github.com/kit548/IoTGas
+
+[33mcommit 7edf201f548585e4717ffb798cde40d3f5d43f5e[m
+Author: Lassi Eloranta <lassi.eloranta@gmail.com>
+Date:   Tue Dec 18 12:01:22 2018 +0200
+
+    Korjattu tietoturva-aukko pakottamalla 'event-stream'-riippuvuuden versio 3.3.4:ksi, joka ei sisällä aukkoa.
+
+[33mcommit 04cf3cd17bb3c026bc7fefca53e5f19330e6d791[m
+Author: kit548 <kit548@gmail.com>
+Date:   Tue Dec 18 09:15:19 2018 +0200
+
+    siistiminen
+
+[33mcommit 2d510c16a905e0699b276280e9a479e7194d9c9b[m
+Author: kit <43469500+kit548@users.noreply.github.com>
+Date:   Tue Dec 18 09:07:53 2018 +0200
+
+    Update README.md
+
+[33mcommit c5ff9299d3bd6168de8f1a904ca304c26871b43e[m
+Author: kit <43469500+kit548@users.noreply.github.com>
+Date:   Mon Dec 17 16:40:50 2018 +0200
+
+    Update README.md
+    
+    added ideas to ToDo
+
+[33mcommit c17898db76231df4f12bc9c72095dded02082816[m
+Author: kit <43469500+kit548@users.noreply.github.com>
+Date:   Mon Dec 17 16:18:45 2018 +0200
+
+    Update readme_ig.txt
+    
+    about this way...
+
+[33mcommit 0c3ed181f8afd4629dc14b1e8a351cba78d73793[m
+Author: kit <43469500+kit548@users.noreply.github.com>
+Date:   Mon Dec 17 16:11:59 2018 +0200
+
+    Update README.md
+    
+    update done and todo
+
+[33mcommit 387f916277b425d750d0f042748c825000f0c3eb[m
+Author: kit <43469500+kit548@users.noreply.github.com>
+Date:   Mon Dec 17 16:09:43 2018 +0200
+
+    Update README.md
+    
+    removed "later comments"
+
+[33mcommit ece9fe382364dbf3d1b8d53f523b06c13d297719[m
+Author: Lassi Eloranta <lassi.eloranta@gmail.com>
+Date:   Mon Dec 17 14:28:49 2018 +0200
+
+    Päivitetty igreactin .gitignore
+
+[33mcommit e59c43d07b1d3bbe58d7b1d9d664a16b9c4d3b08[m
+Author: Lassi Eloranta <lassi.eloranta@gmail.com>
+Date:   Mon Dec 17 14:26:44 2018 +0200
+
+    Lisätty .gitnore
+
+[33mcommit da467bef18fe437e38cfc6f51a7b9a194160c872[m
+Merge: 7ea5689 3fffd52
+Author: kit548 <kit548@gmail.com>
+Date:   Mon Dec 17 14:18:55 2018 +0200
+
+    Merge branch 'master' of https://github.com/kit548/IoTGas
+
+[33mcommit 7ea5689ab8ee21fd6b2201f5b0a4d2771060a945[m
+Author: kit548 <kit548@gmail.com>
+Date:   Mon Dec 17 14:16:49 2018 +0200
+
+    poistetaan ylimääriset
+
+[33mcommit 02ed8b29cb5f830f34750d13e993952996b269ea[m
+Author: kit548 <kit548@gmail.com>
+Date:   Mon Dec 17 14:05:46 2018 +0200
+
+    poistetaan vanhat
+
+[33mcommit 3fffd52c7d356e977d11cb0376f1ff5e7e2bf198[m
+Author: Lassi Eloranta <lassi.eloranta@gmail.com>
+Date:   Mon Dec 17 14:01:30 2018 +0200
+
+    Updated readme some more.
+
+[33mcommit 0e3dda9ad1c567ff258c62c3be376f962b43966f[m
+Author: Lassi Eloranta <lassi.eloranta@gmail.com>
+Date:   Mon Dec 17 13:58:17 2018 +0200
+
+    Updated readme.
+
+[33mcommit c79e30b2d8b75870f38d18e7c2949c8a7cbda067[m
+Author: kit548 <kit548@gmail.com>
+Date:   Mon Dec 17 13:38:32 2018 +0200
+
+    testi1 muutos
+
+[33mcommit 3c0c7522e2b3b61d59305df1f9e404a6796c5214[m
+Merge: 1b8840f 2e9ab1e
+Author: kit548 <kit548@gmail.com>
+Date:   Mon Dec 17 13:13:03 2018 +0200
+
+    Merge branch 'master' of https://github.com/kit548/IoTGas
+
+[33mcommit 1b8840fcdcbfbc0caa54e0ac0ab308e33ecce9c6[m
+Author: kit548 <kit548@gmail.com>
+Date:   Mon Dec 17 13:05:23 2018 +0200
+
+    2nd commit
+
+[33mcommit 54ed9c341d45bb7e49e4cbc5315d723518c82f20[m
+Author: kit548 <kit548@gmail.com>
+Date:   Mon Dec 17 12:59:06 2018 +0200
+
+    initail commit
+
+[33mcommit 2e9ab1ebe60e22ba34e807973c8e3030f7b8c92e[m
+Author: kit <43469500+kit548@users.noreply.github.com>
+Date:   Fri Dec 14 11:44:05 2018 +0200
+
+    Update README.md
+
+[33mcommit 5d95c6a68029f52fd34e595a43a9e3446e39e5bf[m
+Author: kit <43469500+kit548@users.noreply.github.com>
+Date:   Fri Dec 14 11:37:55 2018 +0200
+
+    Add files via upload
+    
+    1st measurement with IoTgas.  Work todo... but draft IoT full stack is working.
+
+[33mcommit 6da4a9cd1e4a56513b7a1f9dce59f29b2f2d2879[m
+Author: kit <43469500+kit548@users.noreply.github.com>
+Date:   Fri Dec 14 11:35:00 2018 +0200
+
+    Update README.md
+    
+    picture
+
+[33mcommit c74bdf86f6b612c2d191094b0f916e9311c42f2f[m
+Author: kit <43469500+kit548@users.noreply.github.com>
+Date:   Fri Dec 14 09:18:23 2018 +0200
+
+    Update README.md
+    
+    updating and testing comits
+
+[33mcommit a581bf85ad3da26a8174dc6d02265e968485d0fc[m
+Author: kit <43469500+kit548@users.noreply.github.com>
+Date:   Fri Dec 14 09:12:24 2018 +0200
+
+    Update README.md
+
+[33mcommit 005f05538a92cc9c3b763752affecfdd891a0dcd[m
+Author: kit <43469500+kit548@users.noreply.github.com>
+Date:   Fri Dec 14 08:38:50 2018 +0200
+
+    Initial commit

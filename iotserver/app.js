@@ -17,11 +17,10 @@ var app = express();
 app.use(cors())
 app.use(helmet());
 
-// Read mongodb authentication from a file
-var secrets = JSON.parse(fs.readFileSync('secrets', 'utf8'));
-
 // Set up mongoose connection
 var mongoose = require('mongoose');
+// Read mongodb authentication from a file
+var secrets = JSON.parse(fs.readFileSync('secrets', 'utf8'));
 // Mongoose options
 const options = {
   user: secrets.user,
