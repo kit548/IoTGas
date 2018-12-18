@@ -1,4 +1,5 @@
 var express = require('express');
+var fs = require('fs');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
@@ -16,13 +17,15 @@ var app = express();
 app.use(cors())
 app.use(helmet());
 
+// Read mongodb authentication from a file
+var secrets = JSON.parse(fs.readFileSync('secrets', 'utf8'));
 
 // Set up mongoose connection
 var mongoose = require('mongoose');
 // Mongoose options
 const options = {
-  user: "user",
-  pass: "pass"
+  user: secrets.user,
+  pass: secrets.pass
 };
 
 //1 var dev_db_url = 'mongodb://cooluser:coolpassword@ds119748.mlab.com:19748/local_library'
