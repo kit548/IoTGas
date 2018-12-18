@@ -22,10 +22,10 @@ var mongoose = require('mongoose');
 // Read mongodb database information from a file
 // Sample secrets.json-file. This file should be in the same folder as this app.js-file.
 // {
-//    "user": "Database username here"
-//    "pass": "Database user password here"
-//    "host": "IP/Domain of the db-server here"
-//    "port": "Port of the db-server here"
+//    "user": "Database username here",
+//    "pass": "Database user password here",
+//    "host": "IP/Domain of the db-server here",
+//    "port": "Port of the db-server here",
 //    "database": "Name of the db to be used here"
 // }
 if (fs.existsSync('secrets.json')) {
