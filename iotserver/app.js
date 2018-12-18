@@ -28,10 +28,18 @@ else
 {
   var databaseUri = `mongodb://localhost:27017/IoTGas`;
 }
+//console.log(databaseUri);
+
 //1 var dev_db_url = 'mongodb://cooluser:coolpassword@ds119748.mlab.com:19748/local_library'
 //1 var mongoDB = process.env.MONGODB_URI || dev_db_url;
 //mongoose.connect(mongoDB);
-mongoose.connect(databaseUri);
+
+// New way to connect to MongoDB as the old one is deprecated.
+// DeprecationWarning: `open()` is deprecated in mongoose >= 4.11.0, use `openUri()` instead, or set the `useMongoClient` option if using `connect()` 
+// or `createConnection()`. See http://mongoosejs.com/docs/4.x/docs/connections.html#use-mongo-client
+mongoose.connect(databaseUri, {
+useMongoClient: true
+});
 mongoose.Promise = global.Promise;
 var db = mongoose.connection; 
 
