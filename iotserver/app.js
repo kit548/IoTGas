@@ -20,8 +20,16 @@ app.use(helmet());
 // Set up mongoose connection
 var mongoose = require('mongoose');
 // Read mongodb database information from a file
-if (fs.existsSync('secrets')) {
-    var secrets = JSON.parse(fs.readFileSync('secrets', 'utf8'));
+// Sample secrets.json-file. This file should be in the same folder as this app.js-file.
+// {
+//    "user": "Database username here"
+//    "pass": "Database user password here"
+//    "host": "IP/Domain of the db-server here"
+//    "port": "Port of the db-server here"
+//    "database": "Name of the db to be used here"
+// }
+if (fs.existsSync('secrets.json')) {
+    var secrets = JSON.parse(fs.readFileSync('secrets.json', 'utf8'));
     var databaseUri = `mongodb://${secrets.user}:${secrets.pass}@${secrets.host}:${secrets.port}/${secrets.database}`;
 }
 else
@@ -42,7 +50,6 @@ useMongoClient: true,
 promiseLibrary: global.Promise
 });
 var db = mongoose.connection; 
-
 
 
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
