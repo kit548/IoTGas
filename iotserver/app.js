@@ -28,7 +28,7 @@ const options = {
 //1 var dev_db_url = 'mongodb://cooluser:coolpassword@ds119748.mlab.com:19748/local_library'
 //1 var mongoDB = process.env.MONGODB_URI || dev_db_url;
 //mongoose.connect(mongoDB);
-mongoose.connect('mongodb://144.76.218.169:27017/IoTGas');
+mongoose.connect('mongodb://144.76.218.169:27017/IoTGas', options);
 mongoose.Promise = global.Promise;
 var db = mongoose.connection; 
 
