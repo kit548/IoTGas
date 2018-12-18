@@ -3,6 +3,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 //import {Table, Button} from 'reactstrap';
 import {Table} from 'reactstrap';
+//eslint-disable-next-line
 import moment from 'moment';
 
 import ReactServices from '../services/ReactServices';
@@ -49,18 +50,8 @@ export default class Container extends React.Component {
 // <center> <Table> </Table> </center>
 	render() {
 		//console.log('Map mesoList') ;
-		//console.log(this.state.mesoList.length) ;
 		//console.log(this.state.mesoList) ;
-		/*
-		
-		let listItems = this.state.mesoList.map((item) => 
-		<tr key={item._id} onClick={() => this.fetchDetails(item.kaasunimi)}>
-			<td>{item.kaasunimi}</td>
-			<td>{item.arvo.toFixed(1)}</td>
-			<td>{ moment(item.gagetime).format("DD.MM hh:mm.ss")  }</td>
-		</tr>
-		)
-		*/
+
 		let listItems = this.state.gases.map((item) => 
 		<tr key={item} onClick={() => this.fetchDetails(item)}>
 			<td>{item}</td>
