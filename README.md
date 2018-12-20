@@ -1,11 +1,11 @@
 # IoTGas
 ## IoT-kaasumittari 
-Mitataan huoneessa olevia epäpuhtauksia kuten H2, LPG, CH4, CO, alkoholi, savu ja propaani (MQ-2 kaasusensori). Laitteisto, käytetyt palvelut/ohjelmistot ja perustoiminnot ovat tarkennettu alla olevassa peruskokoonpanossa.
+Mitataan huoneessa olevia epäpuhtauksia kuten H2, LPG, CH4, CO, alkoholi, savu ja propaani (MQ-2-kaasusensori). Laitteisto, käytetyt palvelut/ohjelmistot ja perustoiminnot ovat tarkennettu alla olevassa peruskokoonpanossa.
 
 Lisäämme laitteistoon lämpötilan ja kosteuden mittaamisen. Kehitysvaiheen aikana selviää antureiden (sensoreiden) tarkkuudet, jolloin muotoutuu mittarin ominaisuudet ja käyttöliittymän muoto selaimeen.    
 
 ### Anturi ja backend (peruskokonpano)
-- Laitteisto: Raspberry Pi 3+, MQ-2 Gas sensor ja ADC Pi Plus
+- Laitteisto: Raspberry Pi 3+, MQ-2 kaasusensori ja ADC Pi Plus
 - Palvelut ja ohjelmistot: Raspbian GNU/Linux 9, Python, pymongo, MongoDB, Node.js, Express, JavaScript  
 -> mitattu tiedot MongoDB:n ja ym. palveluilla REST rajapinta Raspberryyn (wlan), josta frontend hakee halutut mittaukset  
 
@@ -32,7 +32,7 @@ Lisäämme laitteistoon lämpötilan ja kosteuden mittaamisen. Kehitysvaiheen ai
 - Mittaustulosten (kuvaajan) zoomaus ja aikaikkuna siirto frontendissä, hyvä ja näkyvä 'puuhapiste'   I
 
 
-### Toteutetut tehtävät: 
+### Toteutetut tehtävät
 - Ensimmäinen mittaus tehty, katso raspberry_eka_savu.jpg (pymongo)
 - Github käyttö: kit, Aapo, and Lassi  
 - Frontend ja backend Githubissa
