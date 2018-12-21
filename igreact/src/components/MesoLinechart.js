@@ -73,10 +73,10 @@ export default class GasForm extends React.Component {
 	}
 
 	haepiirtodata = ()	=> {
-		ReactServices.readGasvalueslast100(this.props.piirtokaasu)
+		ReactServices.readGasvaluesX(this.props.piirtokaasu, 1000)
 		.then(response => {
 			this.setState({ scatterList: response });
-			console.log('Read 100 gases response:'); console.log(response); 
+			console.log('Read x gases response:'); console.log(response); 
 	 	 })
 		.catch(error => {
 		console.log(error);
