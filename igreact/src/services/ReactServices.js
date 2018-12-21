@@ -3,8 +3,8 @@ import axios from 'axios'
 const ip = window.location.host;
 console.log(ip)
 
-//DESKTOP-BBB6GQC, 192.168.0.18
-const baseUrl = 'http://localhost:3010/meso'
+//DESKTOP-BBB6GQC, 192.168.0.18 192.168.43.125, iotgas
+const baseUrl = 'http://192.168.0.18:3010/meso'
 
 const createOne = (newObject) => {
     // http://localhost:port/default

@@ -38,17 +38,22 @@ export default class GasForm extends React.Component {
 
 	render() {  
 		let mittausarvo = "";
+		let viimeisinmitattu = ""; 
 		//if (!isNaN(this.state.gasList.arvo))  <- gasList: [], 
-		//console.log('Last ->  arvo:');
+		console.log('this.state.gasList:');
+		console.log(this.state.gasList); 
+		
 		if (typeof this.state.gasList === 'object')
-			{mittausarvo = this.state.gasList.arvo.toFixed(1);
+			if(this.state.gasList != null) {
+				mittausarvo = this.state.gasList.arvo.toFixed(1);
+				viimeisinmitattu = this.state.gasList.kaasunimi;
 			//console.log(this.state.gasList.arvo)
 			};
 		return(
 			<form lastmeso='lastmeso'>	
 				<div className="lastmitta"> 
 				{this.LastMeso()}
-				{this.state.gasList.kaasunimi}: {mittausarvo}  V
+				{viimeisinmitattu}: {mittausarvo}  V
 				</div>
 			</form>
 		)
