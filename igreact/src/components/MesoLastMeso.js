@@ -24,8 +24,11 @@ export default class GasForm extends React.Component {
 
 	LastMeso = () => {
 		//console.log('Lastmeso');
-		if (this.state.gasList.length === 0){
-			this.readLastMeso()
+		if(this.state.gasList != null) {
+			if (this.state.gasList.length === 0) {
+				this.readLastMeso()
+			}
+			
 		};
 	}
 
