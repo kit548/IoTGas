@@ -23,8 +23,6 @@ export default class Container extends React.Component {
 		}
 	}
 		
-	//ReactServices.readAll()  ->  readLast100()
-		//ReactServices.readLast100()
 	componentDidMount() { 
 		ReactServices.readGasnames()  
 		.then(response => {
@@ -47,7 +45,7 @@ export default class Container extends React.Component {
 	}
 
 // onUpdate={MesoLinechart.piirtokaasu.bind(this)}
-// <center> <Table> </Table> </center>
+
 	render() {
 		//console.log('Map mesoList') ;
 		//console.log(this.state.mesoList) ;
@@ -55,8 +53,6 @@ export default class Container extends React.Component {
 		let listItems = this.state.gases.map((item) => 
 		<tr key={item} onClick={() => this.fetchDetails(item)}>
 			<td>{item}</td>
-			<td>{ }</td>
-			<td>{ }</td>
 		</tr>
 		)
 				
@@ -70,8 +66,6 @@ export default class Container extends React.Component {
 				<thead>
 					<tr>
 						<th>Mitatut kaasut</th>
-						<th>Arvo</th>
-						<th>Aika</th>
 					</tr>
 				</thead>
 				<tbody>
