@@ -17,23 +17,20 @@ Lisäämme laitteistoon lämpötilan ja kosteuden mittaamisen. Kehitysvaiheen ai
 - Backendin REST rajapinnasta luetaan tarvittavat tiedot ja muodostetaan näistä mittarisivu selaimeen
  
 ### ToDo
-- Mittaustulosten kalibrointi (python) sensorivalmistajan taulukoiden avulla. Tämän harjoituksen tarkoitus ei ole saada aikaan tarkkaa mittaria, riittää "about" arvot.  
-- Lisätään lämpötilan ja kosteuden anturit/mittaaminen.  
-- Mittaustieto MongoDB:n backendin REST-rajapinnan kautta. Nyt python käyttää pymongo:a, jolla mittaukset kirjoitetaan 'suoraan' tietokantaan. 
+- MQ-2 mittausten kalibrointi (python) sensorivalmistajan taulukoiden avulla. 
+- Lisätään kosteuden anturit/mittaaminen.  
+- Mittaustieto MongoDB:n backendin REST-rajapinnan kautta. Nyt mittaukset kirjoitetaan mongopy:llä 'suoraan' tietokantaan. 
 - Siirretään mittaustietoja anturista MQTT protokollalla backendiin, tässä tilanteessa backend ei ole Raspberryssä. 
 - Siirretään backend erilliselle Linux-palvelimelle (...itseasiassa kumpikin, sekä backend ja frontend pilven nurkalle?)
-- Toisaalta laitetaan frontend pyörimään Raspberry Pi:lle, tällöin laittetaan Raspberryn cpu:n käyttöaste yhdeksi mitattavaksi suureeksi (ja pistää Raspberry tiukille).
-- Edelliset siirto-ominaisuudet: tehdään antureiden, backendin ja frontendin konfiguroiminen helppoksi ja siirrettäväksi. Tämä ominaisuus on mielenkiintoinen 'puuhapiste'.  
-
+- Toisaalta laitetaan frontend pyörimään Raspberry Pi:lle, tällöin laittetaan Raspberryn cpu:n käyttöaste yhdeksi mitattavaksi suureeksi.
+- Edelliset siirto-ominaisuudet: tehdään antureiden, backendin ja frontendin konfiguroiminen helppoksi ja siirrettäväksi. 
 - Https: käyttö ja login (login ominaisuus työn alla)
-- MongoDB ilmoittaa frontendille uudesta mittauksesta, frontend päättää mitä viestin pohjalta tehdään, mielenkiintoinen 'puuhapiste'. 
+- MongoDB ilmoittaa frontendille uudesta mittauksesta, frontend päättää mitä viestin pohjalta tehdään.  
 - Mittaustietojen 'editointi' frontendistä.  Nyt käytetään joko MongoDb Compass, Imsomnia ja/tai Postman työkaluja näihin tarpeisiin, (REST tukee jo tätä...UI viimeistelyä) 
-- Sensoridatan lukuohjelman siistiminen (python) ja siirto Githubiin.  
-- Mittaustulosten (kuvaajan) zoomaus ja aikaikkuna siirto frontendissä, hyvä ja näkyvä 'puuhapiste'   I
+- Sensoridatan lukuohjelman (python) siirto Githubiin.  
+- Mittaustulosten (kuvaajan) zoomaus ja aikaikkuna siirto frontendissä.  
 
 
 ### Toteutetut tehtävät
 - Ensimmäinen mittaus tehty, katso raspberry_eka_savu.jpg (pymongo)
-- Github käyttö: kit, Aapo, and Lassi  
-- Frontend ja backend Githubissa
-- MQ-2 sensorilta tulevaa mittaustietoa analysoidaan eli talletaan tietokantaan halutun muutoksen ylittävät lukemat ja/tai vähintään tietyllä aikavälillä (esim. vähintään puolen tunnin välein, jos mittausarvot pysyvät muuttumattomanan)
+- MQ-2 sensorilta tulevaa mittaustietoa analysoidaan ja talletaan tietokantaan halutun muutoksen ylittävät lukemat ja/tai vähintään tietyllä aikavälillä (esim. 10 min. välein)
