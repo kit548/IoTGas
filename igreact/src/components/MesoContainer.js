@@ -18,7 +18,9 @@ export default class Container extends React.Component {
 		super();
 		this.state={
 			mesoList:[],
-			piirtokaasu: '',
+			mittausnimi: '',
+			lamponimi: '',
+			piirralampo: false, 
 			gases: [],
 		}
 	}
@@ -27,41 +29,57 @@ export default class Container extends React.Component {
 		ReactServices.readGasnames()  
 		.then(response => {
 			this.setState({ gases: response });
-			console.log("Gases:"); 
+			console.log("Container Gases: "); 
 			console.log(this.state.gases);
+			this.mita_mitattu(this.state.gases) 
 		  })
 		.catch(error => {
 			console.log("ERROR in Container / componentDidMount");
 			console.log(error);
 		}); 
+		console.log('Container: componentDidUpdate'); 
 		console.log(this.state.gases);
 	}
 
 	fetchDetails = (event) => {
-		this.setState({piirtokaasu: event});
-		console.log('MesoContainer this: ' + this.state.piirtokaasu);
+		this.setState({mittausnimi: event});
+		console.log('Container event: ' + this.state.mittausnimi); 
 		//this.getLastMesosOfGases();
-
 	}
 
-// onUpdate={MesoLinechart.piirtokaasu.bind(this)}
+	mita_mitattu = (gases) => {
+		const lampomitattu = 'Lampotila'; 
+		let x;
+		for (x in gases) {
+			if (gases[x] === lampomitattu) {
+				this.setState({lamponimi: lampomitattu});
+				this.piirralampo = true; 
+				console.log('Container: Lampotila asetettu');
+			}
+			else {
+				// viimeisin mitattu kaasu (ei lampotila)
+				this.setState({mittausnimi: gases[x]});
+				console.log('Container asetettu: ' + gases[x]);
+			}
+		} 
+	}
+
+// onUpdate={MesoLinechart.mittausnimi.bind(this)}
+// <MesoLastMeso handler = { this.componentDidMount.bind(this) } />
 
 	render() {
-		//console.log('Map mesoList') ;
-		//console.log(this.state.mesoList) ;
-
+		//console.log(this.state.mesoList) ; 
+		
 		let listItems = this.state.gases.map((item) => 
 		<tr key={item} onClick={() => this.fetchDetails(item)}>
 			<td>{item}</td>
 		</tr>
 		)
-				
-		
+
 		return(
 			<div>
-			<MesoLastMeso handler = { this.componentDidMount.bind(this) } />
-			<MesoLinechart piirtokaasu = {this.state.piirtokaasu} />
-
+			<MesoLinechart mittausnimi = {this.state.mittausnimi} />
+			<MesoLinechart mittausnimi = {this.state.lamponimi} />			
 			<Table striped bordered>
 				<thead>
 					<tr>
