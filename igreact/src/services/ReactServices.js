@@ -18,35 +18,35 @@ const readAll = () => {
 
 const readLast100 = () => {
     const request = axios.get(`${baseUrl}/last100`); 
-    console.log('ReactServices: last100');
+    console.log('ReactServices-readLast100: /last100');
     return request.then(response => response.data);
 }
 
 const readLast = () => {
     const request = axios.get(`${baseUrl}/last`); 
-    console.log('ReactServices: readlast');
+    console.log('ReactServices-readlast: /last');
     return request.then(response => response.data)
 }
 
 const readGasLast = (id) => {
     // /last/:gasname -> meso_getgasxlast_get
-    console.log('ReactServices: readGaslast ' + id);
+    console.log('ReactServices-readGaslast: /getlast/' + id);
     const request = axios.get(`${baseUrl}/gaslast/${id}`); 
-    console.log('ReactServices: readGaslast done ');
+    //console.log('ReactServices: readGaslast done ');
     return request.then(response => response.data)
 }
 
 const readGasnames = () => {
     // meso_getgases_distinct 
     const request = axios.get(`${baseUrl}/gasenames`); 
-    console.log('ReactServices: gasenames');
+    console.log('ReactServices-readGasnames: /gasenames');
     return request.then(response => response.data)
 }
 
 const readGasvaluesX = (id, mesos) => {
     //  /gases/:id/:mesos'
     const request = axios.get(`${baseUrl}/gasvalues/${id}/${mesos}`); 
-    console.log(`ReactServices: X gases ${id} ${mesos} time & gas values`);
+    console.log(`ReactServices-readGasvaluesX: /gasvalues/${id}/${mesos} (time & gas values)`);
     return request.then(response => response.data);
 }
 
@@ -65,7 +65,7 @@ const updateOne = (id, updatedObject) => {
 
 const destroyOne = (id) => {
     const request = axios.delete(`${baseUrl}/delete/${id}`);
-    console.log('ReactServices del: ' + id);
+    console.log('ReactServices destroyOne: /delete/' + id);
     return request.then(response => response.data);
 }
 
