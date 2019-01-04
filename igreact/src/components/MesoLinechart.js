@@ -27,7 +27,7 @@ let data = {
 	}], 
 };
 
-const chartoptions = { 
+let chartoptions = { 
 	scales: { 
 		xAxes: [{ 
 			display: true,
@@ -75,7 +75,7 @@ const chartoptions = {
 			  ticks: {
 				//min: 0,
 				//max: 25,
-				stepSize: 0.5,
+				//stepSize: 0.5,
 			  },
 			},
 		]
@@ -118,8 +118,7 @@ export default class GasForm extends React.Component {
 		console.log('Linechart render mitat'); console.log(mitat); 
 		data.datasets[0].data = mitat  
 		data.datasets[0].label = this.props.mittausnimi 
-		data.datasets[0].yAxisID = 'y-axis-1' 
-	
+
 		return (
 			<form scatterform='scatterform'>	
 				<div className="scatterdraw">
