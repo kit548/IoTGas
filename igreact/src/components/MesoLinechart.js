@@ -21,8 +21,9 @@ let data = {
 		pointHoverBackgroundColor: 'rgba(75,192,192,1)',
 		pointHoverBorderColor: 'rgba(220,220,220,1)',
 		pointHoverBorderWidth: 2, 
-		pointRadius: 2, 
+		pointRadius: 1, 
 		pointHitRadius: 10, 
+		data: [],
 	}], 
 };
 
@@ -59,7 +60,25 @@ const chartoptions = {
 				unit: 'millisecond',
 				//displayFormats: { millisecond: 'h:mm:ss.SSS a', }, 
 			}     	
-		}] 
+		}], 
+		yAxes: [
+			{
+			  display: true,
+			  position: 'left',
+			  id: 'y-axis-1',
+			  gridLines: {
+				display: true
+			  },
+			  labels: {
+				show: true
+			  },
+			  ticks: {
+				//min: 0,
+				//max: 25,
+				stepSize: 0.5,
+			  },
+			},
+		]
 	} 
 };
 
@@ -68,15 +87,15 @@ export default class GasForm extends React.Component {
 		super(props);
 		this.state= {
 			scatterList:[], 
-			piirtokaasu: '',
+			mittausnimi: '',
 		};
 	}
 
-	haepiirtodata = ()	=> {
-		ReactServices.readGasvaluesX(this.props.piirtokaasu, 1000)
+	haepiirtodata = (mittaus)	=> {
+		ReactServices.readGasvaluesX(mittaus, 1000)
 		.then(response => {
 			this.setState({ scatterList: response });
-			console.log('Read x gases response:'); console.log(response); 
+			console.log('Linechart - haepiirtodata: '); console.log(response); 
 	 	 })
 		.catch(error => {
 		console.log(error);
@@ -84,10 +103,10 @@ export default class GasForm extends React.Component {
 	};
 
 	componentDidUpdate(prevProps) {
-		if (this.props.piirtokaasu !== prevProps.piirtokaasu) {
-			this.haepiirtodata();
-			console.log('Scatter: componentDidUpdate'); 
-		};
+		if (this.props.mittausnimi !== prevProps.mittausnimi) {
+			this.haepiirtodata(this.props.mittausnimi);
+			console.log('Linechart: componentDidUpdate'); 
+		}
 	}
 
 	render(	) {
@@ -95,11 +114,12 @@ export default class GasForm extends React.Component {
 		mitat =  this.state.scatterList; 
 		mitat = JSON.parse(JSON.stringify(mitat).split('"gagetime":').join('"x":')); 
 		mitat = JSON.parse(JSON.stringify(mitat).split('"arvo":').join('"y":')); 
-		console.log('Scatter this: ' + this.props.piirtokaasu);
-		console.log('Mitat'); console.log(mitat); 
+		console.log('Linechart render this.props.mittausnimi : ' + this.props.mittausnimi);
+		console.log('Linechart render mitat'); console.log(mitat); 
 		data.datasets[0].data = mitat  
-		data.datasets[0].label = this.props.piirtokaasu
-		
+		data.datasets[0].label = this.props.mittausnimi 
+		data.datasets[0].yAxisID = 'y-axis-1' 
+	
 		return (
 			<form scatterform='scatterform'>	
 				<div className="scatterdraw">
