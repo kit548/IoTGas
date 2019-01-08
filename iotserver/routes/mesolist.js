@@ -12,23 +12,17 @@ router.get('/', meso_controller.meso_getall_get);
 // GET about 
 router.get('/about', meso_controller.meso_getabout_get); 
 
-// GET last 100 measures 
-router.get('/last100', meso_controller.meso_getlast100);  
-
-// GET last 100 gagetime and arvo of the gas 
-router.get('/gasvalueslast100/:gasname', meso_controller.meso_getgasvalueslast100);  
-
 // GET last x gagetime and arvo of the gas 
-router.get('/gasvalues/:gasname/:mesos', meso_controller.meso_getgasvalueslastX); 
+router.get('/gasvalues/:gasname/:mesos', meso_controller.meso_getgasxlastxvalues); 
 
 // GET last measure
 router.get('/last', meso_controller.meso_getlast_get);  
 
 // GET last measure of the gas
-router.get('/gaslast/:gasname', meso_controller.meso_getgasxlast_get);  
+router.get('/gaslast/:gasname', meso_controller.meso_getgasxlastmeso_get);  
 
 // GET measured gas names  
-router.get('/gasenames', meso_controller.meso_getgases_distinct); 
+router.get('/gasnames', meso_controller.meso_getgases_distinct); 
 
 // GET measure by gas name  
 router.get('/gases/:gasname', meso_controller.meso_getgases_get); 

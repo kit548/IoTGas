@@ -18,13 +18,14 @@ export default class Container extends React.Component {
 		super();
 		this.state={
 			mesoList:[],
-			mittausnimi: '',
+			piirtonimi: '',
+			kaasunimi: '',
 			lamponimi: '',
 			piirralampo: false, 
 			gases: [],
 		}
 	}
-		
+
 	componentDidMount() { 
 		ReactServices.readGasnames()  
 		.then(response => {
@@ -38,12 +39,12 @@ export default class Container extends React.Component {
 			console.log(error);
 		}); 
 		console.log('Container: componentDidUpdate'); 
-		console.log(this.state.gases);
+		console.log(this.state.gases); 
 	}
 
 	fetchDetails = (event) => {
-		this.setState({mittausnimi: event});
-		console.log('Container event: ' + this.state.mittausnimi); 
+		this.setState({kaasunimi: event});
+		console.log('Container event: ' + this.state.kaasunimi); 
 		//this.getLastMesosOfGases();
 	}
 
@@ -54,17 +55,17 @@ export default class Container extends React.Component {
 			if (gases[x] === lampomitattu) {
 				this.setState({lamponimi: lampomitattu});
 				this.piirralampo = true; 
-				console.log('Container: Lampotila asetettu');
+				console.log('Container mita_mitattu: Lampotila'); 	
 			}
 			else {
 				// viimeisin mitattu kaasu (ei lampotila)
-				this.setState({mittausnimi: gases[x]});
-				console.log('Container asetettu: ' + gases[x]);
+				this.setState({kaasunimi: gases[x]});
+				console.log('Container mita_mitattu : ' + gases[x]);
 			}
 		} 
 	}
 
-// onUpdate={MesoLinechart.mittausnimi.bind(this)}
+// onUpdate={MesoLinechart.piirtonimi.bind(this)}
 // <MesoLastMeso handler = { this.componentDidMount.bind(this) } />
 
 	render() {
@@ -76,11 +77,13 @@ export default class Container extends React.Component {
 		</tr>
 		)
 
+		console.log('Container render this.state.piirtonimi : ' + this.state.piirtonimi);
+
 		return(
 			<div>
-			<MesoLinechart mittausnimi = {this.state.mittausnimi} />
-			<MesoLinechart mittausnimi = {this.state.lamponimi} />			
-			<Table striped bordered>
+			<MesoLinechart piirtonimi = {this.state.kaasunimi} />
+			<MesoLinechart piirtonimi = {this.state.lamponimi} />			
+			<Table striped bordered >
 				<thead>
 					<tr>
 						<th>Mitatut kaasut</th>
@@ -90,8 +93,7 @@ export default class Container extends React.Component {
 					{ listItems }
 				</tbody>
 			</Table>
-
-			</div>						
+			</div>					
 		)
 	}
 }

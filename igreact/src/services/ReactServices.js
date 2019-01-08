@@ -4,7 +4,7 @@ const ip = window.location.host;
 console.log(ip)
 
 //DESKTOP-BBB6GQC, 192.168.0.18 192.168.43.125, iotgas
-const baseUrl = 'http://192.168.0.18:3010/meso'
+const baseUrl = 'http://192.168.0.15:3010/meso'
 
 const createOne = (newObject) => {
     const request = axios.post(`${baseUrl}/create`, newObject);
@@ -16,12 +16,6 @@ const readAll = () => {
     return request.then(response => response.data);
 }
 
-const readLast100 = () => {
-    const request = axios.get(`${baseUrl}/last100`); 
-    console.log('ReactServices-readLast100: /last100');
-    return request.then(response => response.data);
-}
-
 const readLast = () => {
     const request = axios.get(`${baseUrl}/last`); 
     console.log('ReactServices-readlast: /last');
@@ -30,7 +24,7 @@ const readLast = () => {
 
 const readGasLast = (id) => {
     // /last/:gasname -> meso_getgasxlast_get
-    console.log('ReactServices-readGaslast: /getlast/' + id);
+    console.log('ReactServices-readGaslast: /gaslast/' + id);
     const request = axios.get(`${baseUrl}/gaslast/${id}`); 
     //console.log('ReactServices: readGaslast done ');
     return request.then(response => response.data)
@@ -38,8 +32,8 @@ const readGasLast = (id) => {
 
 const readGasnames = () => {
     // meso_getgases_distinct 
-    const request = axios.get(`${baseUrl}/gasenames`); 
-    console.log('ReactServices-readGasnames: /gasenames');
+    const request = axios.get(`${baseUrl}/gasnames`); 
+    console.log('ReactServices-readGasnames: /gasnames');
     return request.then(response => response.data)
 }
 
@@ -70,6 +64,6 @@ const destroyOne = (id) => {
 }
 
 export default { 
-    readAll, readLast, readLast100, readGasvaluesX, 
-    readGasLast, readGasnames, createOne, readOne, updateOne, destroyOne 
+    readAll, readLast, readGasvaluesX, readGasLast, readGasnames, 
+    createOne, readOne, updateOne, destroyOne 
 } 

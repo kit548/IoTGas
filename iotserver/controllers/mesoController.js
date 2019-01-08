@@ -15,7 +15,8 @@ exports.meso_getgases_distinct = function (req, res, next)
 		// jump away if error found
 		if (err2) { return next(err2); }
 		else
-		{	res.set('Access-Control-Allow-Origin','*');
+		{	console.log(res2);
+			res.set('Access-Control-Allow-Origin','*');
 			res.json(res2);
 		}	
 	});
@@ -80,27 +81,12 @@ exports.meso_getlast_get = function (req, res, next)
 	});
 };
 
-exports.meso_getlast100 = function (req, res, next) 
-{    //MesoModel.find({}, function(err2, res2) 
-    MesoModel.find().sort({gagetime: -1}).limit(100).exec(function(err2, res2)
-	{ 	
-		console.log("kit Meso_getlast100"); 
-		// jump away if error found
-		if (err2) { return next(err2); }
-		else
-		{ 	console.log(res2); 
-			res.set('Access-Control-Allow-Origin','*');
-			res.json(res2);
-		}	
-	});
-};
-
-exports.meso_getgasxlast_get = function (req, res, next) 
+exports.meso_getgasxlastmeso_get = function (req, res, next) 
 {   console.log(req.params.gasname); 
 	MesoModel.findOne({ kaasunimi: req.params.gasname }, 
 		).sort({gagetime: -1}).limit(-1).exec(function(err2, res2)
 	{ 	
-		console.log("kit Meso_getgasxlast_get"); 
+		console.log("kit Meso_getgasxlastmeso_get"); 
 		// jump away if error found
 		if (err2) { return next(err2); }
 		else
@@ -110,29 +96,13 @@ exports.meso_getgasxlast_get = function (req, res, next)
 	});
 };
 
-exports.meso_getgasvalueslastX = function (req, res, next) 
-{   console.log(req.params.id); console.log(req.params.mesos);
+exports.meso_getgasxlastxvalues = function (req, res, next) 
+{   console.log(req.params.gasname); console.log(req.params.mesos);
 	MesoModel.find({ kaasunimi: req.params.gasname }, 
 		{_id:0, gagetime: 1, arvo: 1}
 		).sort({gagetime: -1}).limit(-req.params.mesos).exec(function(err2, res2)
 	{ 	
-		console.log("kit Meso_getgaseslastX"); 
-		// jump away if error found
-		if (err2) { return next(err2); }
-		else
-		{	res.set('Access-Control-Allow-Origin','*');
-			res.json(res2);
-		}	
-	});
-};
-
-exports.meso_getgasvalueslast100 = function (req, res, next) 
-{   
-	MesoModel.find({ kaasunimi: req.params.gasname }, 
-		{_id:0, gagetime: 1, arvo: 1}
-		).sort({gagetime: -1}).limit(100).exec(function(err2, res2)
-	{ 	
-		console.log("kit Meso_getgaseslast100"); 
+		console.log("kit meso_getgasxlastxvalues"); 
 		// jump away if error found
 		if (err2) { return next(err2); }
 		else

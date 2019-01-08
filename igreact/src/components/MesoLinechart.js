@@ -87,15 +87,16 @@ export default class GasForm extends React.Component {
 		super(props);
 		this.state= {
 			scatterList:[], 
-			mittausnimi: '',
+			piirtonimi: '',
+			lamponimi: '',
 		};
 	}
 
-	haepiirtodata = (mittaus)	=> {
-		ReactServices.readGasvaluesX(mittaus, 1000)
+	haepiirtodata = (nimi)	=> {
+		ReactServices.readGasvaluesX(nimi, 1000)
 		.then(response => {
 			this.setState({ scatterList: response });
-			console.log('Linechart - haepiirtodata: '); console.log(response); 
+			console.log('Linechart - haepiirtodata: ' + nimi); console.log(response); 
 	 	 })
 		.catch(error => {
 		console.log(error);
@@ -103,8 +104,8 @@ export default class GasForm extends React.Component {
 	};
 
 	componentDidUpdate(prevProps) {
-		if (this.props.mittausnimi !== prevProps.mittausnimi) {
-			this.haepiirtodata(this.props.mittausnimi);
+		if (this.props.piirtonimi !== prevProps.piirtonimi) {
+			this.haepiirtodata(this.props.piirtonimi);
 			console.log('Linechart: componentDidUpdate'); 
 		}
 	}
@@ -114,10 +115,10 @@ export default class GasForm extends React.Component {
 		mitat =  this.state.scatterList; 
 		mitat = JSON.parse(JSON.stringify(mitat).split('"gagetime":').join('"x":')); 
 		mitat = JSON.parse(JSON.stringify(mitat).split('"arvo":').join('"y":')); 
-		console.log('Linechart render this.props.mittausnimi : ' + this.props.mittausnimi);
+		console.log('Linechart render this.props.piirtonimi : ' + this.props.piirtonimi);
 		console.log('Linechart render mitat'); console.log(mitat); 
 		data.datasets[0].data = mitat  
-		data.datasets[0].label = this.props.mittausnimi 
+		data.datasets[0].label = this.props.piirtonimi 
 
 		return (
 			<form scatterform='scatterform'>	
