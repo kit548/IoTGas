@@ -88,7 +88,6 @@ export default class GasForm extends React.Component {
 		this.state= {
 			scatterList:[], 
 			piirtonimi: '',
-			lamponimi: '',
 		};
 	}
 
@@ -96,6 +95,7 @@ export default class GasForm extends React.Component {
 		ReactServices.readGasvaluesX(nimi, 1000)
 		.then(response => {
 			this.setState({ scatterList: response });
+			//scatterList = response; 
 			console.log('Linechart - haepiirtodata: ' + nimi); console.log(response); 
 	 	 })
 		.catch(error => {
@@ -111,7 +111,7 @@ export default class GasForm extends React.Component {
 	}
 
 	render(	) {
-		let mitat = []
+		let mitat = [];
 		mitat =  this.state.scatterList; 
 		mitat = JSON.parse(JSON.stringify(mitat).split('"gagetime":').join('"x":')); 
 		mitat = JSON.parse(JSON.stringify(mitat).split('"arvo":').join('"y":')); 

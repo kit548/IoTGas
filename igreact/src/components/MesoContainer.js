@@ -12,16 +12,14 @@ import MesoLastMeso from './MesoLastMeso';
 import MesoLinechart from './MesoLinechart';
 //import GasForm from './GasForm';
 
-
 export default class Container extends React.Component {
 	constructor() {
 		super();
 		this.state={
-			mesoList:[],
+			//mesoList:[],
 			piirtonimi: '',
 			kaasunimi: '',
 			lamponimi: '',
-			piirralampo: false, 
 			gases: [],
 		}
 	}
@@ -40,6 +38,7 @@ export default class Container extends React.Component {
 		}); 
 		console.log('Container: componentDidUpdate'); 
 		console.log(this.state.gases); 
+		this.mita_mitattu = this.mita_mitattu.bind(this);
 	}
 
 	fetchDetails = (event) => {
@@ -51,26 +50,24 @@ export default class Container extends React.Component {
 	mita_mitattu = (gases) => {
 		const lampomitattu = 'Lampotila'; 
 		let x;
+		let kaasu; 
 		for (x in gases) {
 			if (gases[x] === lampomitattu) {
 				this.setState({lamponimi: lampomitattu});
-				this.piirralampo = true; 
 				console.log('Container mita_mitattu: Lampotila'); 	
 			}
 			else {
 				// viimeisin mitattu kaasu (ei lampotila)
-				this.setState({kaasunimi: gases[x]});
+				kaasu = gases[x];
 				console.log('Container mita_mitattu : ' + gases[x]);
 			}
-		} 
+		}
+		this.setState({kaasunimi: kaasu});
 	}
 
 // onUpdate={MesoLinechart.piirtonimi.bind(this)}
-// <MesoLastMeso handler = { this.componentDidMount.bind(this) } />
-
 	render() {
-		//console.log(this.state.mesoList) ; 
-		
+	
 		let listItems = this.state.gases.map((item) => 
 		<tr key={item} onClick={() => this.fetchDetails(item)}>
 			<td>{item}</td>
@@ -93,7 +90,7 @@ export default class Container extends React.Component {
 					{ listItems }
 				</tbody>
 			</Table>
-			</div>					
+			</div>				
 		)
 	}
 }
