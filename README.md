@@ -1,29 +1,32 @@
 # IoTGas
 ## IoT-kaasumittari 
+Mitataan huoneessa olevia epäpuhtauksia kuten H2, LPG, CH4, CO, alkoholi, savu ja propaani (MQ-2-kaasusensori). Lisäksi mitataan ilman lämpötila. Laitteisto, käytetyt palvelut/ohjelmistot ja perustoiminnot ovat tarkennettu alla olevassa peruskokoonpanossa.
 
-Gauge
-### Sensor and backend
-- Hardware: MQ-2 Gas sensor, Raspberry Pi 3+, and ADC Pi Plus
-- Software: Raspbian GNU/Linux 9, Python, pymongo, MongoDB, Node.js, Express, JavaScript backend and REST webservice (to get data from Raspberry via wlan) 
+Lisäämme myöhemmin laitteistoon toisen lämpötila-anturin (DS18B20) ja kosteuden mittaamisen. Kehitysvaiheen aikana selviää antureiden (sensoreiden) tarkkuudet, jolloin muotoutuu mittarin ominaisuudet ja käyttöliittymän muoto selaimeen.    
 
-### Frontend and Displays for browsers 
-- Hardware: Laptops
-- Software: 
-  - Windows 10 and GNU/Linux
-  - Node.js, ReactJS, axios, react-chartjs-2, moment, python, JavaScript   
+### Anturi ja backend (peruskokonpano)
+- Laitteisto: Raspberry Pi 3+, MQ-2 kaasusensori, analoginen lämpötilamittari (RS xxx) ja ADC Pi Plus
+- Palvelut ja ohjelmistot: Raspbian GNU/Linux 9, Python, pymongo, MongoDB, Node.js, Express, JavaScript  
+-> mitattu tiedot MongoDB:n ja ym. palveluilla REST rajapinta Raspberryyn (wlan), josta frontend hakee halutut mittaukset  
 
-
+### Frontend ja mittaukset selaimeen (peruskokoonpano)
+- Laitteisto: PC (kannettava)
+- Palvelut ja ohjelmistot: 
+  - Windows 10 ja/tai GNU/Linux
+  - Node.js, ReactJS, axios, react-chartjs-2, moment, python, JavaScript 
+- Backendin REST rajapinnasta luetaan tarvittavat tiedot ja muodostetaan näistä mittarisivu selaimeen
+ 
 ### ToDo
-- do real gas measurements to see what we can measure with MQ-2 Gas sensor and after this "lock" the features 
-- calibration: only draft calibration, we don't need accurate values
-- add temperature sensor to Raspberry 
-- sensor data to MongoDB via REST (just training)
-- use of MQTT for the sensor data 
-- move mongodb to separate x86 Linux-server and store measurements from Raspberry Pi to that
-- if time: put front end also to Raspberry Pi and measure use of Pi's cpu usage  
+- MQ-2 mittausten kalibrointi (python) sensorivalmistajan taulukoiden avulla. 
+- Lisätään DS18B20 ja kosteuden anturit/mittaaminen.  
+- Mittaustieto MongoDB:n backendin REST-rajapinnan kautta. Nyt mittaukset kirjoitetaan mongopy:llä 'suoraan' tietokantaan. 
+- Siirretään mittaustietoja anturista MQTT protokollalla backendiin. 
+- Siirretään backend erilliselle Linux-palvelimelle (sekä backend ja frontend pilven nurkalle?)
+- Toisaalta laitetaan frontend pyörimään Raspberry Pi:lle, tällöin laittetaan Raspberryn cpu:n käyttöaste yhdeksi mitattavaksi suureeksi.
+- Edelliset siirto-ominaisuudet: tehdään antureiden, backendin ja frontendin konfiguroiminen helppoksi ja siirrettäväksi. 
+- Https: käyttö ja login (login ominaisuus työn alla)
+- MongoDB ilmoittaa frontendille uudesta mittauksesta, frontend päättää mitä viestin pohjalta tehdään.  
+- Mittaustietojen 'editointi' frontendistä.  Nyt käytetään joko MongoDb Compass, Imsomnia ja/tai Postman työkaluja näihin tarpeisiin, (REST tukee osaksi tätä) 
+- Mittaustulosten (kuvaajan) zoomaus ja aikaikkuna siirto frontendissä.  
 
 
-### Done: 
-- 1st measurement with this full-stack system, see raspberry_eka_savu.jpg (used pymongo)
-- learned to use GitHub with the team: kit, Aapo, and Lassi 
-- 1st 'front end' and 'back end' are here 

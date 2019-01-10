@@ -1,4 +1,5 @@
 var express = require('express');
+var fs = require('fs');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
@@ -16,16 +17,39 @@ var app = express();
 app.use(cors())
 app.use(helmet());
 
-
 // Set up mongoose connection
 var mongoose = require('mongoose');
+// Read mongodb database information from a file
+// Sample secrets.json-file. This file should be in the same folder as this app.js-file.
+// {
+//    "user": "Database username here",
+//    "pass": "Database user password here",
+//    "host": "IP/Domain of the db-server here",
+//    "port": "Port of the db-server here",
+//    "database": "Name of the db to be used here"
+// }
+if (fs.existsSync('secrets.json')) {
+    var secrets = JSON.parse(fs.readFileSync('secrets.json', 'utf8'));
+    var databaseUri = `mongodb://${secrets.user}:${secrets.pass}@${secrets.host}:${secrets.port}/${secrets.database}`;
+}
+else
+{
+  var databaseUri = `mongodb://localhost:27017/IoTGas`;
+}
+//console.log(databaseUri);
+
 //1 var dev_db_url = 'mongodb://cooluser:coolpassword@ds119748.mlab.com:19748/local_library'
 //1 var mongoDB = process.env.MONGODB_URI || dev_db_url;
 //mongoose.connect(mongoDB);
-mongoose.connect('mongodb://localhost:27017/IoTGas');
-mongoose.Promise = global.Promise;
-var db = mongoose.connection; 
 
+// New way to connect to MongoDB as the old one is deprecated.
+// DeprecationWarning: `open()` is deprecated in mongoose >= 4.11.0, use `openUri()` instead, or set the `useMongoClient` option if using `connect()` 
+// or `createConnection()`. See http://mongoosejs.com/docs/4.x/docs/connections.html#use-mongo-client
+mongoose.connect(databaseUri, {
+useMongoClient: true,
+promiseLibrary: global.Promise
+});
+var db = mongoose.connection; 
 
 
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
