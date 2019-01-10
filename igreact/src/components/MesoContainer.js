@@ -16,7 +16,6 @@ export default class Container extends React.Component {
 	constructor() {
 		super();
 		this.state={
-			//mesoList:[],
 			piirtonimi: '',
 			kaasunimi: '',
 			lamponimi: '',
@@ -37,14 +36,12 @@ export default class Container extends React.Component {
 			console.log(error);
 		}); 
 		console.log('Container: componentDidUpdate'); 
-		console.log(this.state.gases); 
 		this.mita_mitattu = this.mita_mitattu.bind(this);
 	}
 
 	fetchDetails = (event) => {
 		this.setState({kaasunimi: event});
 		console.log('Container event: ' + this.state.kaasunimi); 
-		//this.getLastMesosOfGases();
 	}
 
 	mita_mitattu = (gases) => {
@@ -57,25 +54,23 @@ export default class Container extends React.Component {
 				console.log('Container mita_mitattu: Lampotila'); 	
 			}
 			else {
-				// viimeisin mitattu kaasu (ei lampotila)
+				// listan viimeisin mitattu kaasu (ei lampotila)
 				kaasu = gases[x];
-				console.log('Container mita_mitattu : ' + gases[x]);
 			}
 		}
 		this.setState({kaasunimi: kaasu});
+		console.log('Container mita_mitattu kaasu: ' + kaasu);
 	}
 
 // onUpdate={MesoLinechart.piirtonimi.bind(this)}
-	render() {
-	
+
+render() {
 		let listItems = this.state.gases.map((item) => 
 		<tr key={item} onClick={() => this.fetchDetails(item)}>
 			<td>{item}</td>
 		</tr>
 		)
-
-		console.log('Container render this.state.piirtonimi : ' + this.state.piirtonimi);
-
+		console.log('Container render');
 		return(
 			<div>
 			<MesoLinechart piirtonimi = {this.state.kaasunimi} />

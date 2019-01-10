@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactServices from '../services/ReactServices'; 
 
-//import {ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, Legend} from 'recharts';
 import {Scatter} from 'react-chartjs-2'; 
 import moment from 'moment';
 
@@ -95,8 +94,8 @@ export default class GasForm extends React.Component {
 		ReactServices.readGasvaluesX(nimi, 1000)
 		.then(response => {
 			this.setState({ scatterList: response });
-			//scatterList = response; 
-			console.log('Linechart - haepiirtodata: ' + nimi); console.log(response); 
+			console.log('Linechart - haepiirtodata: ' + nimi); 
+			//console.log(response); 
 	 	 })
 		.catch(error => {
 		console.log(error);
@@ -110,16 +109,17 @@ export default class GasForm extends React.Component {
 		}
 	}
 
-	render(	) {
-		let mitat = [];
-		mitat =  this.state.scatterList; 
+	data2scatter(mitat, nimi) {
 		mitat = JSON.parse(JSON.stringify(mitat).split('"gagetime":').join('"x":')); 
 		mitat = JSON.parse(JSON.stringify(mitat).split('"arvo":').join('"y":')); 
-		console.log('Linechart render this.props.piirtonimi : ' + this.props.piirtonimi);
-		console.log('Linechart render mitat'); console.log(mitat); 
-		data.datasets[0].data = mitat  
-		data.datasets[0].label = this.props.piirtonimi 
+		console.log('Linechart data2scatter this.props.piirtonimi : ' + this.props.piirtonimi);
+		console.log('Linechart data2scatter mitat'); console.log(mitat); 
+		data.datasets[0].data = mitat;  
+		data.datasets[0].label = nimi;
+	} 
 
+	render(	) {
+		this.data2scatter(this.state.scatterList, this.props.piirtonimi);
 		return (
 			<form scatterform='scatterform'>	
 				<div className="scatterdraw">
@@ -128,6 +128,5 @@ export default class GasForm extends React.Component {
 			</form>
 		);
 	}
-	//});
 }
 
