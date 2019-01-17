@@ -7,8 +7,6 @@ import {Table} from 'reactstrap';
 import moment from 'moment';
 
 import ReactServices from '../services/ReactServices';
-//eslint-disable-next-line
-import MesoLastMeso from './MesoLastMeso';
 import MesoLinechart from './MesoLinechart';
 //import GasForm from './GasForm';
 
