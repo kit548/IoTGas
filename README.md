@@ -12,8 +12,8 @@ Lisäämme myöhemmin laitteistoon toisen lämpötila-anturin (DS18B20) ja koste
 ### Frontend ja mittaukset selaimeen (peruskokoonpano)
 - Laitteisto: PC (kannettava)
 - Palvelut ja ohjelmistot: 
-  - Windows 10 ja/tai GNU/Linux
-  - Node.js, ReactJS, axios, react-chartjs-2, moment, python, JavaScript 
+  - Windows 10, GNU/Linux tai Raspberry Pi (esim. frontend build Pi:llä)
+  - Node.js, ReactJS, axios, reactstrap, bootstrap, react-chartjs-2, moment, python, JavaScript 
 - Backendin REST rajapinnasta luetaan tarvittavat tiedot ja muodostetaan näistä mittarisivu selaimeen
  
 ### ToDo
@@ -22,11 +22,11 @@ Lisäämme myöhemmin laitteistoon toisen lämpötila-anturin (DS18B20) ja koste
 - Mittaustieto MongoDB:n backendin REST-rajapinnan kautta. Nyt mittaukset kirjoitetaan mongopy:llä 'suoraan' tietokantaan. 
 - Siirretään mittaustietoja anturista MQTT protokollalla backendiin. 
 - Siirretään backend erilliselle Linux-palvelimelle (sekä backend ja frontend pilven nurkalle?)
-- Toisaalta laitetaan frontend pyörimään Raspberry Pi:lle, tällöin laittetaan Raspberryn cpu:n käyttöaste yhdeksi mitattavaksi suureeksi.
+- Raspberryn cpu:n käyttöaste yhdeksi mitattavaksi suureeksi.
 - Edelliset siirto-ominaisuudet: tehdään antureiden, backendin ja frontendin konfiguroiminen helppoksi ja siirrettäväksi. 
 - Https: käyttö ja login (login ominaisuus työn alla)
 - MongoDB ilmoittaa frontendille uudesta mittauksesta, frontend päättää mitä viestin pohjalta tehdään.  
 - Mittaustietojen 'editointi' frontendistä.  Nyt käytetään joko MongoDb Compass, Imsomnia ja/tai Postman työkaluja näihin tarpeisiin, (REST tukee osaksi tätä) 
 - Mittaustulosten (kuvaajan) zoomaus ja aikaikkuna siirto frontendissä.  
 
-
+ps. This README.md is used as a report for a course, threfore Finnish is used. 
