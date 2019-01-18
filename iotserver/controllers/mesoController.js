@@ -11,7 +11,7 @@ exports.meso_getgases_distinct = function (req, res, next)
 { 
 	MesoModel.distinct('kaasunimi', function(err2, res2) 
 	{ 	
-		console.log("kit Meso_get_gasnames");
+		console.log("ser Meso_get_gasnames");
 		// jump away if error found
 		if (err2) { return next(err2); }
 		else
@@ -26,7 +26,7 @@ exports.meso_getall_get = function (req, res, next)
 { 
 	MesoModel.find({}, function(err2, res2) 
 	{ 	
-		console.log("kit Meso_getall_get");
+		console.log("ser Meso_getall_get");
 		// jump away if error found
 		if (err2) { return next(err2); }
 		else
@@ -40,7 +40,7 @@ exports.meso_getone_get = function (req, res, next)
 {
 	MesoModel.find({ _id: req.params.id }, function(err2, res2)
 	{ 	
-		console.log("kit Meso_getone_get:" + req.params.id );
+		console.log("ser Meso_getone_get:" + req.params.id );
 		// jump away if error found
 		if (err2) { return next(err2); }
 		else
@@ -55,7 +55,7 @@ exports.meso_getgases_get = function (req, res, next)
 {
 	MesoModel.find({ kaasunimi: req.params.gasname }, function(err2, res2) 
 	{ 	
-		console.log("kit Meso_getgases_get:" + req.params.gasname );
+		console.log("ser Meso_getgases_get:" + req.params.gasname );
 		// jump away if error found
 		if (err2) { return next(err2); }
 		else
@@ -70,7 +70,7 @@ exports.meso_getlast_get = function (req, res, next)
 {    //MesoModel.find({}, function(err2, res2) 
     MesoModel.findOne().sort({gagetime: -1}).exec(function(err2, res2)
 	{ 	
-		console.log("kit Meso_getlast_get"); 
+		console.log("ser Meso_getlast_get"); 
 		// jump away if error found
 		if (err2) { return next(err2); }
 		else 
@@ -84,14 +84,14 @@ exports.meso_getlast_get = function (req, res, next)
 exports.meso_getgases_distinct_lastmeso = function (req, res, next) 
 {   //ugly coding
 	MesoModel.distinct('kaasunimi',  function(err2, resa) 
-	{ 	console.log("kit meso_getgases_distinct_lastmeso-gases");
+	{ 	console.log("ser meso_getgases_distinct_lastmeso-gases");
 		// jump away if error found
 		if (err2) { return next(err2); }
 		else
 		{	console.log(resa);
-			console.log("kit kit meso_getgases_distinct_lastmeso-lastvalues"); 
+			console.log("ser meso_getgases_distinct_lastmeso-lastvalues"); 
 			let resoall = [];
-			let x;
+			let x = 0;
 			let y = 0; 
 			for (x in resa) {				
 				MesoModel.findOne({ kaasunimi: resa[x]}, 
@@ -102,7 +102,7 @@ exports.meso_getgases_distinct_lastmeso = function (req, res, next)
 					{	//console.log(y);
 						resoall[y] = resb; 
 						y += 1;
-						// wait for last query? sync... //ugly coding... react and express takes care?
+						// wait for last query? sync... //ugly coding... react and express takes care!
 						if (y > x) {
 							console.log(resoall);
 							res.set('Access-Control-Allow-Origin','*');
@@ -120,7 +120,7 @@ exports.meso_getgasxlastmeso_get = function (req, res, next)
 	MesoModel.findOne({ kaasunimi: req.params.gasname }, 
 		).sort({gagetime: -1}).limit(-1).exec(function(err2, res2)
 	{ 	
-		console.log("kit Meso_getgasxlastmeso_get"); 
+		console.log("ser Meso_getgasxlastmeso_get"); 
 		// jump away if error found
 		if (err2) { return next(err2); }
 		else
@@ -136,7 +136,7 @@ exports.meso_getgasxlastxvalues = function (req, res, next)
 		{_id:0, gagetime: 1, arvo: 1}
 		).sort({gagetime: -1}).limit(-req.params.mesos).exec(function(err2, res2)
 	{ 	
-		console.log("kit meso_getgasxlastxvalues"); 
+		console.log("ser meso_getgasxlastxvalues"); 
 		// jump away if error found
 		if (err2) { return next(err2); }
 		else
@@ -170,7 +170,7 @@ exports.meso_createone_post =
 
     (req, res, next) => {
 	const validationerror = validationResult(req);
-	//console.log("kit Meso_creating"); 
+	//console.log("ser Meso_creating"); 
 	if (!validationerror.isEmpty())
 	{
 		return res.status(422).json({ errors: validationerror.mapped() });
@@ -188,7 +188,7 @@ exports.meso_createone_post =
 	
 	NewIotlist.save( function(err2, res2)
 	{
-		//console.log("kit Meso_createone_post");
+		//console.log("ser Meso_createone_post");
 		// jump away if error found
 		if (err2)
 		{
@@ -196,7 +196,7 @@ exports.meso_createone_post =
 		}
 		else
 		{
-			//console.log("kit Meso_create_json"); 
+			//console.log("ser Meso_create_json"); 
 			res.set('Access-Control-Allow-Origin','*');
 			res.json(res2);
 		}	
@@ -231,7 +231,7 @@ exports.meso_updateone_put =
 		{ new : true }, // returns updated picture info 
 		function(err2, res2)
 		{
-			//console.log("kit Meso_updateone_put");
+			//console.log("ser Meso_updateone_put");
 			// jump away if error found
 			if (err2)
 			{
@@ -240,7 +240,7 @@ exports.meso_updateone_put =
 			else
 			{
 				// no error - return this //res.json({text: 'put one'}) 
-				console.log("kit Meso_put_json");
+				console.log("ser Meso_put_json");
 				res.set('Access-Control-Allow-Origin','*');
 				res.json(res2);
 			}	
@@ -264,7 +264,7 @@ exports.meso_deleteone_delete = function (req, res, next)
 			else
 			{
 				// no error - return this //res.json({text: 'delete one'}) 
-				console.log('kit Meso info: Delete one'); 
+				console.log('ser Meso info: Delete one'); 
 				res.set('Access-Control-Allow-Origin','*');
 				res.json(res2);
 			}	
