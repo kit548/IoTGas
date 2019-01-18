@@ -48,7 +48,7 @@ def main():
     # tallennus raja volteissa anturilta 1 
     muutos_raja_arvo_1 = 0.03
     # mittauksen eli kaasun nimi ja muuta kovakoodausta  
-    kaasunimi_1 = "Leipomo (kynnys " + str(muutos_raja_arvo_1) +")"
+    kaasunimi_1 = "yk (" + str(muutos_raja_arvo_1) +")"
     gageid = "01"
     kaasuid = "01"    
     # ja sitten alustetaan anturi 1 ilmat etc. ja anturi 2 lampotila
@@ -63,6 +63,7 @@ def main():
     laskuri = 0  
     print(' ')
     print("Mittaus: " + mittaus.kaasunimi)
+    print("- pakotettu tallennusvali: " + str(pakotettu_tallennusvali) + " min.")
     print(' ')
 
     while True:
@@ -74,26 +75,26 @@ def main():
             mitattu_arvo_1 = adc.read_voltage(1) 
             adc_temp = adc.read_voltage(2)
             #print("Channel 1: %02f" % adc.read_voltage(1))
-	    #...
-	    #print("Channel 8: %02f" % adc.read_voltage(8))
+            #...
+            #print("Channel 8: %02f" % adc.read_voltage(8))
             mitat.append(mitattu_arvo_1) 
             lammot.append(adc_temp) 
             time.sleep(sleep_mittausvali_keskiarvoon) 
             i += 1
-	# mongodb aika millisek. 
+        # mongodb aika millisek. 
         mittausaika_1 = int(round((time.time() - sleep_mittausvali_keskiarvoon*silmukka_lkm/2)* 1000))
         mitattu_arvo_1 = statistics.mean(mitat) 
         hajonta_1 = statistics.pstdev(mitat) 
-	# mitattu_arvo_1 kalibraatio funktio...?
+        # mitattu_arvo_1 kalibraatio funktio...?
 
         adc_temp = statistics.mean(lammot) 
         lampo = analog_temp_Rs_sensor_kali(adc_temp)
-	#lampo = 40 # testi 
-	hajonta_temp = statistics.pstdev(lammot) 
-	hajonta_temp = analog_temp_Rs_sensor_kali(hajonta_temp, True)
-	
-	laskuri += 1 
-
+        #lampo = 40 # testi 
+        hajonta_temp = statistics.pstdev(lammot) 
+        hajonta_temp = analog_temp_Rs_sensor_kali(hajonta_temp, True)
+    
+        laskuri += 1 
+    
         if mittaus.huomattava_muutos_tullut_talleta_kantaan(mitattu_arvo_1, mittausaika_1):
             if analog_temp_Rs_sensor.edellinen_tallentamatta:
                 analog_temp_Rs_sensor.talleta_edellinenmitta()
