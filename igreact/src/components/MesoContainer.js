@@ -24,6 +24,7 @@ export default class Container extends React.Component {
 	componentDidMount() { 
 		this.hae_viimeisimmat_mittaukset();
 		this.hae_viimeisimmat_mittaukset = this.hae_viimeisimmat_mittaukset.bind(this);
+		this.mita_mitattu = this.mita_mitattu.bind(this);
 		console.log('Container: componentDidUpdate'); 
 	}
 
@@ -34,7 +35,7 @@ export default class Container extends React.Component {
 			console.log("Container gases: "); 
 			console.log(this.state.gases);
 			this.mita_mitattu(this.state.gases) 
-			this.mita_mitattu = this.mita_mitattu.bind(this);
+			//this.mita_mitattu = this.mita_mitattu.bind(this);
 		  })
 		.catch(error => {
 			console.log("ERROR in Container / hae_viimeisimmat_mittaukset");
