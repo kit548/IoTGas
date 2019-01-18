@@ -5,7 +5,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-		  <h2>IoTGas</h2>
+		  <strong> IoTGas  </strong>
   		<MesoContainer/>
       </div>
     );
