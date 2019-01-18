@@ -43,6 +43,7 @@ export default class Container extends React.Component {
 	} 
 
 	mita_mitattu = (gases) => {
+		// kovakoodattu lampoanturi...jos laitetaan gassensor kanta ja kaasuid <- siistimpi 
 		const lampomitattu = 'Lampotila'; 
 		let x;
 		let kaasu = ''; 
@@ -69,7 +70,7 @@ export default class Container extends React.Component {
 		console.log('Container event: ' + this.state.kaasunimi); 
 	}
 
-render() {
+	render() {
 		let listItems = this.state.gases.map((item) => 
 		<tr key={item.kaasunimi} onClick={() => this.fetchDetails(item.kaasunimi)}>
 			<td>{item.kaasunimi}</td>
@@ -82,12 +83,12 @@ render() {
 			<div>
 			<MesoLinechart piirtonimi = {this.state.kaasunimi} />
 			<MesoLinechart piirtonimi = {this.state.lamponimi} />			
-			<Table striped bordered >
+			<Table hover size="sm">
 				<thead>
 					<tr>
-						<th>Mitaus:</th>
-						<th>viimeisin arvo</th>
-						<th>mitatuspäivä</th>
+						<th>Mitaukset</th>
+						<th>viimeisin</th>
+						<th>päivä</th>
 					</tr>
 				</thead>
 				<tbody>
