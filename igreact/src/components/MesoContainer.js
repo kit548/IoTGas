@@ -10,7 +10,7 @@ import ReactServices from '../services/ReactServices';
 import MesoLinechart from './MesoLinechart';
 //import GasForm from './GasForm';
 
-const Scatterinterval = 1000 * 60 * 60 * 2;
+const Scatterinterval = 1000 * 60 * 60 * 24;
 
 export default class Container extends React.Component {
 	constructor() {
@@ -88,18 +88,18 @@ export default class Container extends React.Component {
 		<tr key={item.kaasunimi} onClick={() => this.fetchDetails(item)}>
 			<td>{item.kaasunimi}</td>
 			<td>{item.arvo.toFixed(1)}</td>
-			<td>{item.gagetime}</td>
+			<td>{new Date(item.gagetime).toLocaleDateString()}</td>
 		</tr>
 		)
 		console.log('Container render');
 		return(
 			<div>
-			<MesoLinechart key = 'Gas' 
+			<MesoLinechart className = 'Gas' 
 				piirtonimi = {this.state.kaasunimi} 
 				alku = {this.state.alku}
 				loppu = {this.state.loppu}
 				/>
-			<MesoLinechart key = 'Temp' 
+			<MesoLinechart className = 'Temp'
 				piirtonimi = {this.state.lamponimi} 
 				alku = {this.state.alku}
 				loppu = {this.state.loppu}

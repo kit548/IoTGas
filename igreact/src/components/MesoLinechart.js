@@ -106,6 +106,13 @@ export default class GasForm extends React.Component {
 			console.log(this.props); 
 			this.haepiirtodata(this.props.piirtonimi, this.props.alku, this.props.loppu);
 		}
+		if (this.props.className === "Temp") {
+			if (this.props.alku !== prevProps.alku || this.props.alku !== prevProps.alku ) {
+				console.log('Linechart: componentDidUpdate'); 
+				console.log(this.props);
+				this.haepiirtodata(this.props.piirtonimi, this.props.alku, this.props.loppu);
+			}
+		}
 	}
 	  
 	data2scatter(mitat, nimi) {
