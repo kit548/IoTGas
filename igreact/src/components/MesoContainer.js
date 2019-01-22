@@ -10,7 +10,7 @@ import ReactServices from '../services/ReactServices';
 import MesoLinechart from './MesoLinechart';
 //import GasForm from './GasForm';
 
-const Scatterinterval = 1000 * 60 * 60 * 24;
+const Scatterinterval = 1000 * 60 * 60 * 4;
 
 export default class Container extends React.Component {
 	constructor() {
@@ -26,7 +26,6 @@ export default class Container extends React.Component {
 	}
 
 	componentDidMount() { 
-		//this.mita_mitattu = this.mita_mitattu.bind(this);
 		this.hae_viimeisimmat_mittaukset();
 		console.log('Container: componentDidUpdate'); 
 	}
@@ -46,6 +45,7 @@ export default class Container extends React.Component {
 	} 
 
 	mita_mitattu = (gases) => {
+		// this.mita_mitattu = this.mita_mitattu.bind(this);
 		// kovakoodattu lampoanturi...jos laitetaan gassensor kanta ja kaasuid <- siistimpi 
 		const lampomitattu = 'Lampotila'; 
 		let x;

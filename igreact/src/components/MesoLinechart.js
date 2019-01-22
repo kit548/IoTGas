@@ -123,8 +123,8 @@ export default class GasForm extends React.Component {
 		data.datasets[0].data = mitat;  
 		data.datasets[0].label = nimi;
 		data.labels = nimi; 
-		//chartoptions.scales.xAxes[0].ticks.min = this.props.alku; 
-		//chartoptions.scales.xAxes[0].ticks.max = this.props.loppu; 		
+		chartoptions.scales.xAxes[0].ticks.min = this.props.alku; 
+		chartoptions.scales.xAxes[0].ticks.max = this.props.loppu; 		
 	} 
 
 	render(	) {
