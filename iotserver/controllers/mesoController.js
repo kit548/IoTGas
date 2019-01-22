@@ -146,6 +146,23 @@ exports.meso_getgasxlastxvalues = function (req, res, next)
 	});
 };
 
+exports.meso_getgasxintervalvalues = function (req, res, next) 
+{   console.log(req.params.gasname); console.log(req.params.begin); console.log(req.params.end);
+	MesoModel.find({ kaasunimi: req.params.gasname, gagetime: { $gte: req.params.begin, $lte: req.params.end } }, 
+		{_id:0, gagetime: 1, arvo: 1}
+		).sort({gagetime: -1}).exec(function(err2, res2)
+	{ 	
+		console.log("ser meso_getgasxintervalvalues"); 
+		// jump away if error found
+		if (err2) { return next(err2); }
+		else
+		{	console.log(res2);
+			res.set('Access-Control-Allow-Origin','*');
+			res.json(res2);
+		}	
+	});
+};
+
 exports.meso_getabout_get = function (req, res, next) 
 {   
 	console.log("Meso_about"); 		
@@ -153,7 +170,6 @@ exports.meso_getabout_get = function (req, res, next)
 	   "The body of this 'back end sw' is from IoT course"
 	   );
 };
-
 
 exports.meso_createone_post = 
 [
