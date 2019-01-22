@@ -31,6 +31,7 @@ let chartoptions = {
 		xAxes: [{ 
 			display: true,
 			ticks: {
+				//min: xAxelmin,
                 userCallback: function(label, index, labels) {
                     return moment(label).format("hh:mm");
                 }
@@ -72,9 +73,7 @@ let chartoptions = {
 				show: true
 			  },
 			  ticks: {
-				//min: 0,
-				//max: 25,
-				//stepSize: 0.5,
+				//min: 0, //max: 25, //stepSize: 0.5,
 			  },
 			},
 		]
@@ -86,16 +85,15 @@ export default class GasForm extends React.Component {
 		super(props);
 		this.state= {
 			scatterList:[], 
-			piirtonimi: '',
 		};
 	}
 
-	haepiirtodata = (nimi)	=> {
-		ReactServices.readGasvaluesX(nimi, 1000)
+	haepiirtodata = (nimi, ialku, iloppu)	=> {
+		ReactServices.gasvaluesinterval(nimi, ialku, iloppu)
 		.then(response => {
-			this.setState({ scatterList: response });
+			this.setState({ scatterList: response }); 
 			console.log('Linechart - haepiirtodata: ' + nimi); 
-			//console.log(response); 
+			console.log('Linechart: ' + ialku + ' ' + iloppu); 
 	 	 })
 		.catch(error => {
 		console.log(error);
@@ -104,11 +102,12 @@ export default class GasForm extends React.Component {
 
 	componentDidUpdate(prevProps) {
 		if (this.props.piirtonimi !== prevProps.piirtonimi) {
-			this.haepiirtodata(this.props.piirtonimi);
 			console.log('Linechart: componentDidUpdate'); 
+			console.log(this.props); 
+			this.haepiirtodata(this.props.piirtonimi, this.props.alku, this.props.loppu);
 		}
 	}
-
+	  
 	data2scatter(mitat, nimi) {
 		mitat = JSON.parse(JSON.stringify(mitat).split('"gagetime":').join('"x":')); 
 		mitat = JSON.parse(JSON.stringify(mitat).split('"arvo":').join('"y":')); 
@@ -116,6 +115,9 @@ export default class GasForm extends React.Component {
 		console.log('Linechart data2scatter mitat'); console.log(mitat); 
 		data.datasets[0].data = mitat;  
 		data.datasets[0].label = nimi;
+		data.labels = nimi; 
+		//chartoptions.scales.xAxes[0].ticks.min = this.props.alku; 
+		//chartoptions.scales.xAxes[0].ticks.max = this.props.loppu; 		
 	} 
 
 	render(	) {
@@ -123,7 +125,7 @@ export default class GasForm extends React.Component {
 		return (
 			<form scatterform='scatterform'>	
 				<div className="scatterdraw">
-				<Scatter data={data} options={chartoptions}/>
+				<Scatter options={chartoptions} data={data} />
 				</div>
 			</form>
 		);

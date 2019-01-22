@@ -10,6 +10,8 @@ import ReactServices from '../services/ReactServices';
 import MesoLinechart from './MesoLinechart';
 //import GasForm from './GasForm';
 
+const Scatterinterval = 1000 * 60 * 60 * 2;
+
 export default class Container extends React.Component {
 	constructor() {
 		super();
@@ -17,14 +19,15 @@ export default class Container extends React.Component {
 			piirtonimi: '',
 			kaasunimi: '',
 			lamponimi: '',
+			alku: 0, 
+			loppu: 10, 
 			gases: [],
 		}
 	}
 
 	componentDidMount() { 
+		//this.mita_mitattu = this.mita_mitattu.bind(this);
 		this.hae_viimeisimmat_mittaukset();
-		this.hae_viimeisimmat_mittaukset = this.hae_viimeisimmat_mittaukset.bind(this);
-		this.mita_mitattu = this.mita_mitattu.bind(this);
 		console.log('Container: componentDidUpdate'); 
 	}
 
@@ -34,8 +37,7 @@ export default class Container extends React.Component {
 			this.setState({ gases: response });
 			console.log("Container gases: "); 
 			console.log(this.state.gases);
-			this.mita_mitattu(this.state.gases) 
-			//this.mita_mitattu = this.mita_mitattu.bind(this);
+			this.mita_mitattu(this.state.gases); 
 		  })
 		.catch(error => {
 			console.log("ERROR in Container / hae_viimeisimmat_mittaukset");
@@ -48,11 +50,11 @@ export default class Container extends React.Component {
 		const lampomitattu = 'Lampotila'; 
 		let x;
 		let kaasu = ''; 
+		let lampo = ''; 
 		let aika = 0; 
 		for (x in gases) {
 			if (gases[x].kaasunimi === lampomitattu) {
-				this.setState({lamponimi: lampomitattu});
-				console.log('Container mita_mitattu: Lampotila'); 	
+				lampo = lampomitattu; 
 			}
 			else {
 				// listan viimeisin mitattu kaasu (ei lampotila) 
@@ -62,28 +64,46 @@ export default class Container extends React.Component {
 				}
 			}
 		}
+		this.setState({alku: aika - Scatterinterval}); 
+		this.setState({loppu: aika});
 		this.setState({kaasunimi: kaasu});
-		console.log('Container mita_mitattu kaasu: ' + kaasu);
-	}
-
+		this.setState({lamponimi: lampo});
+		console.log("Container: mita_mitattu");
+		console.log(this.state.kaasunimi);
+		console.log(this.state.lamponimi);
+	}	
+	
 	fetchDetails = (event) => {
-		this.setState({kaasunimi: event});
+		this.setState({alku: event.gagetime - Scatterinterval}); 
+		this.setState({loppu: event.gagetime});
+		this.setState({kaasunimi: event.kaasunimi});
+		this.setState({lamponimi: this.state.lamponimi});
 		console.log('Container event: ' + this.state.kaasunimi); 
+		console.log('Container loppu: ' + this.state.loppu); 
 	}
 
+	//<td>{new Date(item.gagetime).toLocaleDateString()}</td>
 	render() {
 		let listItems = this.state.gases.map((item) => 
-		<tr key={item.kaasunimi} onClick={() => this.fetchDetails(item.kaasunimi)}>
+		<tr key={item.kaasunimi} onClick={() => this.fetchDetails(item)}>
 			<td>{item.kaasunimi}</td>
 			<td>{item.arvo.toFixed(1)}</td>
-			<td>{new Date(item.gagetime).toLocaleDateString()}</td>
+			<td>{item.gagetime}</td>
 		</tr>
 		)
 		console.log('Container render');
 		return(
 			<div>
-			<MesoLinechart piirtonimi = {this.state.kaasunimi} />
-			<MesoLinechart piirtonimi = {this.state.lamponimi} />			
+			<MesoLinechart key = 'Gas' 
+				piirtonimi = {this.state.kaasunimi} 
+				alku = {this.state.alku}
+				loppu = {this.state.loppu}
+				/>
+			<MesoLinechart key = 'Temp' 
+				piirtonimi = {this.state.lamponimi} 
+				alku = {this.state.alku}
+				loppu = {this.state.loppu}
+			/>			
 			<Table hover size="sm">
 				<thead>
 					<tr>

@@ -1,10 +1,12 @@
 import axios from 'axios'
 
+/*
 const ip = window.location.host;
 console.log(ip)
+*/
 
 //DESKTOP-BBB6GQC, 192.168.0.18 192.168.43.125, iotgas
-const baseUrl = 'http://192.168.0.20:3010/meso'
+const baseUrl = 'http://localhost:3010/meso'
 
 const createOne = (newObject) => {
     const request = axios.post(`${baseUrl}/create`, newObject);
@@ -35,7 +37,6 @@ const readLastvalues = () => {
     return request.then(response => response.data)
 }
 
-
 const readGasnames = () => {
     // meso_getgases_distinct 
     const request = axios.get(`${baseUrl}/gasnames`); 
@@ -47,6 +48,13 @@ const readGasvaluesX = (id, mesos) => {
     //  /gases/:id/:mesos'
     const request = axios.get(`${baseUrl}/gasvalues/${id}/${mesos}`); 
     console.log(`ReactServices-readGasvaluesX: /gasvalues/${id}/${mesos} (time & gas values)`);
+    return request.then(response => response.data);
+}
+
+const gasvaluesinterval = (id, ibegin, iend) => {
+    //  /gases/:id/:begin/:end'
+    const request = axios.get(`${baseUrl}/gasvaluesinterval/${id}/${ibegin}/${iend}`); 
+    console.log(`ReactServices-gasvaluesinterval: /gasvalues/${id}/${ibegin}/${iend} (inteval of gas values)`);
     return request.then(response => response.data);
 }
 
@@ -71,5 +79,5 @@ const destroyOne = (id) => {
 
 export default { 
     readAll, readLast, readGasvaluesX, readGasLast, readGasnames, readLastvalues,  
-    createOne, readOne, updateOne, destroyOne 
+    gasvaluesinterval, createOne, readOne, updateOne, destroyOne 
 } 
