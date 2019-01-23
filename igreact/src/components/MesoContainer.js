@@ -10,7 +10,8 @@ import ReactServices from '../services/ReactServices';
 import MesoLinechart from './MesoLinechart';
 //import GasForm from './GasForm';
 
-const Scatterinterval = 1000 * 60 * 60 * 4;
+
+const defauldScatterShowInterval = 1000 * 60 * 60 * 4;
 
 export default class Container extends React.Component {
 	constructor() {
@@ -19,8 +20,8 @@ export default class Container extends React.Component {
 			piirtonimi: '',
 			kaasunimi: '',
 			lamponimi: '',
-			alku: 0, 
-			loppu: 10, 
+			piirtoalku: 0, 
+			piirtoloppu: 10, 
 			gases: [],
 		}
 	}
@@ -64,22 +65,22 @@ export default class Container extends React.Component {
 				}
 			}
 		}
-		this.setState({alku: aika - Scatterinterval}); 
-		this.setState({loppu: aika});
+		this.setState({piirtoalku: aika - defauldScatterShowInterval}); 
+		this.setState({piirtoloppu: aika});
 		this.setState({kaasunimi: kaasu});
 		this.setState({lamponimi: lampo});
 		console.log("Container: mita_mitattu");
 		console.log(this.state.kaasunimi);
 		console.log(this.state.lamponimi);
 	}	
-	
+
 	fetchDetails = (event) => {
-		this.setState({alku: event.gagetime - Scatterinterval}); 
-		this.setState({loppu: event.gagetime});
+		this.setState({piirtoalku: event.gagetime - defauldScatterShowInterval}); 
+		this.setState({piirtoloppu: event.gagetime});
 		this.setState({kaasunimi: event.kaasunimi});
 		this.setState({lamponimi: this.state.lamponimi});
 		console.log('Container event: ' + this.state.kaasunimi); 
-		console.log('Container loppu: ' + this.state.loppu); 
+		console.log('Container loppu: ' + this.state.piirtoloppu); 
 	}
 
 	//<td>{new Date(item.gagetime).toLocaleDateString()}</td>
@@ -96,13 +97,13 @@ export default class Container extends React.Component {
 			<div>
 			<MesoLinechart className = 'Gas' 
 				piirtonimi = {this.state.kaasunimi} 
-				alku = {this.state.alku}
-				loppu = {this.state.loppu}
+				piirtoalku = {this.state.piirtoalku}
+				piirtoloppu = {this.state.piirtoloppu} 
 				/>
 			<MesoLinechart className = 'Temp'
 				piirtonimi = {this.state.lamponimi} 
-				alku = {this.state.alku}
-				loppu = {this.state.loppu}
+				piirtoalku = {this.state.piirtoalku}
+				piirtoloppu = {this.state.piirtoloppu}
 			/>			
 			<Table hover size="sm">
 				<thead>

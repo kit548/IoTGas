@@ -88,15 +88,16 @@ export default class GasForm extends React.Component {
 		};
 	}
 
-	haepiirtodata = (nimi, ialku, iloppu)	=> {
-		ReactServices.gasvaluesinterval(nimi, ialku, iloppu)
+	haepiirtodata = (nimi, alku, loppu)	=> {
+		ReactServices.gasvaluesinterval(nimi, alku, loppu)
 		.then(response => {
 			this.setState({ scatterList: response }); 
 			console.log('Linechart - haepiirtodata: ' + nimi); 
-			console.log('Linechart: ' + ialku + ' ' + iloppu); 
+			console.log('Linechart: ' + alku + ' ' + loppu); 
 	 	 })
 		.catch(error => {
 		console.log(error);
+		console.log(nimi, alku, loppu);
 		}); 
 	};
 
@@ -104,17 +105,17 @@ export default class GasForm extends React.Component {
 		if (this.props.piirtonimi !== prevProps.piirtonimi) {
 			console.log('Linechart: componentDidUpdate'); 
 			console.log(this.props); 
-			this.haepiirtodata(this.props.piirtonimi, this.props.alku, this.props.loppu);
+			this.haepiirtodata(this.props.piirtonimi, this.props.piirtoalku, this.props.piirtoloppu);
 		}
 		if (this.props.className === "Temp") {
-			if (this.props.alku !== prevProps.alku || this.props.alku !== prevProps.alku ) {
+			if (this.props.piirtoalku !== prevProps.piirtoalku || this.props.piirtoalku !== prevProps.piirtoalku ) {
 				console.log('Linechart: componentDidUpdate'); 
 				console.log(this.props);
-				this.haepiirtodata(this.props.piirtonimi, this.props.alku, this.props.loppu);
+				this.haepiirtodata(this.props.piirtonimi, this.props.piirtoalku, this.props.piirtoloppu);
 			}
 		}
 	}
-	  
+	
 	data2scatter(mitat, nimi) {
 		mitat = JSON.parse(JSON.stringify(mitat).split('"gagetime":').join('"x":')); 
 		mitat = JSON.parse(JSON.stringify(mitat).split('"arvo":').join('"y":')); 
@@ -123,8 +124,8 @@ export default class GasForm extends React.Component {
 		data.datasets[0].data = mitat;  
 		data.datasets[0].label = nimi;
 		data.labels = nimi; 
-		chartoptions.scales.xAxes[0].ticks.min = this.props.alku; 
-		chartoptions.scales.xAxes[0].ticks.max = this.props.loppu; 		
+		chartoptions.scales.xAxes[0].ticks.min = this.props.piirtoalku; 
+		chartoptions.scales.xAxes[0].ticks.max = this.props.piirtoloppu; 		
 	} 
 
 	render(	) {
