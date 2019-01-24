@@ -27,6 +27,9 @@ let data = {
 };
 
 let chartoptions = { 
+	animation: { 
+		duration: 100
+	},
 	scales: { 
 		xAxes: [{ 
 			display: true,
@@ -85,15 +88,19 @@ export default class GasForm extends React.Component {
 		super(props);
 		this.state= {
 			scatterList:[], 
+			update: false, 
 		};
 	}
 
 	haepiirtodata = (nimi, alku, loppu)	=> {
+		// kovakoodattu noin puoli vuotta 
+		// myöhemmin tähän älyä ... jos tarvitaan hakea lisää, 
+
+		alku = loppu - 1000*60*60*24*30*6;  // ½ year 
 		ReactServices.gasvaluesinterval(nimi, alku, loppu)
 		.then(response => {
 			this.setState({ scatterList: response }); 
-			console.log('Linechart - haepiirtodata: ' + nimi); 
-			console.log('Linechart: ' + alku + ' ' + loppu); 
+			console.log('Linechart haepiirtodata: ' + nimi + ' ' + alku + '/' + loppu); 
 	 	 })
 		.catch(error => {
 		console.log(error);
@@ -103,14 +110,20 @@ export default class GasForm extends React.Component {
 
 	componentDidUpdate(prevProps) {
 		if (this.props.piirtonimi !== prevProps.piirtonimi) {
-			console.log('Linechart: componentDidUpdate'); 
+			console.log('Linechart: componentDidUpdate (piirtonimi)'); 
 			console.log(this.props); 
-			this.haepiirtodata(this.props.piirtonimi, this.props.piirtoalku, this.props.piirtoloppu);
+			if (this.props.piirtohaedata) {
+				this.haepiirtodata(this.props.piirtonimi, this.props.piirtoalku, this.props.piirtoloppu);
+			}
 		}
-		if (this.props.className === "Temp") {
-			if (this.props.piirtoalku !== prevProps.piirtoalku || this.props.piirtoalku !== prevProps.piirtoalku ) {
-				console.log('Linechart: componentDidUpdate'); 
-				console.log(this.props);
+
+		if ((this.props.piirtoalku !== prevProps.piirtoalku || 
+			this.props.piirtoloppu !== prevProps.piirtoloppu) && 
+			this.props.piirtonimi !== '') {
+			console.log('Linechart: componentDidUpdate (alku/loppu)'); 
+			console.log(this.props);
+			//this.setState({update: !this.state.update})
+			if (this.props.piirtohaedata) {
 				this.haepiirtodata(this.props.piirtonimi, this.props.piirtoalku, this.props.piirtoloppu);
 			}
 		}
@@ -119,13 +132,13 @@ export default class GasForm extends React.Component {
 	data2scatter(mitat, nimi) {
 		mitat = JSON.parse(JSON.stringify(mitat).split('"gagetime":').join('"x":')); 
 		mitat = JSON.parse(JSON.stringify(mitat).split('"arvo":').join('"y":')); 
-		console.log('Linechart data2scatter this.props.piirtonimi : ' + this.props.piirtonimi);
-		console.log('Linechart data2scatter mitat'); console.log(mitat); 
+		console.log('Linechart: data2scatter ') ;
+		console.log(this.props); console.log(mitat); 
 		data.datasets[0].data = mitat;  
 		data.datasets[0].label = nimi;
 		data.labels = nimi; 
 		chartoptions.scales.xAxes[0].ticks.min = this.props.piirtoalku; 
-		chartoptions.scales.xAxes[0].ticks.max = this.props.piirtoloppu; 		
+		chartoptions.scales.xAxes[0].ticks.max = this.props.piirtoloppu; 
 	} 
 
 	render(	) {

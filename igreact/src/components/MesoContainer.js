@@ -2,7 +2,7 @@ import React from 'react';
 //eslint-disable-next-line
 import ReactDOM from 'react-dom';
 //import {Table, Button} from 'reactstrap';
-import {Table} from 'reactstrap';
+import {Table, Button, ButtonGroup,  Row, Col } from 'reactstrap';
 //eslint-disable-next-line
 import moment from 'moment';
 
@@ -11,7 +11,11 @@ import MesoLinechart from './MesoLinechart';
 //import GasForm from './GasForm';
 
 
-const defauldScatterShowInterval = 1000 * 60 * 60 * 4;
+let defScatterShowInterval = 1000 * 60 * 60 * 6;  //6 hours
+let defzoomaskel = defScatterShowInterval/10 ;
+let defpiirtoloppu = 0; 
+//let defpiirtoalku = 0;
+
 
 export default class Container extends React.Component {
 	constructor() {
@@ -22,13 +26,18 @@ export default class Container extends React.Component {
 			lamponimi: '',
 			piirtoalku: 0, 
 			piirtoloppu: 10, 
+			defpiirtoalku:0,
+			piirtohaedata: true,
+			piirtozoom: '',
 			gases: [],
 		}
 	}
 
 	componentDidMount() { 
 		this.hae_viimeisimmat_mittaukset();
-		console.log('Container: componentDidUpdate'); 
+		console.log('Container: componentDidUpdate');
+		//this.zoomi = this.zoomi.bind(this); 
+		this.mita_mitattu = this.mita_mitattu.bind(this); 
 	}
 
 	hae_viimeisimmat_mittaukset = () => {
@@ -65,7 +74,20 @@ export default class Container extends React.Component {
 				}
 			}
 		}
-		this.setState({piirtoalku: aika - defauldScatterShowInterval}); 
+		console.log(kaasu);
+		ReactServices.readGasFirst(kaasu) 
+		.then(response => {
+			this.setState({ piirtoalku: response.gagetime });
+			this.setState({ defpiirtoalku: response.gagetime });
+			console.log("Container kaasu 1st: "); 
+			console.log(response);
+		  })
+		.catch(error => {
+			console.log("ERROR in Container / kaasu 1st meso");
+			console.log(error);
+		});
+		defpiirtoloppu = aika; 
+		//this.setState({piirtoalku: aika - defScatterShowInterval}); 
 		this.setState({piirtoloppu: aika});
 		this.setState({kaasunimi: kaasu});
 		this.setState({lamponimi: lampo});
@@ -75,12 +97,70 @@ export default class Container extends React.Component {
 	}	
 
 	fetchDetails = (event) => {
-		this.setState({piirtoalku: event.gagetime - defauldScatterShowInterval}); 
+		this.setState({piirtoalku: event.gagetime - defScatterShowInterval}); 
 		this.setState({piirtoloppu: event.gagetime});
 		this.setState({kaasunimi: event.kaasunimi});
 		this.setState({lamponimi: this.state.lamponimi});
+		this.setState({piirtohaedata: true});
 		console.log('Container event: ' + this.state.kaasunimi); 
 		console.log('Container loppu: ' + this.state.piirtoloppu); 
+	}
+
+	zoomi = (event) => {
+		console.log("Zoom: " + event);
+		//this.setState({piirtohaedata: false}); 
+		let temploppu = defpiirtoloppu;
+		let tempalku =  this.state.defpiirtoalku;
+		let tempaskel = defzoomaskel; 
+		if (event === "reset") {
+			console.log("default: " + defpiirtoloppu + " " + defScatterShowInterval)
+			this.setState({piirtoloppu: defpiirtoloppu});
+			this.setState({piirtoalku: defpiirtoloppu - defScatterShowInterval});
+		}
+		else if (event === "<") {
+			console.log("< " + defzoomaskel + " " )
+			this.setState({piirtoloppu: this.state.piirtoloppu - defzoomaskel});
+			this.setState({piirtoalku: this.state.piirtoalku - defzoomaskel});
+		}
+		else if (event === ">") {
+			temploppu = this.state.piirtoloppu + defzoomaskel;
+			if (temploppu > defpiirtoloppu) {
+				tempaskel = temploppu - defpiirtoloppu ;
+				temploppu = defpiirtoloppu ;
+			}
+			console.log("> " + temploppu + " " + tempaskel)
+			this.setState({piirtoloppu: temploppu});
+			this.setState({piirtoalku: this.state.piirtoalku + tempaskel});
+		}
+		else if (event === "zoomout-") {
+			temploppu = this.state.piirtoloppu + defzoomaskel; 
+			tempalku = this.state.piirtoalku - defzoomaskel; 
+			if (temploppu >= defpiirtoloppu) {
+				temploppu = defpiirtoloppu ;
+			}			
+			this.setState({piirtoalku: tempalku});
+			this.setState({piirtoloppu: temploppu});
+			console.log(event + " " + tempalku + "  " + temploppu)
+		}
+		else if (event === "zoomin+") {
+			temploppu = this.state.piirtoloppu - defzoomaskel; 
+			tempalku = this.state.piirtoalku + defzoomaskel; 
+			const minimizoom = 10000 ; //ms
+			if (tempalku + minimizoom > temploppu) {
+				temploppu = (temploppu + tempalku)/2 ;
+				tempalku = temploppu - minimizoom/2
+				temploppu = temploppu + minimizoom/2 ;
+			}			
+			this.setState({piirtoalku: tempalku});
+			this.setState({piirtoloppu: temploppu});
+			console.log(event + " " + tempalku + "  " + temploppu + " " + (temploppu-tempalku));
+		}
+		else {
+			console.log("Zoo...uusi...: " + event + " " + defzoomaskel + " " + defScatterShowInterval)
+			//this.setState({piirtoalku: this.state.piirtoalku + Number(event) * defzoomaskel});
+			//this.setState({piirtoloppu: this.state.piirtoloppu - Number(event) * defzoomaskel});
+		}
+		console.log(this.state.defpiirtoalku)
 	}
 
 	//<td>{new Date(item.gagetime).toLocaleDateString()}</td>
@@ -92,18 +172,35 @@ export default class Container extends React.Component {
 			<td>{new Date(item.gagetime).toLocaleDateString()}</td>
 		</tr>
 		)
-		console.log('Container render');
+		console.log('Container render...');
 		return(
 			<div>
 			<MesoLinechart className = 'Gas' 
 				piirtonimi = {this.state.kaasunimi} 
 				piirtoalku = {this.state.piirtoalku}
 				piirtoloppu = {this.state.piirtoloppu} 
+				piirtohaedata  = {this.state.piirtohaedata} 
+				piirtozoom = {this.state.piirtozoom} 
 				/>
+			<ButtonGroup justified="jotain" size="sm">
+				<Button outline color="primary" 
+					onClick={() => this.zoomi('<')}> {"<"} </Button>
+				<Button outline color="primary" 
+					onClick={() => this.zoomi("zoomout-")}> - </Button>
+				<Button outline color="primary"  
+					onClick={() => this.zoomi("reset")}> Reset </Button>
+				<Button outline color="primary"
+					onClick={() => this.zoomi("zoomin+")}> + </Button>
+				<Button outline color="primary"
+					onClick={() => this.zoomi('>')}> {">"} </Button>					
+			</ButtonGroup>
+								
 			<MesoLinechart className = 'Temp'
 				piirtonimi = {this.state.lamponimi} 
 				piirtoalku = {this.state.piirtoalku}
 				piirtoloppu = {this.state.piirtoloppu}
+				piirtohaedata  = {this.state.piirtohaedata}
+				piirtozoom = {this.state.piirtozoom} 
 			/>			
 			<Table hover size="sm">
 				<thead>
