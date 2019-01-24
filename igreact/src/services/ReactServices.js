@@ -31,6 +31,13 @@ const readGasLast = (id) => {
     return request.then(response => response.data)
 }
 
+const readGasFirst = (id) => {
+    console.log('ReactServices-readGasFirst: /gasfirst/' + id);
+    const request = axios.get(`${baseUrl}/gasfirst/${id}`); 
+    //console.log('ReactServices: readGasFirst done ');
+    return request.then(response => response.data)
+}
+
 const readLastvalues = () => {
     console.log('ReactServices-readLastvalues: /lastvalues/' );
     const request = axios.get(`${baseUrl}/lastvalues`); 
@@ -78,6 +85,7 @@ const destroyOne = (id) => {
 }
 
 export default { 
-    readAll, readLast, readGasvaluesX, readGasLast, readGasnames, readLastvalues,  
-    gasvaluesinterval, createOne, readOne, updateOne, destroyOne 
+    readAll, readLast, readGasFirst, readGasvaluesX, readGasLast, 
+    readGasnames, readLastvalues,  gasvaluesinterval, 
+    createOne, readOne, updateOne, destroyOne 
 } 

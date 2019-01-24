@@ -130,6 +130,21 @@ exports.meso_getgasxlastmeso_get = function (req, res, next)
 	});
 };
 
+exports.meso_getgasxfirstmeso_get = function (req, res, next) 
+{   console.log(req.params.gasname); 
+	MesoModel.findOne({ kaasunimi: req.params.gasname }, 
+		).sort({gagetime: 1}).limit(-1).exec(function(err2, res2)
+	{ 	
+		console.log("ser meso_getgasxfirstmeso_get"); 
+		// jump away if error found
+		if (err2) { return next(err2); }
+		else
+		{	res.set('Access-Control-Allow-Origin','*');
+			res.json(res2);
+		}	
+	});
+};
+
 exports.meso_getgasxlastxvalues = function (req, res, next) 
 {   console.log(req.params.gasname); console.log(req.params.mesos);
 	MesoModel.find({ kaasunimi: req.params.gasname }, 
