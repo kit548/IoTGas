@@ -9,7 +9,7 @@ import moment from 'moment';
 let data = { 
 	labels: ['Scatter'],  
 	datasets: [{
-		label: 'kaasu', 
+		label:'kaasu',
 		fill: false,
 		showLine: true, 
 		backgroundColor: 'rgba(75,192,192,0.4)', 
@@ -27,6 +27,9 @@ let data = {
 };
 
 let chartoptions = { 
+	legend: {
+        display: false
+    },
 	animation: { 
 		duration: 100
 	},
@@ -35,9 +38,10 @@ let chartoptions = {
 			display: true,
 			ticks: {
 				//min: xAxelmin,
-                userCallback: function(label, index, labels) {
+				userCallback: function(label, index, labels) {
                     return moment(label).format("hh:mm");
-                }
+				},
+				autoSkipPadding: 20, 
 			 },
 			 tooltips: {
 				 //not work jet...
@@ -93,8 +97,6 @@ export default class GasForm extends React.Component {
 	}
 
 	haepiirtodata = (nimi, alku, loppu)	=> {
-
-		//alku = loppu - 1000*60*60*24*30*6;  // ½ year 
 		ReactServices.gasvaluesinterval(nimi, alku, loppu)
 		.then(response => {
 			this.setState({ scatterList: response }); 

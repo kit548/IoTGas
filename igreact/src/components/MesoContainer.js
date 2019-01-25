@@ -218,6 +218,7 @@ export default class Container extends React.Component {
 		console.log('Container render...');
 		return(
 			<div>
+			<div style={{textAlign: "center"}}>{this.state.kaasunimi}</div>
 			<MesoLinechart className = 'Gas' 
 				piirtonimi = {this.state.kaasunimi} 
 				piirtoalku = {this.state.piirtoalku}
@@ -225,7 +226,8 @@ export default class Container extends React.Component {
 				piirtohaedata  = {this.state.piirtohaedata} 
 				piirtozoom = {this.state.piirtozoom} 
 				/>
-			<ButtonGroup justified="jotain" size="sm">
+			<div style={{textAlign: "center"}}>	
+			<ButtonGroup size="sm">
 			<Button outline color="primary" 
 					onClick={() => this.zoomi('<<')}> {"<< (all)"} </Button>
 				<Button outline color="primary" 
@@ -241,7 +243,9 @@ export default class Container extends React.Component {
 				<Button outline color="primary"
 					onClick={() => this.zoomi('>>')}> {">>"} </Button>					
 			</ButtonGroup>
-								
+			</div>
+			<br></br>
+			<div style={{textAlign: "center"}}>{this.state.lamponimi}</div>					
 			<MesoLinechart className = 'Temp'
 				piirtonimi = {this.state.lamponimi} 
 				piirtoalku = {this.state.piirtoalku}
