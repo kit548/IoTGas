@@ -93,10 +93,8 @@ export default class GasForm extends React.Component {
 	}
 
 	haepiirtodata = (nimi, alku, loppu)	=> {
-		// kovakoodattu noin puoli vuotta 
-		// myöhemmin tähän älyä ... jos tarvitaan hakea lisää, 
 
-		alku = loppu - 1000*60*60*24*30*6;  // ½ year 
+		//alku = loppu - 1000*60*60*24*30*6;  // ½ year 
 		ReactServices.gasvaluesinterval(nimi, alku, loppu)
 		.then(response => {
 			this.setState({ scatterList: response }); 
