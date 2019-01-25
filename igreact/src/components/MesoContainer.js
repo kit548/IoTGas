@@ -11,7 +11,7 @@ import MesoLinechart from './MesoLinechart';
 //import GasForm from './GasForm';
 
 
-let defScatterShowInterval = 1000 * 60 * 60 ;  //1 hours
+let defScatterShowInterval = 1000 * 60 * 60 ; // 1h
 let defmaxpiirtoloppu = 0; 
 
 export default class Container extends React.Component {
@@ -111,11 +111,12 @@ export default class Container extends React.Component {
 	}
 
 	fetchDetails = (event) => {
+		this.hae_kaasun_ensimmainen_mittaus(event.kaasunimi);
 		defmaxpiirtoloppu = event.gagetime
 		this.setState({piirtoalku: defmaxpiirtoloppu - defScatterShowInterval}); 
 		this.setState({piirtoloppu: defmaxpiirtoloppu});
 		this.setState({kaasunimi: event.kaasunimi});
-		this.setState({lamponimi: this.state.lamponimi});
+		//this.setState({lamponimi: this.state.lamponimi});
 		this.setState({piirtohaedata: true});
 		console.log('Container event: ' + this.state.kaasunimi); 
 		console.log('Container loppu: ' + defmaxpiirtoloppu + "=" + this.state.piirtoloppu); 
@@ -125,33 +126,34 @@ export default class Container extends React.Component {
 	zoomi = (event) => {
 		console.log("Zoom: " + event);
 		//this.setState({piirtohaedata: false}); 
-		let temploppu = 0; temploppu = this.state.piirtoloppu;
-		let tempalku = 0; tempalku = this.state.piirtoalku;
-		let tempaskel = Number((temploppu - tempalku)/10).toFixed(0);
-		console.log(tempalku + '...' + temploppu + '=' + (temploppu - tempalku) + ' ' + tempaskel);
-		console.log("min: " + this.state.minpiirtoalku + ' max:' + defmaxpiirtoloppu);
+		let temploppu = this.state.piirtoloppu;
+		let tempalku = this.state.piirtoalku;
+		let tempaskel = ((Number(temploppu) - Number(tempalku))/10).toFixed(0);
+		console.log(tempalku + '..' + temploppu + '=' + (temploppu - tempalku) + ' askel: ' + tempaskel);
+		console.log("rajat min: " + this.state.minpiirtoalku + ' max:' + defmaxpiirtoloppu);
 		if (event === "reset") {
 			console.log("reset default: " + defmaxpiirtoloppu + " " + defScatterShowInterval);
 			this.setState({piirtoloppu: defmaxpiirtoloppu});
 			this.setState({piirtoalku: defmaxpiirtoloppu - defScatterShowInterval});
 		}
 		else if (event === "<") {
-			temploppu = this.state.piirtoloppu - tempaskel*3;
-			tempalku = this.state.piirtoalku - tempaskel*3;
+			temploppu = this.state.piirtoloppu - Number(tempaskel*3);
+			tempalku = this.state.piirtoalku - Number(tempaskel*3);
 			if (tempalku < this.state.minpiirtoalku) {
-				tempaskel = tempaskel*3 - (this.state.minpiirtoalku - tempalku);
-				temploppu = Number(this.state.piirtoloppu) - tempaskel;
+				tempaskel = Number((temploppu - tempalku)/10).toFixed(0);
+				tempaskel = tempaskel*3 - Number(this.state.minpiirtoalku - Number(tempalku));
+				temploppu = Number(this.state.piirtoloppu) - Number(tempaskel);
 				tempalku = this.state.minpiirtoalku;
 			}
 			console.log(event + " " + + temploppu + " " + tempaskel);
 			this.setState({piirtoloppu: temploppu});
-			this.setState({piirtoalku: this.state.piirtoalku + tempaskel});
+			this.setState({piirtoalku: this.state.piirtoalku + Number(tempaskel)});
 		}
 		else if (event === ">") {
-			temploppu = this.state.piirtoloppu + tempaskel*3;
-			tempalku = this.state.piirtoalku + tempaskel*3;
+			temploppu = this.state.piirtoloppu + Number(tempaskel*3);
+			tempalku = this.state.piirtoalku + Number(tempaskel*3);
 			if (temploppu > defmaxpiirtoloppu) {
-				tempaskel = tempaskel*3 - (temploppu - defmaxpiirtoloppu);
+				tempaskel = tempaskel*3 - Number(Number(temploppu) - defmaxpiirtoloppu);
 				temploppu = defmaxpiirtoloppu ;
 				tempalku = this.state.piirtoalku + Number(tempaskel);
 			}
@@ -164,9 +166,14 @@ export default class Container extends React.Component {
 			console.log(event + " haetaan kannasta uusimmat");
 
 		}
+		else if (event === "<<") {
+			console.log(event + " näytä kaikki " + this.state.minpiirtoalku + ' ' + defmaxpiirtoloppu);
+			this.setState({piirtoloppu: defmaxpiirtoloppu});
+			this.setState({piirtoalku: this.state.minpiirtoalku});
+		}
 		else if (event === "zoomout-") {
-			temploppu = temploppu + tempaskel; 
-			tempalku = tempalku - tempaskel; 
+			temploppu = Number(temploppu) + Number(tempaskel); 
+			tempalku = Number(tempalku) - Number(tempaskel); 
 			if (temploppu >= defmaxpiirtoloppu) {
 				temploppu = defmaxpiirtoloppu ;
 			} 	
@@ -178,14 +185,14 @@ export default class Container extends React.Component {
 			console.log(event + " " + tempalku + "  " + temploppu);
 		}
 		else if (event === "zoomin+") {
-			temploppu = temploppu - Number(tempaskel); 
-			tempalku = tempalku + Number(tempaskel); 
+			temploppu = Number(temploppu) - Number(tempaskel); 
+			tempalku = Number(tempalku) + Number(tempaskel); 
 			console.log("+:" + tempalku);
 			const minimizoom = 1000 * 60 * 5 ; 
-			if ((temploppu - tempalku) < minimizoom) {
-				const ka = Number((temploppu - tempalku)/2).toFixed(0);
-				tempalku = ka - minimizoom/2;
-				temploppu = ka + minimizoom/2;
+			if ((Number(temploppu) - Number(tempalku)) < Number(minimizoom)) {
+				const ka = Number((Number(temploppu) + Number(tempalku))/2).toFixed(0);
+				tempalku = Number(ka) - Number(minimizoom/2);
+				temploppu = Number(ka) + Number(minimizoom/2);
 			}			
 			this.setState({piirtoalku: tempalku});
 			this.setState({piirtoloppu: temploppu});
@@ -219,6 +226,8 @@ export default class Container extends React.Component {
 				piirtozoom = {this.state.piirtozoom} 
 				/>
 			<ButtonGroup justified="jotain" size="sm">
+			<Button outline color="primary" 
+					onClick={() => this.zoomi('<<')}> {"<< (all)"} </Button>
 				<Button outline color="primary" 
 					onClick={() => this.zoomi('<')}> {"<"} </Button>
 				<Button outline color="primary" 
