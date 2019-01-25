@@ -2,7 +2,7 @@ import pymongo
 import sys
 
 # ruma mittausluokka, ToDo: kalibraatio  
-class Mittausluokka:
+class MittausLuokka:
     def __init__(self, kaasunimi, gageid = "99", kaasuid = "99", muutos_raja_arvo = sys.float_info.max, pakotettu_tallennusvali = sys.float_info.max):
         self.kaasunimi = kaasunimi
         self.gageid = gageid
