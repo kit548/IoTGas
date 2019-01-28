@@ -26,6 +26,7 @@ export default class Container extends React.Component {
 			minpiirtoalku: 0,
 			piirtohaedata: true,  // testing Linechart...
 			gases: [],
+			seconds: 0, 
 		}
 	}
 
@@ -33,7 +34,17 @@ export default class Container extends React.Component {
 		this.hae_viimeisimmat_mittaukset();
 		this.mita_mitattu = this.mita_mitattu.bind(this); 
 		this.zoomi = this.zoomi.bind(this); 
+		this.interval = setInterval(() => this.tick(), (30 * 1000)); // auto refesh every 30 seconds"
 		console.log('Container: componentDidUpdate');
+	}
+
+	componentWillUnmount() {
+		clearInterval(this.interval);
+	}
+
+	tick() {
+		console.log("container tick");
+		this.hae_viimeisimmat_mittaukset();
 	}
 
 	hae_viimeisimmat_mittaukset = () => {
