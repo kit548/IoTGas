@@ -24,7 +24,7 @@ export default class Container extends React.Component {
 			piirtoalku: 0, 
 			piirtoloppu: 10, 
 			minpiirtoalku: 0,
-			piirtohaedata: true,  // testing Linechart...
+			piirtohaedata: true,  // testing Linechart... remove all these? 
 			gases: [],
 		}
 	}
