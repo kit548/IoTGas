@@ -26,7 +26,6 @@ export default class Container extends React.Component {
 			minpiirtoalku: 0,
 			piirtohaedata: true,  // testing Linechart...
 			gases: [],
-			seconds: 0, 
 		}
 	}
 
@@ -34,7 +33,7 @@ export default class Container extends React.Component {
 		this.hae_viimeisimmat_mittaukset();
 		this.mita_mitattu = this.mita_mitattu.bind(this); 
 		this.zoomi = this.zoomi.bind(this); 
-		this.interval = setInterval(() => this.tick(), (30 * 1000)); // auto refesh every 30 seconds"
+		this.autoreFreshOn(); 
 		console.log('Container: componentDidUpdate');
 	}
 
@@ -42,8 +41,13 @@ export default class Container extends React.Component {
 		clearInterval(this.interval);
 	}
 
+	autoreFreshOn = () => {
+		// auto refresh every 30 seconds 
+		this.interval = setInterval(() => this.tick(), (30.0 * 1000.0)); 
+	}
+
 	tick() {
-		console.log("container tick");
+		console.log("container tick (auto refresh)");
 		this.hae_viimeisimmat_mittaukset();
 	}
 
@@ -147,13 +151,15 @@ export default class Container extends React.Component {
 	// osa (koko) zoom voisi toimia paremmin MesoLinechart:n puolella 
 	zoomi = (event) => {
 		console.log("Zoom: " + event);
+		clearInterval(this.interval); 
+		console.log("auto refresh off");
 		//this.setState({piirtohaedata: false}); 
 		let temploppu = Number(this.state.piirtoloppu);
 		let tempalku = Number(this.state.piirtoalku);
-		let tempaskel = Number((Number(temploppu) - Number(tempalku))/10).toFixed(0);
+		let tempaskel = Number((Number(temploppu) - Number(tempalku))/10.0).toFixed(0);
 		console.log("This.state:" + tempalku + '..' + temploppu + ' = ' + (temploppu - tempalku) + ' -> askel: ' + tempaskel);
 		console.log("rajat min: " + this.state.minpiirtoalku + ' max:' + defmaxpiirtoloppu); 
-		this.buttoms_enabled()
+		this.buttoms_enabled();
 
 		if (event === "reset") {
 			temploppu = Number(defmaxpiirtoloppu); 
@@ -179,8 +185,10 @@ export default class Container extends React.Component {
 			}
 		}
 		else if (event === ">>") {
-			this.hae_kaasun_viimeinen_mittaus(this.state.kaasunimi);
-			console.log(event + " haetaan kannasta uusimmat");
+			this.hae_kaasun_viimeinen_mittaus(this.state.kaasunimi); 
+			console.log(event + " haetaan kannasta uusimmat"); 
+			this.autoreFreshOn(); 
+			console.log("auto refresh on");
 		}
 		else if (event === "<<") {
 			tempalku = Number(this.state.minpiirtoalku) 
@@ -207,11 +215,11 @@ export default class Container extends React.Component {
 		else if (event === "zoomin") {
 			temploppu -= Number(tempaskel); 
 			tempalku += Number(tempaskel); 
-			const minimizoom = 1000 * 60 * 10 ; 
+			const minimizoom = 1000.0 * 60.0 * 10.0 ; 
 			if ((temploppu - tempalku) < minimizoom) {
-				const ka = Number((Number(temploppu) + Number(tempalku))/2).toFixed(0);
-				tempalku = Number(ka) - Number(minimizoom/2);
-				temploppu = Number(ka) + Number(minimizoom/2);
+				const ka = Number((Number(temploppu) + Number(tempalku))/2.0).toFixed(0);
+				tempalku = Number(ka) - Number(minimizoom/2.0);
+				temploppu = Number(ka) + Number(minimizoom/2.0);
 				this.setState({zoomin: true});
 			}			
 		}
