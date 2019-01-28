@@ -24,17 +24,16 @@ export default class Container extends React.Component {
 			piirtoalku: 0, 
 			piirtoloppu: 10, 
 			minpiirtoalku: 0,
-			piirtohaedata: true,
-			piirtozoom: '',
+			piirtohaedata: true,  // testing Linechart...
 			gases: [],
 		}
 	}
 
 	componentDidMount() { 
 		this.hae_viimeisimmat_mittaukset();
-		console.log('Container: componentDidUpdate');
-		//this.zoomi = this.zoomi.bind(this); 
 		this.mita_mitattu = this.mita_mitattu.bind(this); 
+		this.zoomi = this.zoomi.bind(this); 
+		console.log('Container: componentDidUpdate');
 	}
 
 	hae_viimeisimmat_mittaukset = () => {
@@ -53,7 +52,6 @@ export default class Container extends React.Component {
 	} 
 
 	mita_mitattu = (gases) => {
-		// this.mita_mitattu = this.mita_mitattu.bind(this);
 		// kovakoodattu lampoanturi...jos laitetaan gassensor kanta ja kaasuid <- siistimpi 
 		const lampomitattu = 'Lampotila'; 
 		let x;
@@ -87,6 +85,7 @@ export default class Container extends React.Component {
 		ReactServices.readGasFirst(kaasu) 
 		.then(response => {
 			this.setState({ minpiirtoalku: response.gagetime });
+			this.setState({piirtohaedata: true}); 
 			console.log("Container kaasu 1st: "); 
 			console.log(response);
 		})
@@ -100,6 +99,7 @@ export default class Container extends React.Component {
 		ReactServices.readGasLast(kaasu) 
 		.then(response => {
 			this.setState({ piirtoloppu: response.gagetime });
+			this.setState({piirtohaedata: true}); 
 			defmaxpiirtoloppu = response.gagetime;
 			console.log("Container kaasu 1st: "); 
 			console.log(response);
@@ -116,94 +116,100 @@ export default class Container extends React.Component {
 		this.setState({piirtoalku: defmaxpiirtoloppu - defScatterShowInterval}); 
 		this.setState({piirtoloppu: defmaxpiirtoloppu});
 		this.setState({kaasunimi: event.kaasunimi});
-		//this.setState({lamponimi: this.state.lamponimi});
+		//this.setState({lamponimi: xxx});
 		this.setState({piirtohaedata: true});
+		this.buttoms_enabled();
 		console.log('Container event: ' + this.state.kaasunimi); 
 		console.log('Container loppu: ' + defmaxpiirtoloppu + "=" + this.state.piirtoloppu); 
 	}
 
-	// osa (koko) zoomista voisi toimia paremmin MesoLinechart:n puolella 
+	buttoms_enabled = () => {
+		this.setState({disabled_all: false});
+		this.setState({reset: false});
+		this.setState({zoomout: false});
+		this.setState({zoomin: false});
+		this.setState({left2: false});
+		this.setState({left1: false});
+		this.setState({right1: false});
+	}
+
+	// osa (koko) zoom voisi toimia paremmin MesoLinechart:n puolella 
 	zoomi = (event) => {
 		console.log("Zoom: " + event);
 		//this.setState({piirtohaedata: false}); 
-		let temploppu = this.state.piirtoloppu;
-		let tempalku = this.state.piirtoalku;
-		let tempaskel = ((Number(temploppu) - Number(tempalku))/10).toFixed(0);
-		console.log(tempalku + '..' + temploppu + '=' + (temploppu - tempalku) + ' askel: ' + tempaskel);
-		console.log("rajat min: " + this.state.minpiirtoalku + ' max:' + defmaxpiirtoloppu);
+		let temploppu = Number(this.state.piirtoloppu);
+		let tempalku = Number(this.state.piirtoalku);
+		let tempaskel = Number((Number(temploppu) - Number(tempalku))/10).toFixed(0);
+		console.log("This.state:" + tempalku + '..' + temploppu + ' = ' + (temploppu - tempalku) + ' -> askel: ' + tempaskel);
+		console.log("rajat min: " + this.state.minpiirtoalku + ' max:' + defmaxpiirtoloppu); 
+		this.buttoms_enabled()
+
 		if (event === "reset") {
-			console.log("reset default: " + defmaxpiirtoloppu + " " + defScatterShowInterval);
-			this.setState({piirtoloppu: defmaxpiirtoloppu});
-			this.setState({piirtoalku: defmaxpiirtoloppu - defScatterShowInterval});
+			temploppu = Number(defmaxpiirtoloppu); 
+			tempalku = Number(defmaxpiirtoloppu) - Number(defScatterShowInterval); 
+			this.setState({reset: true});
 		}
 		else if (event === "<") {
-			temploppu = this.state.piirtoloppu - Number(tempaskel*3);
-			tempalku = this.state.piirtoalku - Number(tempaskel*3);
+			temploppu -= Number(tempaskel);
+			tempalku -= Number(tempaskel);
 			if (tempalku < this.state.minpiirtoalku) {
-				tempaskel = Number((temploppu - tempalku)/10).toFixed(0);
-				tempaskel = tempaskel*3 - Number(this.state.minpiirtoalku - Number(tempalku));
-				temploppu = Number(this.state.piirtoloppu) - Number(tempaskel);
-				tempalku = this.state.minpiirtoalku;
+				tempalku = Number(this.state.minpiirtoalku);
+				temploppu = Number(tempalku) + Number(tempaskel); 
+				this.setState({left1: true});
 			}
-			console.log(event + " " + + temploppu + " " + tempaskel);
-			this.setState({piirtoloppu: temploppu});
-			this.setState({piirtoalku: this.state.piirtoalku + Number(tempaskel)});
 		}
 		else if (event === ">") {
-			temploppu = this.state.piirtoloppu + Number(tempaskel*3);
-			tempalku = this.state.piirtoalku + Number(tempaskel*3);
+			temploppu += Number(tempaskel);
+			tempalku += Number(tempaskel);
 			if (temploppu > defmaxpiirtoloppu) {
-				tempaskel = tempaskel*3 - Number(Number(temploppu) - defmaxpiirtoloppu);
-				temploppu = defmaxpiirtoloppu ;
-				tempalku = this.state.piirtoalku + Number(tempaskel);
+				temploppu = Number(defmaxpiirtoloppu) ;
+				tempalku = Number(defmaxpiirtoloppu) - Number(tempaskel);
+				this.setState({right1: true});
 			}
-			console.log(event + " " + temploppu + " " + tempaskel);
-			this.setState({piirtoloppu: temploppu});
-			this.setState({piirtoalku: this.state.piirtoalku + tempaskel});
 		}
 		else if (event === ">>") {
 			this.hae_kaasun_viimeinen_mittaus(this.state.kaasunimi);
 			console.log(event + " haetaan kannasta uusimmat");
-
 		}
 		else if (event === "<<") {
-			console.log(event + " näytä kaikki " + this.state.minpiirtoalku + ' ' + defmaxpiirtoloppu);
-			this.setState({piirtoloppu: defmaxpiirtoloppu});
-			this.setState({piirtoalku: this.state.minpiirtoalku});
+			tempalku = Number(this.state.minpiirtoalku) 
+			temploppu = Number(tempalku) + Number(tempaskel);
+			this.setState({left2: true});
 		}
-		else if (event === "zoomout-") {
-			temploppu = Number(temploppu) + Number(tempaskel); 
-			tempalku = Number(tempalku) - Number(tempaskel); 
-			if (temploppu >= defmaxpiirtoloppu) {
-				temploppu = defmaxpiirtoloppu ;
+		else if (event === "all") {
+			temploppu = Number(defmaxpiirtoloppu);			
+			tempalku = Number(this.state.minpiirtoalku);
+			this.setState({disabled_all: true});
+		}
+		else if (event === "zoomout") {
+			temploppu += Number(tempaskel); 
+			tempalku -= Number(tempaskel); 
+			if (temploppu > defmaxpiirtoloppu) {
+				temploppu = Number(defmaxpiirtoloppu) ;
+				this.setState({zoomout: true});
 			} 	
-			if (tempalku <= this.state.minpiirtoalku){
-				tempalku = this.state.minpiirtoalku;
+			if (tempalku < this.state.minpiirtoalku){
+				tempalku = Number(this.state.minpiirtoalku);
+				this.setState({zoomout: true});
 			}		
-			this.setState({piirtoalku: tempalku});
-			this.setState({piirtoloppu: temploppu});
-			console.log(event + " " + tempalku + "  " + temploppu);
 		}
-		else if (event === "zoomin+") {
-			temploppu = Number(temploppu) - Number(tempaskel); 
-			tempalku = Number(tempalku) + Number(tempaskel); 
-			console.log("+:" + tempalku);
-			const minimizoom = 1000 * 60 * 5 ; 
-			if ((Number(temploppu) - Number(tempalku)) < Number(minimizoom)) {
+		else if (event === "zoomin") {
+			temploppu -= Number(tempaskel); 
+			tempalku += Number(tempaskel); 
+			const minimizoom = 1000 * 60 * 10 ; 
+			if ((temploppu - tempalku) < minimizoom) {
 				const ka = Number((Number(temploppu) + Number(tempalku))/2).toFixed(0);
 				tempalku = Number(ka) - Number(minimizoom/2);
 				temploppu = Number(ka) + Number(minimizoom/2);
+				this.setState({zoomin: true});
 			}			
-			this.setState({piirtoalku: tempalku});
-			this.setState({piirtoloppu: temploppu});
-			console.log(event + " " + tempalku + "..." + temploppu + "->" + (temploppu-tempalku));
 		}
 		else {
-			console.log("Zoom: " + event + " uusi, ei ole määritelty!");
-			//this.setState({piirtoalku: this.state.piirtoalku + Number(event) * defzoomaskel});
-			//this.setState({piirtoloppu: this.state.piirtoloppu - Number(event) * defzoomaskel});
+			console.log("Zoom: " + event + " ; ei ole määritelty!");
 		}
-		console.log(this.state.minpiirtoalku)
+		console.log(event + " " + tempalku + ".." + temploppu + ' = ' + (temploppu-tempalku));
+		this.setState({piirtoloppu: temploppu});
+		this.setState({piirtoalku: tempalku});
 	}
 
 	//<td>{new Date(item.gagetime).toLocaleDateString()}</td>
@@ -224,24 +230,48 @@ export default class Container extends React.Component {
 				piirtoalku = {this.state.piirtoalku}
 				piirtoloppu = {this.state.piirtoloppu} 
 				piirtohaedata  = {this.state.piirtohaedata} 
-				piirtozoom = {this.state.piirtozoom} 
 				/>
 			<div style={{textAlign: "center"}}>	
 			<ButtonGroup size="sm">
-			<Button outline color="primary" 
-					onClick={() => this.zoomi('<<')}> {"<< (all)"} </Button>
 				<Button outline color="primary" 
-					onClick={() => this.zoomi('<')}> {"<"} </Button>
+					disabled={this.state.left2}
+					onClick={!this.state.left2 ? () => this.zoomi('<<') : null}> 
+					{"<<"} 
+					</Button>
 				<Button outline color="primary" 
-					onClick={() => this.zoomi("zoomout-")}> - </Button>
+					disabled={this.state.left1}
+					onClick={!this.state.left1 ? () => this.zoomi('<') : null}> 
+					{"<"} 
+					</Button>
+				<Button outline color="primary" 
+					disabled={this.state.zoomout}
+					onClick={!this.state.zoomout ? () => this.zoomi("zoomout"): null}> 
+					- 
+					</Button>
 				<Button outline color="primary"  
-					onClick={() => this.zoomi("reset")}> Reset </Button>
+					disabled={this.state.disabled_all}
+					onClick={!this.state.disabled_all ? () => this.zoomi("all"): null}> 
+					All 
+					</Button>
+				<Button outline color="primary"  
+					disabled={this.state.reset}
+					onClick={!this.state.reset ? () => this.zoomi("reset") : null}> 
+					Reset 
+					</Button>
 				<Button outline color="primary"
-					onClick={() => this.zoomi("zoomin+")}> + </Button>
+					disabled={this.state.zoomin}
+					onClick={!this.state.zoomin ? () => this.zoomi("zoomin"): null}> 
+					+ 
+					</Button>
 				<Button outline color="primary"
-					onClick={() => this.zoomi('>')}> {">"} </Button>
+					disabled={this.state.right1}
+					onClick={!this.state.right ? () => this.zoomi('>') : null}> 
+					{">"} 
+					</Button>
 				<Button outline color="primary"
-					onClick={() => this.zoomi('>>')}> {">>"} </Button>					
+					onClick={() => this.zoomi('>>')}> 
+					{">>"} 
+					</Button>					
 			</ButtonGroup>
 			</div>
 			<br></br>
@@ -251,7 +281,6 @@ export default class Container extends React.Component {
 				piirtoalku = {this.state.piirtoalku}
 				piirtoloppu = {this.state.piirtoloppu}
 				piirtohaedata  = {this.state.piirtohaedata}
-				piirtozoom = {this.state.piirtozoom} 
 			/>			
 			<Table hover size="sm">
 				<thead>

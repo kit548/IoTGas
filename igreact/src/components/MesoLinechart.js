@@ -92,11 +92,12 @@ export default class GasForm extends React.Component {
 		super(props);
 		this.state= {
 			scatterList:[], 
-			update: false, 
+			key: 0 ,
 		};
 	}
 
-	haepiirtodata = (nimi, alku, loppu)	=> {
+	haepiirtodata = (nimi, alku, loppu)	=> { 
+		// alku = loppu - 1000*60*60*24*30*12;  // one year ... key 
 		ReactServices.gasvaluesinterval(nimi, alku, loppu)
 		.then(response => {
 			this.setState({ scatterList: response }); 
@@ -122,9 +123,12 @@ export default class GasForm extends React.Component {
 			this.props.piirtonimi !== '') {
 			console.log('Linechart: componentDidUpdate (alku/loppu)'); 
 			console.log(this.props);
-			//this.setState({update: !this.state.update})
 			if (this.props.piirtohaedata) {
 				this.haepiirtodata(this.props.piirtonimi, this.props.piirtoalku, this.props.piirtoloppu);
+			}
+			else {  
+				this.setState({ key: Math.random() });
+				console.log("Linechart render")
 			}
 		}
 	}
@@ -145,7 +149,7 @@ export default class GasForm extends React.Component {
 		this.data2scatter(this.state.scatterList, this.props.piirtonimi);
 		return (
 			<form scatterform='scatterform'>	
-				<div className="scatterdraw">
+				<div key={this.state.key} className="scatterdraw">
 				<Scatter options={chartoptions} data={data} />
 				</div>
 			</form>
