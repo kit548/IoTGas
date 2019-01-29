@@ -40,7 +40,7 @@ export default class Container extends React.Component {
 		clearInterval(this.interval);
 	}
 
-	autoreFreshOn = () => {
+	autoreFreshOn() {
 		// auto refresh every 30 seconds 
 		this.interval = setInterval(() => this.tick(), (30.0 * 1000.0)); 
 	}
@@ -48,6 +48,18 @@ export default class Container extends React.Component {
 	tick() {
 		console.log("container tick (auto refresh)");
 		this.hae_kaasun_viimeinen_mittaus(this.state.kaasunimi); 
+		this.updateLastMeasurements()
+	}
+
+	updateLastMeasurements() {
+		ReactServices.readLastvalues() 
+		.then(response => {
+			this.setState({ gases: response });
+		})
+		.catch(error => {
+			console.log("ERROR in Container / hae_viimeisimmat_mittaukset");
+			console.log(error);
+		});
 	}
 
 	hae_viimeisimmat_mittaukset = () => {
@@ -68,10 +80,8 @@ export default class Container extends React.Component {
 	mita_mitattu = (gases) => {
 		// kovakoodattu lampoanturi...jos laitetaan gassensor kanta ja kaasuid <- siistimpi 
 		const lampomitattu = 'Lampotila'; 
-		let x;
-		let kaasu = ''; 
-		let lampo = ''; 
-		let aika = 0; 
+		let x, aika = 0;
+		let kaasu, lampo = ''; 
 		for (x in gases) {
 			if (gases[x].kaasunimi === lampomitattu) {
 				lampo = lampomitattu; 
@@ -112,7 +122,7 @@ export default class Container extends React.Component {
 	hae_kaasun_viimeinen_mittaus = (kaasu) => {
 		ReactServices.readGasLast(kaasu) 
 		.then(response => {
-			this.setState({ piirtoloppu: response.gagetime });
+			this.setState({piirtoloppu: response.gagetime});
 			this.setState({piirtohaedata: true}); 
 			defmaxpiirtoloppu = response.gagetime;
 			console.log("Container kaasu 1st: "); 
@@ -124,32 +134,9 @@ export default class Container extends React.Component {
 		});
 	}
 
-	fetchDetails = (event) => {
-		this.hae_kaasun_ensimmainen_mittaus(event.kaasunimi);
-		defmaxpiirtoloppu = event.gagetime
-		this.setState({piirtoalku: defmaxpiirtoloppu - defScatterShowInterval}); 
-		this.setState({piirtoloppu: defmaxpiirtoloppu});
-		this.setState({kaasunimi: event.kaasunimi});
-		//this.setState({lamponimi: xxx});
-		this.setState({piirtohaedata: true});
-		this.buttoms_enabled();
-		console.log('Container event: ' + this.state.kaasunimi); 
-		console.log('Container loppu: ' + defmaxpiirtoloppu + "=" + this.state.piirtoloppu); 
-	}
-
-	buttoms_enabled = () => {
-		this.setState({disabled_all: false});
-		this.setState({reset: false});
-		this.setState({zoomout: false});
-		this.setState({zoomin: false});
-		this.setState({left2: false});
-		this.setState({left1: false});
-		this.setState({right1: false});
-	}
-
 	// osa (koko) zoom voisi toimia paremmin MesoLinechart:n puolella 
 	zoomi = (event) => {
-		this.buttoms_enabled();
+		this.buttomsEnabled();
 		clearInterval(this.interval); 
 		console.log("auto refresh off");
 		//this.setState({piirtohaedata: false}); 
@@ -184,7 +171,8 @@ export default class Container extends React.Component {
 			}
 		}
 		else if (event === ">>") {
-			this.hae_kaasun_viimeinen_mittaus(this.state.kaasunimi); 
+			this.hae_kaasun_viimeinen_mittaus(this.state.kaasunimi);
+			this.updateLastMeasurements(); 
 			console.log(event + " haetaan kannasta uusimmat"); 
 			this.autoreFreshOn(); 
 			console.log("auto refresh on");
@@ -230,8 +218,38 @@ export default class Container extends React.Component {
 		this.setState({piirtoalku: tempalku});
 	}
 
+	buttomsEnabled() {
+		this.setState({disabled_all: false});
+		this.setState({reset: false});
+		this.setState({zoomout: false});
+		this.setState({zoomin: false});
+		this.setState({left2: false});
+		this.setState({left1: false});
+		this.setState({right1: false});
+	}
+
 	sysInfo() {
 		//console.log(os.EOL); 
+	}
+
+	fetchDetails = (event) => {
+		this.hae_kaasun_ensimmainen_mittaus(event.kaasunimi);
+		defmaxpiirtoloppu = event.gagetime
+		this.setState({piirtoalku: defmaxpiirtoloppu - defScatterShowInterval}); 
+		this.setState({piirtoloppu: defmaxpiirtoloppu});
+		this.setState({kaasunimi: event.kaasunimi});
+		//this.setState({lamponimi: xxx});
+		this.setState({piirtohaedata: true});
+		this.buttomsEnabled();
+		console.log('Container event: ' + event.kaasunimi + " -> " + this.state.kaasunimi); 
+	}
+
+	measureTime(time) {
+		let temptime = moment(time).format("D.M.YYYY"); 
+		if (temptime === moment().format("D.M.YYYY")) {
+			temptime = moment(time).format("hh:mm"); 
+		}
+		return temptime;
 	}
 
 	//<td>{new Date(item.gagetime).toLocaleDateString()}</td>
@@ -240,7 +258,7 @@ export default class Container extends React.Component {
 		<tr key={item.kaasunimi} onClick={() => this.fetchDetails(item)}>
 			<td>{item.kaasunimi}</td>
 			<td>{item.arvo.toFixed(1)}</td>
-			<td>{new Date(item.gagetime).toLocaleDateString()}</td>
+			<td>{this.measureTime(item.gagetime)}</td>
 		</tr>
 		)
 		console.log('Container render...');
@@ -320,7 +338,7 @@ export default class Container extends React.Component {
 					<tr>
 						<th>Mitaukset</th>
 						<th>viimeisin</th>
-						<th>päivä</th>
+						<th>aika</th>
 					</tr>
 				</thead>
 				<tbody>
