@@ -2,14 +2,13 @@ import React from 'react';
 //eslint-disable-next-line
 import ReactDOM from 'react-dom';
 //eslint-disable-next-line
-import {Table, Button, ButtonGroup,  Row, Col } from 'reactstrap';
+import {Table, Button, ButtonGroup, Badge } from 'reactstrap';
+//import os from 'react-native-os'; 
 //eslint-disable-next-line
 import moment from 'moment';
 
 import ReactServices from '../services/ReactServices';
 import MesoLinechart from './MesoLinechart';
-//import GasForm from './GasForm';
-
 
 let defScatterShowInterval = 1000 * 60 * 60 ; // 1h
 let defmaxpiirtoloppu = 0; 
@@ -48,7 +47,7 @@ export default class Container extends React.Component {
 
 	tick() {
 		console.log("container tick (auto refresh)");
-		this.hae_viimeisimmat_mittaukset();
+		this.hae_kaasun_viimeinen_mittaus(this.state.kaasunimi); 
 	}
 
 	hae_viimeisimmat_mittaukset = () => {
@@ -150,16 +149,16 @@ export default class Container extends React.Component {
 
 	// osa (koko) zoom voisi toimia paremmin MesoLinechart:n puolella 
 	zoomi = (event) => {
-		console.log("Zoom: " + event);
+		this.buttoms_enabled();
 		clearInterval(this.interval); 
 		console.log("auto refresh off");
 		//this.setState({piirtohaedata: false}); 
 		let temploppu = Number(this.state.piirtoloppu);
 		let tempalku = Number(this.state.piirtoalku);
 		let tempaskel = Number((Number(temploppu) - Number(tempalku))/10.0).toFixed(0);
+		console.log("Zoom: " + event);
 		console.log("This.state:" + tempalku + '..' + temploppu + ' = ' + (temploppu - tempalku) + ' -> askel: ' + tempaskel);
 		console.log("rajat min: " + this.state.minpiirtoalku + ' max:' + defmaxpiirtoloppu); 
-		this.buttoms_enabled();
 
 		if (event === "reset") {
 			temploppu = Number(defmaxpiirtoloppu); 
@@ -231,6 +230,10 @@ export default class Container extends React.Component {
 		this.setState({piirtoalku: tempalku});
 	}
 
+	sysInfo() {
+		//console.log(os.EOL); 
+	}
+
 	//<td>{new Date(item.gagetime).toLocaleDateString()}</td>
 	render() {
 		let listItems = this.state.gases.map((item) => 
@@ -241,9 +244,20 @@ export default class Container extends React.Component {
 		</tr>
 		)
 		console.log('Container render...');
+		this.sysInfo();
+
 		return(
 			<div>
-			<div style={{textAlign: "center"}}>{this.state.kaasunimi}</div>
+			<h5> 
+				<strong> 
+				<Badge color="primary"> 
+					IoTGas 
+				</Badge> 
+				</strong> 
+			</h5>	
+			<div style={{textAlign: "center"}}>
+				{this.state.kaasunimi}
+			</div>
 			<MesoLinechart className = 'Gas' 
 				piirtonimi = {this.state.kaasunimi} 
 				piirtoalku = {this.state.piirtoalku}
