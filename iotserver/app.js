@@ -46,7 +46,8 @@ else
 // DeprecationWarning: `open()` is deprecated in mongoose >= 4.11.0, use `openUri()` instead, or set the `useMongoClient` option if using `connect()` 
 // or `createConnection()`. See http://mongoosejs.com/docs/4.x/docs/connections.html#use-mongo-client
 mongoose.connect(databaseUri, {
-useMongoClient: true,
+//useMongoClient: true,
+useNewUrlParser: true,
 promiseLibrary: global.Promise
 });
 var db = mongoose.connection; 
