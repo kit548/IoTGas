@@ -93,7 +93,7 @@ export default class Container extends React.Component {
 		for (x in gases) {
 			console.log(gases[x].kaasuid);
 			if (gases[x].kaasuid === "90") {
-				lampo = gases[x].kaasunimi; 
+				lampo = gases[x].kaasunimi;
 				if (gases[x].gageid === "18") {
 					lampods18b20 = gases[x].kaasunimi;
 				}
@@ -106,9 +106,11 @@ export default class Container extends React.Component {
 				}
 			}
 		}
-		if (lampods18b20 != '') {
-			lampo = lampods18b20
-		}
+		
+		if (lampods18b20 !== '') {
+			lampo = lampods18b20;
+		};
+		
 		console.log("Container: whatMeasured");
 		console.log(kaasu);
 		console.log(this.state.gases);
@@ -249,12 +251,22 @@ export default class Container extends React.Component {
 	}
 
 	fetchDetails = (event) => {
-		this.findGas1stMeasurement(event.kaasunimi);
-		defmaxpiirtoloppu = event.gagetime
-		this.setState({piirtoalku: defmaxpiirtoloppu - defScatterShowInterval}); 
-		this.setState({piirtoloppu: defmaxpiirtoloppu});
-		this.setState({kaasunimi: event.kaasunimi});
-		//this.setState({lamponimi: xxx});
+
+		if (event.kaasuid ==="90") {
+			if (event.kaasunimi === this.state.lamponimi) {
+				this.setState({kaasunimi: event.kaasunimi});
+			}
+			else {
+				this.setState({lamponimi: event.kaasunimi});
+			}
+		} 
+		else {
+			this.findGas1stMeasurement(event.kaasunimi);
+			defmaxpiirtoloppu = event.gagetime
+			this.setState({piirtoalku: defmaxpiirtoloppu - defScatterShowInterval}); 
+			this.setState({piirtoloppu: defmaxpiirtoloppu});
+			this.setState({kaasunimi: event.kaasunimi});
+		}
 		this.setState({piirtohaedata: true});
 		this.buttomsEnabled();
 		console.log('Container event: ' + event.kaasunimi + " -> " + this.state.kaasunimi); 
