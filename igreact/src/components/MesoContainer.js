@@ -29,8 +29,8 @@ export default class Container extends React.Component {
 	}
 
 	componentDidMount() { 
-		this.hae_viimeisimmat_mittaukset();
-		this.mita_mitattu = this.mita_mitattu.bind(this); 
+		this.findLastMeasurements();
+		this.whatMeasured = this.whatMeasured.bind(this); 
 		this.zoomi = this.zoomi.bind(this); 
 		this.autoreFreshOn(); 
 		console.log('Container: componentDidUpdate');
@@ -42,49 +42,61 @@ export default class Container extends React.Component {
 
 	autoreFreshOn() {
 		// auto refresh every 30 seconds 
-		this.interval = setInterval(() => this.tick(), (30.0 * 1000.0)); 
+		this.interval = setInterval(() => this.autoRefresh(), (30.0 * 1000.0)); 
 	}
 
-	tick() {
-		console.log("container tick (auto refresh)");
-		this.hae_kaasun_viimeinen_mittaus(this.state.kaasunimi); 
-		this.updateLastMeasurements()
+	autoRefresh() {
+		console.log("container autoRefresh" + this.state.kaasunimi);
+		if (this.state.kaasunimi === '') {
+			console.log("...all");
+			this.findLastMeasurements();
+		}
+		else {
+			console.log("...last");
+			this.findGasLastMeasurement(this.state.kaasunimi); 
+			this.updateLastMeasurements();
+		}
 	}
 
 	updateLastMeasurements() {
 		ReactServices.readLastvalues() 
 		.then(response => {
 			this.setState({ gases: response });
+			console.log("Container updateLastMeasurements: ");
 		})
 		.catch(error => {
-			console.log("ERROR in Container / hae_viimeisimmat_mittaukset");
+			console.log("ERROR in Container / findLastMeasurements");
 			console.log(error);
 		});
 	}
 
-	hae_viimeisimmat_mittaukset = () => {
+	findLastMeasurements = () => {
 		ReactServices.readLastvalues() 
 		.then(response => {
 			this.setState({ gases: response });
-			console.log("Container gases: "); 
+			console.log("Container findLastMeasurements: "); 
 			console.log(this.state.gases);
-			this.mita_mitattu(this.state.gases); 
-			this.hae_kaasun_ensimmainen_mittaus(this.state.kaasunimi);
+			this.whatMeasured(this.state.gases); 
+			this.findGas1stMeasurement(this.state.kaasunimi);
 		  })
 		.catch(error => {
-			console.log("ERROR in Container / hae_viimeisimmat_mittaukset");
+			console.log("ERROR in Container / findLastMeasurements");
 			console.log(error);
 		}); 
 	} 
 
-	mita_mitattu = (gases) => {
+	whatMeasured = (gases) => {
 		// kovakoodattu lampoanturi...jos laitetaan gassensor kanta ja kaasuid <- siistimpi 
-		const lampomitattu = 'Lampotila'; 
+		//const lampomitattu = 'Lampotila'; 
 		let x, aika = 0;
-		let kaasu, lampo = ''; 
+		let kaasu, lampo, lampods18b20 = ''; 
 		for (x in gases) {
-			if (gases[x].kaasunimi === lampomitattu) {
-				lampo = lampomitattu; 
+			console.log(gases[x].kaasuid);
+			if (gases[x].kaasuid === "90") {
+				lampo = gases[x].kaasunimi; 
+				if (gases[x].gageid === "18") {
+					lampods18b20 = gases[x].kaasunimi;
+				}
 			}
 			else {
 				// listan viimeisin mitattu kaasu (ei lampotila) 
@@ -94,32 +106,36 @@ export default class Container extends React.Component {
 				}
 			}
 		}
+		if (lampods18b20 != '') {
+			lampo = lampods18b20
+		}
+		console.log("Container: whatMeasured");
 		console.log(kaasu);
+		console.log(this.state.gases);
 		defmaxpiirtoloppu = aika; 
 		this.setState({piirtoloppu: defmaxpiirtoloppu});
 		this.setState({piirtoalku: defmaxpiirtoloppu - defScatterShowInterval});
 		this.setState({kaasunimi: kaasu});
 		this.setState({lamponimi: lampo});
-		console.log("Container: mita_mitattu");
 		console.log(this.state.kaasunimi);
 		console.log(this.state.lamponimi);
 	}	
 
-	hae_kaasun_ensimmainen_mittaus = (kaasu) => {
+	findGas1stMeasurement = (kaasu) => {
 		ReactServices.readGasFirst(kaasu) 
 		.then(response => {
 			this.setState({ minpiirtoalku: response.gagetime });
 			this.setState({piirtohaedata: true}); 
-			console.log("Container kaasu 1st: "); 
+			console.log("Container findGas1stMeasurement: "); 
 			console.log(response);
 		})
 		.catch(error => {
-			console.log("ERROR in Container / kaasu 1st meso");
+			console.log("ERROR in Container / findGas1stMeasurement");
 			console.log(error);
 		});
 	}
 
-	hae_kaasun_viimeinen_mittaus = (kaasu) => {
+	findGasLastMeasurement = (kaasu) => {
 		ReactServices.readGasLast(kaasu) 
 		.then(response => {
 			this.setState({piirtoloppu: response.gagetime});
@@ -129,7 +145,7 @@ export default class Container extends React.Component {
 			console.log(response);
 		})
 		.catch(error => {
-			console.log("ERROR in Container / kaasu 1st meso");
+			console.log("ERROR in Container / findGasLastMeasurement");
 			console.log(error);
 		});
 	}
@@ -171,7 +187,7 @@ export default class Container extends React.Component {
 			}
 		}
 		else if (event === ">>") {
-			this.hae_kaasun_viimeinen_mittaus(this.state.kaasunimi);
+			this.findGasLastMeasurement(this.state.kaasunimi);
 			this.updateLastMeasurements(); 
 			console.log(event + " haetaan kannasta uusimmat"); 
 			this.autoreFreshOn(); 
@@ -233,7 +249,7 @@ export default class Container extends React.Component {
 	}
 
 	fetchDetails = (event) => {
-		this.hae_kaasun_ensimmainen_mittaus(event.kaasunimi);
+		this.findGas1stMeasurement(event.kaasunimi);
 		defmaxpiirtoloppu = event.gagetime
 		this.setState({piirtoalku: defmaxpiirtoloppu - defScatterShowInterval}); 
 		this.setState({piirtoloppu: defmaxpiirtoloppu});
