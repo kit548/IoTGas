@@ -49,16 +49,17 @@ def main():
     print(sys.version)
     # mittausten aluastus, hieman kovakoodia 
     # pakotettu_tallennusvali minuuteissa 
-    pakotettu_tallennusvali = 1/6
+    pakotettu_tallennusvali = 1/2
     # tallennus raja volteissa anturilta 1 
     muutos_raja_arvo_1 = 0.03
     # mittauksen eli kaasun nimi ja muuta kovakoodausta  
-    kaasunimi_1 = "huonekaasu" # (" + str(muutos_raja_arvo_1) +")"
+    kaasunimi_1 = "Ilma A" # (" + str(muutos_raja_arvo_1) +")"
     gageid = "01"
     kaasuid = "01"    
     # ja sitten alustetaan anturi 1 ilmat etc. ja anturi 2 lampotila
     mittaus = vadelmavakka.MittausLuokka(kaasunimi_1, gageid, kaasuid, muutos_raja_arvo_1, pakotettu_tallennusvali)
-    analog_temp_Rs_sensor = vadelmavakka.MittausLuokka("Lampotila", "02", "90")
+    # kaasuid 90 = temparature
+    analog_temp_Rs_sensor = vadelmavakka.MittausLuokka("Rs HW-483", "02", "90")
     analog_temp_Rs_sensor.tallennuksen_alaraja = -30
     suoritinmittaus = vadelmavakka.MittausLuokka("vadelma cpu", "03", "80")
     
