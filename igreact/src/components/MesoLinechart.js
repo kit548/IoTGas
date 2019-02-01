@@ -154,7 +154,7 @@ export default class GasForm extends React.Component {
 			data.datasets[0].pointBorderColor = 'rgba(175,192,175,1)';
 		} 
 		else {
-			data.datasets[0].pointBorderColor = 'rgba(75,192,192,1)';
+			data.datasets[0].pointBorderColor = 'rgba(75,150,210,1)';
 		}
 	} 
 

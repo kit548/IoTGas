@@ -42,8 +42,8 @@ export default class Container extends React.Component {
 	}
 
 	autoreFreshOn() {
-		// auto refresh every 30 seconds 
-		this.interval = setInterval(() => this.autoRefresh(), (30.0 * 1000.0)); 
+		// auto refresh every 10 seconds 
+		this.interval = setInterval(() => this.autoRefresh(), (10.0 * 1000.0)); 
 	}
 
 	autoRefresh() {
