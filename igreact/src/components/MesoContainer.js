@@ -62,7 +62,9 @@ export default class Container extends React.Component {
 	updateLastMeasurements() {
 		ReactServices.readLastvalues() 
 		.then(response => {
-			this.setState({ gases: response });
+			let kaasut = response; 
+			kaasut.sort((a, b) => a.kaasunimi.localeCompare(b.kaasunimi));
+			this.setState({ gases: kaasut });
 			console.log("Container updateLastMeasurements: ");
 		})
 		.catch(error => {
@@ -74,7 +76,9 @@ export default class Container extends React.Component {
 	findLastMeasurements = () => {
 		ReactServices.readLastvalues() 
 		.then(response => {
-			this.setState({ gases: response });
+			let kaasut = response; 
+			kaasut.sort((a, b) => a.kaasunimi.localeCompare(b.kaasunimi));
+			this.setState({ gases: kaasut });
 			console.log("Container findLastMeasurements: "); 
 			console.log(this.state.gases);
 			this.whatMeasured(this.state.gases); 
@@ -95,7 +99,7 @@ export default class Container extends React.Component {
 		for (x in gases) {
 			if (gases[x].kaasuid === "90") {
 				lampo = gases[x].kaasunimi;
-				if (gases[x].gageid === "18") {
+				if (gases[x].gageid === "20") {
 					lampods18b20 = gases[x].kaasunimi; 
 					aikads18b20 = gases[x].gagetime
 				}
@@ -306,6 +310,12 @@ export default class Container extends React.Component {
 		return temptime;
 	}
 
+	temperatureRowColor(kaasuid) {
+		if (kaasuid === "90") {
+			return "text-success"}
+		else { 
+			return "text-info"}
+	}
 	/*
 	<Button outline color="primary"  
 		disabled={this.state.reset}
@@ -316,7 +326,8 @@ export default class Container extends React.Component {
 	//<td>{new Date(item.gagetime).toLocaleDateString()}</td>
 	render() {
 		let listItems = this.state.gases.map((item) => 
-		<tr key={item.kaasunimi} onClick={() => this.fetchDetails(item)}>
+		<tr className={this.temperatureRowColor(item.kaasuid)} 
+			key={item.kaasunimi} onClick={() => this.fetchDetails(item)}>
 			<td>{item.kaasunimi}</td>
 			<td>{item.arvo.toFixed(1)}</td>
 			<td>{this.measureTime(item.gagetime)}</td>
@@ -334,8 +345,8 @@ export default class Container extends React.Component {
 				</Badge> 
 				</strong> 
 			</h5>	
-			<div style={{textAlign: "center"}}>
-				{this.state.kaasunimi}
+			<div className="text-info" style={{textAlign: "center"}}>
+				{"Kaasu: " + this.state.kaasunimi}
 			</div>
 			<MesoLinechart className = 'Gas' 
 				piirtonimi = {this.state.kaasunimi} 
@@ -363,22 +374,22 @@ export default class Container extends React.Component {
 				<Button outline color="primary"  
 					disabled={this.state.show_all}
 					onClick={!this.state.show_all ? () => this.zoomi("all"): null}> 
-					All 
+					all 
 				</Button>
 				<Button outline color="primary"  
 					disabled={this.state.t24h}
 					onClick={!this.state.t24h ? () => this.zoomi("t24h") : null}> 
-					24 
+					day 
 				</Button>
 				<Button outline color="primary"  
 					disabled={this.state.t6h}
 					onClick={!this.state.t6h ? () => this.zoomi("t6h") : null}> 
-					6 
+					6h 
 				</Button>
 				<Button outline color="primary"  
 					disabled={this.state.t2h}
 					onClick={!this.state.t2h ? () => this.zoomi("t2h") : null}> 
-					2 
+					2h 
 				</Button>
 				<Button outline color="primary"
 					disabled={this.state.zoomin}
@@ -397,7 +408,9 @@ export default class Container extends React.Component {
 			</ButtonGroup>
 			</div>
 			<br></br>
-			<div style={{textAlign: "center"}}>{this.state.lamponimi}</div>					
+			<div className="text-success" style={{textAlign: "center"}}>
+				{'Lämpötila (C): ' + this.state.lamponimi}
+			</div>					
 			<MesoLinechart className = 'Temp'
 				piirtonimi = {this.state.lamponimi} 
 				piirtoalku = {this.state.piirtoalku}

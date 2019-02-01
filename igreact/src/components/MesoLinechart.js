@@ -150,6 +150,12 @@ export default class GasForm extends React.Component {
 		piirtomax = Number((Number(piirtomax) + Number(xtasaus))/Number(xtasaus)).toFixed(0) * Number(xtasaus);
 		chartoptions.scales.xAxes[0].ticks.min = piirtomin; 
 		chartoptions.scales.xAxes[0].ticks.max = piirtomax; 
+		if (this.props.className === "Temp") {
+			data.datasets[0].pointBorderColor = 'rgba(175,192,175,1)';
+		} 
+		else {
+			data.datasets[0].pointBorderColor = 'rgba(75,192,192,1)';
+		}
 	} 
 
 	render(	) {
