@@ -10,8 +10,8 @@ import moment from 'moment';
 import ReactServices from '../services/ReactServices';
 import MesoLinechart from './MesoLinechart';
 
-let defScatterShowInterval = 1000 * 60 * 60 ; // 1h
-let defmaxpiirtoloppu = 0; 
+let defScatterShowInterval = 1000 * 60 * 60 * 2; // 2h
+let defGasmaxPiirtoloppu = 0; 
 
 export default class Container extends React.Component {
 	constructor() {
@@ -31,9 +31,10 @@ export default class Container extends React.Component {
 	componentDidMount() { 
 		this.findLastMeasurements();
 		this.whatMeasured = this.whatMeasured.bind(this); 
+		this.findGas1stMeasurement = this.findGas1stMeasurement.bind(this);
 		this.zoomi = this.zoomi.bind(this); 
 		this.autoreFreshOn(); 
-		console.log('Container: componentDidUpdate');
+		console.log('Container: componentDidMount');
 	}
 
 	componentWillUnmount() {
@@ -46,7 +47,7 @@ export default class Container extends React.Component {
 	}
 
 	autoRefresh() {
-		console.log("container autoRefresh" + this.state.kaasunimi);
+		console.log("Container autoRefresh" + this.state.kaasunimi);
 		if (this.state.kaasunimi === '') {
 			console.log("...all");
 			this.findLastMeasurements();
@@ -65,7 +66,7 @@ export default class Container extends React.Component {
 			console.log("Container updateLastMeasurements: ");
 		})
 		.catch(error => {
-			console.log("ERROR in Container / findLastMeasurements");
+			console.log("ERROR in Container / updateLastMeasurements");
 			console.log(error);
 		});
 	}
@@ -86,16 +87,17 @@ export default class Container extends React.Component {
 	} 
 
 	whatMeasured = (gases) => {
-		// kovakoodattu lampoanturi...jos laitetaan gassensor kanta ja kaasuid <- siistimpi 
-		//const lampomitattu = 'Lampotila'; 
+		// kovakoodattu lampoanturi...jos laitetaan gassensor kantaan, 
+		// kaasuid ja tiedon välitys...siistimpi 
 		let x, aika = 0;
+		let aikads18b20 = 0; 
 		let kaasu, lampo, lampods18b20 = ''; 
 		for (x in gases) {
-			console.log(gases[x].kaasuid);
 			if (gases[x].kaasuid === "90") {
 				lampo = gases[x].kaasunimi;
 				if (gases[x].gageid === "18") {
-					lampods18b20 = gases[x].kaasunimi;
+					lampods18b20 = gases[x].kaasunimi; 
+					aikads18b20 = gases[x].gagetime
 				}
 			}
 			else {
@@ -107,26 +109,27 @@ export default class Container extends React.Component {
 			}
 		}
 		
-		if (lampods18b20 !== '') {
+		if (lampods18b20 !== '' &&
+			Math.abs(Number(aikads18b20)-Number(aika)) < 1000.0 * 60.0 * 5.0 ) {
 			lampo = lampods18b20;
 		};
 		
 		console.log("Container: whatMeasured");
 		console.log(kaasu);
 		console.log(this.state.gases);
-		defmaxpiirtoloppu = aika; 
-		this.setState({piirtoloppu: defmaxpiirtoloppu});
-		this.setState({piirtoalku: defmaxpiirtoloppu - defScatterShowInterval});
+		defGasmaxPiirtoloppu = aika; 
+		this.setState({piirtoloppu: defGasmaxPiirtoloppu});
+		this.setState({piirtoalku: defGasmaxPiirtoloppu - defScatterShowInterval});
 		this.setState({kaasunimi: kaasu});
 		this.setState({lamponimi: lampo});
-		console.log(this.state.kaasunimi);
-		console.log(this.state.lamponimi);
+		//console.log(this.state.kaasunimi);
+		//console.log(this.state.lamponimi);
 	}	
 
 	findGas1stMeasurement = (kaasu) => {
 		ReactServices.readGasFirst(kaasu) 
 		.then(response => {
-			this.setState({ minpiirtoalku: response.gagetime });
+			this.setState({minpiirtoalku: response.gagetime});
 			this.setState({piirtohaedata: true}); 
 			console.log("Container findGas1stMeasurement: "); 
 			console.log(response);
@@ -140,10 +143,10 @@ export default class Container extends React.Component {
 	findGasLastMeasurement = (kaasu) => {
 		ReactServices.readGasLast(kaasu) 
 		.then(response => {
+			defGasmaxPiirtoloppu = response.gagetime;
 			this.setState({piirtoloppu: response.gagetime});
 			this.setState({piirtohaedata: true}); 
-			defmaxpiirtoloppu = response.gagetime;
-			console.log("Container kaasu 1st: "); 
+			console.log("Container findGasLastMeasurement: "); 
 			console.log(response);
 		})
 		.catch(error => {
@@ -161,14 +164,34 @@ export default class Container extends React.Component {
 		let temploppu = Number(this.state.piirtoloppu);
 		let tempalku = Number(this.state.piirtoalku);
 		let tempaskel = Number((Number(temploppu) - Number(tempalku))/10.0).toFixed(0);
+		const minaskel = 1000.0 * 60 * 10;
+		if (tempaskel < minaskel) {tempaskel = minaskel}
 		console.log("Zoom: " + event);
 		console.log("This.state:" + tempalku + '..' + temploppu + ' = ' + (temploppu - tempalku) + ' -> askel: ' + tempaskel);
-		console.log("rajat min: " + this.state.minpiirtoalku + ' max:' + defmaxpiirtoloppu); 
+		console.log("rajat min: " + this.state.minpiirtoalku + ' max:' + defGasmaxPiirtoloppu); 
 
 		if (event === "reset") {
-			temploppu = Number(defmaxpiirtoloppu); 
-			tempalku = Number(defmaxpiirtoloppu) - Number(defScatterShowInterval); 
+			temploppu = Number(defGasmaxPiirtoloppu); 
+			tempalku = Number(defGasmaxPiirtoloppu) - Number(defScatterShowInterval); 
 			this.setState({reset: true});
+		}
+		else if (event === "t24h") {
+			temploppu = Number(defGasmaxPiirtoloppu); 
+			tempalku = Number(defGasmaxPiirtoloppu) - Number(1000.0 * 60.0 * 60.0 *24.0); 
+			this.setState({reset: true});
+			this.autoreFreshOn(); 
+		}
+		else if (event === "t6h") {
+			temploppu = Number(defGasmaxPiirtoloppu); 
+			tempalku = Number(defGasmaxPiirtoloppu) - Number(1000.0 * 60.0 * 60.0 *6.0); 
+			this.setState({reset: true});
+			this.autoreFreshOn(); 
+		}
+		else if (event === "t2h") {
+			temploppu = Number(defGasmaxPiirtoloppu); 
+			tempalku = Number(defGasmaxPiirtoloppu) - Number(1000.0 * 60.0 * 60.0 *2.0); 
+			this.setState({reset: true});
+			this.autoreFreshOn(); 
 		}
 		else if (event === "<") {
 			temploppu -= Number(tempaskel);
@@ -182,9 +205,9 @@ export default class Container extends React.Component {
 		else if (event === ">") {
 			temploppu += Number(tempaskel);
 			tempalku += Number(tempaskel);
-			if (temploppu > defmaxpiirtoloppu) {
-				temploppu = Number(defmaxpiirtoloppu) ;
-				tempalku = Number(defmaxpiirtoloppu) - Number(tempaskel);
+			if (temploppu > defGasmaxPiirtoloppu) {
+				temploppu = Number(defGasmaxPiirtoloppu) ;
+				tempalku = Number(defGasmaxPiirtoloppu) - Number(tempaskel);
 				this.setState({right1: true});
 			}
 		}
@@ -201,15 +224,15 @@ export default class Container extends React.Component {
 			this.setState({left2: true});
 		}
 		else if (event === "all") {
-			temploppu = Number(defmaxpiirtoloppu);			
+			temploppu = Number(defGasmaxPiirtoloppu);			
 			tempalku = Number(this.state.minpiirtoalku);
-			this.setState({disabled_all: true});
+			this.setState({show_all: true});
 		}
 		else if (event === "zoomout") {
 			temploppu += Number(tempaskel); 
 			tempalku -= Number(tempaskel); 
-			if (temploppu > defmaxpiirtoloppu) {
-				temploppu = Number(defmaxpiirtoloppu) ;
+			if (temploppu > defGasmaxPiirtoloppu) {
+				temploppu = Number(defGasmaxPiirtoloppu) ;
 				this.setState({zoomout: true});
 			} 	
 			if (tempalku < this.state.minpiirtoalku){
@@ -237,13 +260,16 @@ export default class Container extends React.Component {
 	}
 
 	buttomsEnabled() {
-		this.setState({disabled_all: false});
+		this.setState({show_all: false});
 		this.setState({reset: false});
 		this.setState({zoomout: false});
 		this.setState({zoomin: false});
 		this.setState({left2: false});
 		this.setState({left1: false});
 		this.setState({right1: false});
+		this.setState({t24h: false});
+		this.setState({t6h: false});
+		this.setState({t2h: false});
 	}
 
 	sysInfo() {
@@ -262,9 +288,9 @@ export default class Container extends React.Component {
 		} 
 		else {
 			this.findGas1stMeasurement(event.kaasunimi);
-			defmaxpiirtoloppu = event.gagetime
-			this.setState({piirtoalku: defmaxpiirtoloppu - defScatterShowInterval}); 
-			this.setState({piirtoloppu: defmaxpiirtoloppu});
+			defGasmaxPiirtoloppu = event.gagetime
+			this.setState({piirtoalku: defGasmaxPiirtoloppu - defScatterShowInterval}); 
+			this.setState({piirtoloppu: defGasmaxPiirtoloppu});
 			this.setState({kaasunimi: event.kaasunimi});
 		}
 		this.setState({piirtohaedata: true});
@@ -280,6 +306,13 @@ export default class Container extends React.Component {
 		return temptime;
 	}
 
+	/*
+	<Button outline color="primary"  
+		disabled={this.state.reset}
+		onClick={!this.state.reset ? () => this.zoomi("reset") : null}> 
+		Reset 
+	</Button>
+	*/
 	//<td>{new Date(item.gagetime).toLocaleDateString()}</td>
 	render() {
 		let listItems = this.state.gases.map((item) => 
@@ -293,7 +326,7 @@ export default class Container extends React.Component {
 		this.sysInfo();
 
 		return(
-			<div>
+		<div>
 			<h5> 
 				<strong> 
 				<Badge color="primary"> 
@@ -316,41 +349,51 @@ export default class Container extends React.Component {
 					disabled={this.state.left2}
 					onClick={!this.state.left2 ? () => this.zoomi('<<') : null}> 
 					{"<<"} 
-					</Button>
+				</Button>
 				<Button outline color="primary" 
 					disabled={this.state.left1}
 					onClick={!this.state.left1 ? () => this.zoomi('<') : null}> 
 					{"<"} 
-					</Button>
+				</Button>
 				<Button outline color="primary" 
 					disabled={this.state.zoomout}
 					onClick={!this.state.zoomout ? () => this.zoomi("zoomout"): null}> 
 					- 
-					</Button>
+				</Button>
 				<Button outline color="primary"  
-					disabled={this.state.disabled_all}
-					onClick={!this.state.disabled_all ? () => this.zoomi("all"): null}> 
+					disabled={this.state.show_all}
+					onClick={!this.state.show_all ? () => this.zoomi("all"): null}> 
 					All 
-					</Button>
+				</Button>
 				<Button outline color="primary"  
-					disabled={this.state.reset}
-					onClick={!this.state.reset ? () => this.zoomi("reset") : null}> 
-					Reset 
-					</Button>
+					disabled={this.state.t24h}
+					onClick={!this.state.t24h ? () => this.zoomi("t24h") : null}> 
+					24 
+				</Button>
+				<Button outline color="primary"  
+					disabled={this.state.t6h}
+					onClick={!this.state.t6h ? () => this.zoomi("t6h") : null}> 
+					6 
+				</Button>
+				<Button outline color="primary"  
+					disabled={this.state.t2h}
+					onClick={!this.state.t2h ? () => this.zoomi("t2h") : null}> 
+					2 
+				</Button>
 				<Button outline color="primary"
 					disabled={this.state.zoomin}
 					onClick={!this.state.zoomin ? () => this.zoomi("zoomin"): null}> 
 					+ 
-					</Button>
+				</Button>
 				<Button outline color="primary"
 					disabled={this.state.right1}
 					onClick={!this.state.right ? () => this.zoomi('>') : null}> 
 					{">"} 
-					</Button>
+				</Button>
 				<Button outline color="primary"
 					onClick={() => this.zoomi('>>')}> 
 					{">>"} 
-					</Button>					
+				</Button>					
 			</ButtonGroup>
 			</div>
 			<br></br>
@@ -373,7 +416,7 @@ export default class Container extends React.Component {
 					{ listItems }
 				</tbody>
 			</Table>
-			</div>				
+		</div>				
 		)
 	}
 }

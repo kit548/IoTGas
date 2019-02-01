@@ -128,7 +128,7 @@ export default class GasForm extends React.Component {
 			}
 			else {  
 				this.setState({ key: Math.random() });
-				console.log("Linechart render")
+				console.log("Linechart render... future feature")
 			}
 		}
 	}
@@ -140,14 +140,14 @@ export default class GasForm extends React.Component {
 		mitat = JSON.parse(JSON.stringify(mitat).split('"gagetime":').join('"x":')); 
 		mitat = JSON.parse(JSON.stringify(mitat).split('"arvo":').join('"y":')); 
 		console.log('Linechart: data2scatter ') ;
-		console.log(this.props); console.log(mitat); 
+		console.log(this.props); //console.log(mitat); 
 		data.datasets[0].data = mitat;  
 		data.datasets[0].label = nimi;
 		data.labels = nimi; 
 		piirtomin = this.props.piirtoalku; 
 		piirtomax = this.props.piirtoloppu; 
 		piirtomin = Number(piirtomin/(xtasaus)).toFixed(0) * xtasaus; 
-		piirtomax = Number((Number(piirtomax) + Number(xtasaus))/(xtasaus)).toFixed(0) * xtasaus;
+		piirtomax = Number((Number(piirtomax) + Number(xtasaus))/Number(xtasaus)).toFixed(0) * Number(xtasaus);
 		chartoptions.scales.xAxes[0].ticks.min = piirtomin; 
 		chartoptions.scales.xAxes[0].ticks.max = piirtomax; 
 	} 
