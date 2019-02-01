@@ -2,7 +2,7 @@
 ## IoT-kaasumittari 
 Mitataan huoneessa olevia epäpuhtauksia kuten H2, LPG, CH4, CO, alkoholi, savu ja propaani MQ-2 kaasusensorilla. Laitteisto, käytetyt palvelut/ohjelmistot ja perustoiminnot ovat tarkennettu alla olevassa peruskokoonpanossa.
 
-Ilmassa olevan kaasun lisäksi mitataan ilman lämpötila. Raspberry Pi:n käyttöaste talletetaan kaasumittauksen tavoin python koodissa, jolla saadaan tietoa ko. koodin ja palveluiden toiminnasta Raspberryssä. Saatamme lisätä laitteistoon toisen lämpötila-anturin (DS18B20) ja kosteuden mittaamisen.    
+Ilmassa olevan kaasun lisäksi mitataan ilman lämpötila (analoginen ja DS18b20 sensorit). Analogia sensori kirjoittaa mittaustiedon suoraan MongoDB kantaan, kuten tehdään MQ-2 kaasusensorin kanssa. DS18b20 sensori käyttää MQTT protokollaa, tässä tilanteessa mittaustieto viedään MongoDB kantaan backendin REST rajapinnan kautta. Raspberry Pi:n käyttöaste talletetaan kaasumittauksen tavoin python koodissa, jolla saadaan tietoa ohjelman ja palveluiden toiminnasta Raspberryssä. 
 
 Kehitysvaiheen aikana selviää antureiden (sensoreiden) tarkkuudet ja Reactin ominaisuudet, jolloin muotoutuu mittarin ominaisuudet ja käyttöliittymän muoto selaimeen.   
 
@@ -21,11 +21,10 @@ Kehitysvaiheen aikana selviää antureiden (sensoreiden) tarkkuudet ja Reactin o
 ### ToDo
 - MQ-2 mittausten kalibrointi (python) sensorivalmistajan taulukoiden avulla. 
 - Lisätään kosteuden mittaamisen anturi.  
-- Siirretään mittaustietoja anturista MQTT protokollalla backendiin (lämpötila-anturi DS18B20). 
-- Mittaustieto MongoDB:n backendin REST-rajapinnan kautta. Nyt mittaukset kirjoitetaan mongopy:llä 'suoraan' tietokantaan. 
 - Https: käyttö ja login (login ominaisuus työn alla)
 - MongoDB ilmoittaa frontendille uudesta mittauksesta, frontend päättää mitä viestin pohjalta tehdään. 
   Tällähetkellä frontend hakee uusia mittauksia 30 sekunnin välein, joka on yksinkertainen ja toimiva ratkaisu tähän sovellukseen. 
-- Mittaustietojen 'editointi' frontendistä.  Nyt käytetään joko MongoDb Compass, Imsomnia ja/tai Postman työkaluja näihin tarpeisiin, (REST tukee osaksi tätä) 
+- Mittaustietojen 'editointi' frontendistä.  Nyt käytetään joko MongoDb Compass, Imsomnia ja/tai Postman työkaluja näihin tarpeisiin, (REST tukee osaksi tätä).
+- Mittauksen alkuarvojen ja mittauksen ohjaaminen frontendistä.
 
 ps. This README.md is used as a report for a course, threfore Finnish is used. 
