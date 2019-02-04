@@ -44,19 +44,17 @@ let chartoptions = {
 				autoSkipPadding: 20, 
 			 },
 			 tooltips: {
-				 //not work jet...
+				 // not working ...
 				callbacks: {
-					label: function(tooltipItem, data) {
-						var label = data.datasets[tooltipItem.datasetIndex].label || '';
-						if (label) {
-							label += ': ';
-						}
-						//label += Math.round(tooltipItem.yLabel * 100) / 100;
-						return data;
-						//return data + ': ' + label;
-					}
-				}
-			},
+					function(tooltipItems, data) {
+						var sum = "test";
+						// tooltipItems.forEach(function(tooltipItem) {
+						//	sum += (data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index]);
+						// });
+						return sum;
+					},
+				},
+			},			
 			scaleLabel: { 
 				display: false, 
 				labelString: "aika", 
@@ -152,9 +150,11 @@ export default class GasForm extends React.Component {
 		chartoptions.scales.xAxes[0].ticks.max = piirtomax; 
 		if (this.props.className === "temp") {
 			data.datasets[0].pointBorderColor = 'rgba(175,192,175,1)';
+			chartoptions.scales.yAxes[0].ticks.suggestedMax = 25;
 		} 
 		else {
 			data.datasets[0].pointBorderColor = 'rgba(75,150,210,1)';
+			chartoptions.scales.yAxes[0].ticks.suggestedMax = 1;
 		}
 	} 
 
