@@ -46,32 +46,34 @@ def add_meso(mittajson):
 def main():
     print()
     paluu = get_mesos().content
-    print("Mittaukset kannassa: " + str(paluu))
+    print("Mittaukset: " + str(paluu))
     paluu = ''
     print("REST: " , _url('/meso/gasnames'))
     print()
     mittaus = 0
-    gageid = 20 #reserverd for DS18B20 
-    kaasuid = 90 #temparature
+    gageid = "ds18b20" 
+    kaasuid = "temp" #temparature
     kaasunimi = "DS18B20"  
-    sleep_mittausvali_keskiarvoon = 0.05
-    mittausten_vali = 10 
+
+    sleep_mittausvali_keskiarvoon = 0.1 # s
+    keskiarvo_lkm=30
+    
+    mittausten_vali = 120   # s
     print("Mittausnimi: " + kaasunimi)
     mittausaika = int(round(time.time() * 1000))
     print("startti: " + str(mittausaika))
-    print("mittaan: " + str(mittausten_vali) + " s ka.")
+    print("mittausvali: " + str(mittausten_vali) + " s ka.: " + str(keskiarvo_lkm))
     print()
     while True:
         i = 0 
-        silmukka_lkm=10
         mitat = []
-        while i < silmukka_lkm: 
+        while i < keskiarvo_lkm: 
             mittaus = read_temperature()
             mitat.append(mittaus) 
             time.sleep(sleep_mittausvali_keskiarvoon) 
             i += 1
         # mongodb aika millisek. 
-        mittausaika = int(round((time.time() - sleep_mittausvali_keskiarvoon*silmukka_lkm/2)* 1000))
+        mittausaika = int(round((time.time() - sleep_mittausvali_keskiarvoon*keskiarvo_lkm/2)* 1000))
         mittaus = statistics.mean(mitat) 
         mittajson = {"gageid": gageid, "kaasuid": kaasuid, "kaasunimi": kaasunimi, "arvo": mittaus, "gagetime": mittausaika}
         print("mitattu: %.02f" % mittaus + "  kanta-aika: " + str(mittausaika))

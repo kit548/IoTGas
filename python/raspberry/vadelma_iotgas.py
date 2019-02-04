@@ -54,14 +54,14 @@ def main():
     muutos_raja_arvo_1 = 0.03
     # mittauksen eli kaasun nimi ja muuta kovakoodausta  
     kaasunimi_1 = "Ilma A" # (" + str(muutos_raja_arvo_1) +")"
-    gageid = "01"
+    gageid = "mq-2"
     kaasuid = "01"    
     # ja sitten alustetaan anturi 1 ilmat etc. ja anturi 2 lampotila
     mittaus = vadelmavakka.MittausLuokka(kaasunimi_1, gageid, kaasuid, muutos_raja_arvo_1, pakotettu_tallennusvali)
     # kaasuid 90 = temparature
-    analog_temp_Rs_sensor = vadelmavakka.MittausLuokka("Rs HW-483", "02", "90")
+    analog_temp_Rs_sensor = vadelmavakka.MittausLuokka("Rs HW-483", "rs_hw-483", "temp")
     analog_temp_Rs_sensor.tallennuksen_alaraja = -30
-    suoritinmittaus = vadelmavakka.MittausLuokka("vadelma cpu", "03", "80")
+    suoritinmittaus = vadelmavakka.MittausLuokka("vadelma cpu", "raspberry", "cpu")
     
     #sleep_mittausvali_keskiarvoon sekunneissa eli pieni tauko silmukkaan -> time.sleep(secs)
     sleep_mittausvali_keskiarvoon = 0.05
