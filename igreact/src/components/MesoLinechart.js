@@ -96,12 +96,12 @@ export default class GasForm extends React.Component {
 		};
 	}
 
-	haepiirtodata = (nimi, alku, loppu)	=> { 
+	getScatterdata  = (nimi, alku, loppu)	=> { 
 		// alku = loppu - 1000*60*60*24*30*12;  // one year ... key 
 		ReactServices.gasvaluesinterval(nimi, alku, loppu)
 		.then(response => {
 			this.setState({ scatterList: response }); 
-			console.log('Linechart haepiirtodata: ' + nimi + ' ' + alku + '/' + loppu); 
+			console.log('Linechart getScatterdata : ' + nimi + ' ' + alku + '/' + loppu); 
 	 	 })
 		.catch(error => {
 		console.log(error);
@@ -114,7 +114,7 @@ export default class GasForm extends React.Component {
 			console.log('Linechart: componentDidUpdate (piirtonimi)'); 
 			console.log(this.props); 
 			if (this.props.piirtohaedata) {
-				this.haepiirtodata(this.props.piirtonimi, this.props.piirtoalku, this.props.piirtoloppu);
+				this.getScatterdata (this.props.piirtonimi, this.props.piirtoalku, this.props.piirtoloppu);
 			}
 		}
 
@@ -124,7 +124,7 @@ export default class GasForm extends React.Component {
 			console.log('Linechart: componentDidUpdate (alku/loppu)'); 
 			console.log(this.props);
 			if (this.props.piirtohaedata) {
-				this.haepiirtodata(this.props.piirtonimi, this.props.piirtoalku, this.props.piirtoloppu);
+				this.getScatterdata (this.props.piirtonimi, this.props.piirtoalku, this.props.piirtoloppu);
 			}
 			else {  
 				this.setState({ key: Math.random() });
@@ -133,13 +133,13 @@ export default class GasForm extends React.Component {
 		}
 	}
 	
-	data2scatter(mitat, nimi) {
+	data2Scatter(mitat, nimi) {
 		let piirtomax = 0; 
 		let piirtomin = 0; 
 		const xtasaus = 1000.0 * 60.0 * 5.0; 
 		mitat = JSON.parse(JSON.stringify(mitat).split('"gagetime":').join('"x":')); 
 		mitat = JSON.parse(JSON.stringify(mitat).split('"arvo":').join('"y":')); 
-		console.log('Linechart: data2scatter ') ;
+		console.log('Linechart: data2Scatter ') ;
 		console.log(this.props); //console.log(mitat); 
 		data.datasets[0].data = mitat;  
 		data.datasets[0].label = nimi;
@@ -150,7 +150,7 @@ export default class GasForm extends React.Component {
 		piirtomax = Number((Number(piirtomax) + Number(xtasaus))/Number(xtasaus)).toFixed(0) * Number(xtasaus);
 		chartoptions.scales.xAxes[0].ticks.min = piirtomin; 
 		chartoptions.scales.xAxes[0].ticks.max = piirtomax; 
-		if (this.props.className === "Temp") {
+		if (this.props.className === "temp") {
 			data.datasets[0].pointBorderColor = 'rgba(175,192,175,1)';
 		} 
 		else {
@@ -159,7 +159,7 @@ export default class GasForm extends React.Component {
 	} 
 
 	render(	) {
-		this.data2scatter(this.state.scatterList, this.props.piirtonimi);
+		this.data2Scatter(this.state.scatterList, this.props.piirtonimi);
 		return (
 			<form scatterform='scatterform'>	
 				<div key={this.state.key} className="scatterdraw">
