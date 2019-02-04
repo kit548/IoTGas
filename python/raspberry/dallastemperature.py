@@ -74,9 +74,10 @@ def main():
             i += 1
         # mongodb aika millisek. 
         mittausaika = int(round((time.time() - sleep_mittausvali_keskiarvoon*keskiarvo_lkm/2)* 1000))
-        mittaus = statistics.mean(mitat) 
+        mittaus = statistics.mean(mitat)
         mittajson = {"gageid": gageid, "kaasuid": kaasuid, "kaasunimi": kaasunimi, "arvo": mittaus, "gagetime": mittausaika}
-        print("mitattu: %.02f" % mittaus + "  kanta-aika: " + str(mittausaika))
+        aikanyt = time.strftime("%H:%M:%S",time.localtime())
+        print("mitattu: %.02f" % mittaus + "  kanta-aika: " + str(mittausaika) + " eli: " + aikanyt)
         paluu = add_meso(mittajson)
         if str(paluu) != '<Response [200]>':
             print(paluu)
