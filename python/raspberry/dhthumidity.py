@@ -1,11 +1,6 @@
 ''' 
-DHT-kirjaston asennus
-Varmista että tarvittavat paketit löytyy, build-essential python-dev
-git clone https://github.com/adafruit/Adafruit_Python_DHT.git
-sudo python setup.py install
-
-DHT11-pinout edestä
-Signal, VCC, Ground
+DHT11-pinout edesta
+Signal, VCC (3-5V), Ground
 '''
 from __future__ import absolute_import, division, print_function, unicode_literals
 
@@ -15,35 +10,35 @@ import time
 import Adafruit_DHT
 #import restpinta
 
-# Sensorin datapinni Raspissa, mallin määritys & mittausten välillä odotettava aika sekunteina.
+# Sensorin datapinni Raspissa, mallin maaritys & mittausten valilla odotettava aika sekunteina.
 gpioPin = 17
 # Adafruitin kirjasto tukee sensoreita DHT11, DHT22, AM2302
 dhtModel = Adafruit_DHT.DHT11
 dhtSleep = 5
 
 def readDHTData(temp=False):
-    # Yrittää lukea DHT-anturin arvot 15 kertaa kahden sekunnin välein kunnes saadaan data luettua
+    # Yrittaa lukea DHT-anturin arvot 15 kertaa kahden sekunnin valein kunnes saadaan data luettua
     humidity, temperature = Adafruit_DHT.read_retry(dhtModel, gpioPin)
-    # Mikäli dataa ei saatu luettua, odotetaan dhtSleep-muuttujassa määritetty aika
-    # ja käynnistetään luku uudestaan ajamalla funktio uudestaan.
+    # Mikali dataa ei saatu luettua, odotetaan dhtSleep-muuttujassa maaritetty aika
+    # ja kaynnistetaan luku uudestaan ajamalla funktio uudestaan.
     if humidity is None and temperature is None:
-        print("Datan luku epäonnistui, yritetään uudestaan ", dhtSleep, " sekunnin päästä.")
+        print("Datan luku epaonnistui, yritetaan uudestaan ", dhtSleep, " sekunnin paasta.")
         time.sleep(dhtSleep)
         readDHTData()
     else:
-        # Mikäli vapaaehtoinen funktio-argumentti asetetaan todeksi, palauta myös lämpötila
+        # Mikali vapaaehtoinen funktio-argumentti asetetaan todeksi, palauta myos lampotila
         # Muulloin palauta vain ilmankosteus
         if temp:
-        return (humidity, temperature)
+            return (humidity, temperature)
         else:
             return humidity
 
-# Ota sensoridata muuttujaan ja lue siitä ilmankosteusarvo erilliseen muuttujaan
+# Ota sensoridata muuttujaan ja lue siita ilmankosteusarvo erilliseen muuttujaan
 humidity = readDHTData(False)
 # Debug-tulostus
 print("Ilmankosteus prosenteissa: %f " % humidity)
 
-# REST, yritä siirtää omaan luokkaan
+# REST, yrita siirtaa omaan luokkaan
 def _url(path):
     return 'http://localhost:3010' + path
 
