@@ -36,7 +36,7 @@ def readDHTData(temp=False):
 # Ota sensoridata muuttujaan ja lue siita ilmankosteusarvo erilliseen muuttujaan
 humidity = readDHTData(False)
 # Debug-tulostus
-print("Ilmankosteus prosenteissa: %f " % humidity)
+print("Ilmankosteus prosenteissa: %.2f " % humidity)
 
 # REST, yrita siirtaa omaan luokkaan
 def _url(path):
