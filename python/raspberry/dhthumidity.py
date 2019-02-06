@@ -11,7 +11,7 @@ import Adafruit_DHT
 #import restpinta
 
 # Sensorin datapinni Raspissa, mallin maaritys & mittausten valilla odotettava aika sekunteina.
-gpioPin = 17
+gpioPin = 24
 # Adafruitin kirjasto tukee sensoreita DHT11, DHT22, AM2302
 dhtModel = Adafruit_DHT.DHT11
 dhtSleep = 5
