@@ -15,13 +15,28 @@ import time
 import Adafruit_DHT
 import restpinta
 
-# Sensorin datapinni Raspissa & mallin määritys
+# Sensorin datapinni Raspissa, mallin määritys & mittausten välillä odotettava aika sekunteina.
 gpioPin = 17
 dhtModel = Adafruit_DHT.DHT11
+dhtSleep = 5
 
-# Yrittää lukea DHT-anturin arvot 15 kertaa kahden sekunnin välein
-humidity, temperature = Adafruit_DHT.read_retry(dhtModel, gpioPin)
+def readDHTData():
+    # Yrittää lukea DHT-anturin arvot 15 kertaa kahden sekunnin välein kunnes saadaan data luettua
+    humidity, temperature = Adafruit_DHT.read_retry(dhtModel, gpioPin)
+    # Mikäli dataa ei saatu luettua, odotetaan dhtSleep-muuttujassa määritetty aika
+    # ja käynnistetään luku uudestaan ajamalla funktio uudestaan.
+    if humidity is None and temperature is None:
+        print("Datan luku epäonnistui, yritetään uudestaan ", dhtSleep, " sekunnin päästä.")
+        time.sleep(dhtSleep)
+        readDHTData()
+    else:
+        return (humidity, temperature)
 
+# Ota sensoridata muuttujaan ja lue siitä ilmankosteusarvo erilliseen muuttujaan
+dhtValues = readDHTData()
+humidity = dhtValues[0]
 # Debug-tulostus
-print('Ilmankosteus: {0:0.1f}%'.format(humidity))
+print("Ilmankosteus prosenteissa: %f " % humidity)
+
+
 
