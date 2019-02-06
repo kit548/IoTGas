@@ -13,14 +13,15 @@ import sys
 import requests
 import time
 import Adafruit_DHT
-import restpinta
+#import restpinta
 
 # Sensorin datapinni Raspissa, mallin määritys & mittausten välillä odotettava aika sekunteina.
 gpioPin = 17
+# Adafruitin kirjasto tukee sensoreita DHT11, DHT22, AM2302
 dhtModel = Adafruit_DHT.DHT11
 dhtSleep = 5
 
-def readDHTData():
+def readDHTData(temp=False):
     # Yrittää lukea DHT-anturin arvot 15 kertaa kahden sekunnin välein kunnes saadaan data luettua
     humidity, temperature = Adafruit_DHT.read_retry(dhtModel, gpioPin)
     # Mikäli dataa ei saatu luettua, odotetaan dhtSleep-muuttujassa määritetty aika
@@ -30,13 +31,26 @@ def readDHTData():
         time.sleep(dhtSleep)
         readDHTData()
     else:
+        # Mikäli vapaaehtoinen funktio-argumentti asetetaan todeksi, palauta myös lämpötila
+        # Muulloin palauta vain ilmankosteus
+        if temp:
         return (humidity, temperature)
+        else:
+            return humidity
 
 # Ota sensoridata muuttujaan ja lue siitä ilmankosteusarvo erilliseen muuttujaan
-dhtValues = readDHTData()
-humidity = dhtValues[0]
+humidity = readDHTData(False)
 # Debug-tulostus
 print("Ilmankosteus prosenteissa: %f " % humidity)
 
+# REST, yritä siirtää omaan luokkaan
+def _url(path):
+    return 'http://localhost:3010' + path
 
+def get_mesos():
+    return requests.get(_url('/meso/gasnames'))
 
+def add_meso(mittajson):
+    return requests.post(_url('/meso/create'), mittajson)
+
+def main():
