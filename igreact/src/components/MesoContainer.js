@@ -375,9 +375,9 @@ export default class Container extends React.Component {
 			<Table hover size="sm">
 				<thead>
 					<tr>
-						<th>Mitaukset</th>
-						<th>viimeisin</th>
-						<th>aika</th>
+						<th>Mittaukset</th>
+						<th>Viimeisin</th>
+						<th>Aika</th>
 					</tr>
 				</thead>
 				<tbody>
