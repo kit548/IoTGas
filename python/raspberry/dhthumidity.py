@@ -48,7 +48,7 @@ def add_meso(mittajson):
     return requests.post(_url('/meso/create'), mittajson)
 
 def main():
-        print()
+    print()
     paluu = get_mesos().content
     print("Mittaukset: " + str(paluu))
     paluu = ''
