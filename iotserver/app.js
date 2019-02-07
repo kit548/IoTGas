@@ -29,8 +29,13 @@ var mongoose = require('mongoose');
 //    "database": "Name of the db to be used here"
 // }
 if (fs.existsSync('secrets.json')) {
+  try {
     var secrets = JSON.parse(fs.readFileSync('secrets.json', 'utf8'));
     var databaseUri = `mongodb://${secrets.user}:${secrets.pass}@${secrets.host}:${secrets.port}/${secrets.database}`;
+  }
+  catch(e) {
+    console.error("secrets.json-tiedoston luku epäonnistui. Virhekoodi: " + e.message);
+}
 }
 else
 {
