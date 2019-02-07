@@ -1,7 +1,6 @@
-''' 
-DHT11-pinout edesta
-Signal, VCC (3-5V), Ground
-'''
+#DHT11-pinout edesta
+#Signal, VCC (3-5V), Ground
+
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import sys
@@ -49,3 +48,42 @@ def add_meso(mittajson):
     return requests.post(_url('/meso/create'), mittajson)
 
 def main():
+        print()
+    paluu = get_mesos().content
+    print("Mittaukset: " + str(paluu))
+    paluu = ''
+    print("REST: " , _url('/meso/gasnames'))
+    print()
+    mittaus = 0
+    gageid = "dht11" 
+    kaasuid = "98"
+    kaasunimi = "DHT11"  
+
+    sleep_mittausvali_keskiarvoon = 0.1 # s
+    keskiarvo_lkm=30
+    
+    mittausten_vali = 120   # s
+    print("Mittausnimi: " + kaasunimi)
+    mittausaika = int(round(time.time() * 1000))
+    print("startti: " + str(mittausaika))
+    print("mittausvali: " + str(mittausten_vali) + " s ka.: " + str(keskiarvo_lkm))
+    print()
+    while True:
+        i = 0 
+        mitat = []
+        while i < keskiarvo_lkm: 
+            mittaus = read_temperature()
+            mitat.append(mittaus) 
+            time.sleep(sleep_mittausvali_keskiarvoon) 
+            i += 1
+        mittausaika = int(round((time.time() - sleep_mittausvali_keskiarvoon*keskiarvo_lkm/2)* 1000))
+        mittaus = statistics.mean(mitat) 
+        mittajson = {"gageid": gageid, "kaasuid": kaasuid, "kaasunimi": kaasunimi, "arvo": mittaus, "gagetime": mittausaika}
+        print("mitattu: %.02f" % mittaus + "  kanta-aika: " + str(mittausaika))
+        paluu = add_meso(mittajson)
+        if str(paluu) != '<Response [200]>':
+            print(paluu)
+        time.sleep(mittausten_vali)
+        
+if __name__ == "__main__":
+    main()
