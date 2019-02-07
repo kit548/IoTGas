@@ -7,7 +7,7 @@ Ilmassa olevan kaasun lisäksi mitataan ilman lämpötila (analoginen ja DS18b20
 Kehitysvaiheen aikana selviää antureiden (sensoreiden) tarkkuudet ja Reactin ominaisuudet, jolloin muotoutuu mittarin ominaisuudet ja käyttöliittymän muoto selaimeen.   
 
 ### Anturi ja backend (peruskokoonpano)
-- Laitteisto: Raspberry Pi 3+, MQ-2 kaasusensori, analoginen lämpötilamittari (Rs, HW-483) ja ADC Pi Plus
+- Laitteisto: Raspberry Pi 3+, MQ-2 kaasusensori, analoginen lämpötilamittari (Rs, HW-483), digitaalinen lämpötilamittari (Dallas DS18B20), kosteusmittari DHT11 ja ADC Pi Plus
 - Palvelut ja ohjelmistot: Raspbian GNU/Linux 9, Python, pymongo, MongoDB, Node.js, Express ja JavaScript  
 -> mitattu tiedot MongoDB:n ja ym. palveluilla REST rajapinta Raspberryyn, josta frontend hakee halutut mittaukset.  
 
