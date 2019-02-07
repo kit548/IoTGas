@@ -59,8 +59,8 @@ def main():
     kaasuid = "98"
     kaasunimi = "DHT11"  
 
-    sleep_mittausvali_keskiarvoon = 0.1 # s
-    keskiarvo_lkm=1
+    sleep_mittausvali_keskiarvoon = 3 # s
+    keskiarvo_lkm=5
     
     mittausten_vali = 120   # s
     print("Mittausnimi: " + kaasunimi)
