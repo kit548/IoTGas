@@ -7,12 +7,12 @@ Ilmassa olevan kaasun lisäksi mitataan ilman lämpötila (analoginen RS HW-483 
 Kehitysvaiheen aikana selviää antureiden (sensoreiden) tarkkuudet ja Reactin ominaisuudet, jolloin muotoutuu mittarin ominaisuudet ja käyttöliittymän muoto selaimeen.   
 
 ### Anturi ja backend (peruskokoonpano)
-- Laitteisto: Raspberry Pi 3+, MQ-2 kaasusensori, analoginen lämpötilamittari (Rs, HW-483), digitaalinen lämpötilamittari (Dallas DS18B20), kosteusmittari (DHT11) ja ADC Pi Plus
+- Laitteisto: Raspberry Pi 3+, MQ-2 kaasusensori, analoginen lämpötilamittari (Rs, HW-483), digitaalinen lämpötilamittari (Dallas DS18B20), kosteusmittari (DHT11) ja A/D-muunnin ADC Pi Plus
 - Palvelut ja ohjelmistot: Raspbian GNU/Linux 9, Python, pymongo, MongoDB, Node.js, Express ja JavaScript  
 -> mitattu tiedot MongoDB:n ja ym. palveluilla REST-rajapinta Raspberryyn, josta frontend hakee halutut mittaukset.  
 
 ### Frontend ja mittaukset selaimeen (peruskokoonpano)
-- Laitteisto: PC (kannettava) ja Raspberry Pi 3 + 
+- Laitteisto: PC (kannettava) ja Raspberry Pi 3+ 
 - Palvelut ja ohjelmistot: 
   - Windows 10, GNU/Linux ja Raspbian GNU/Linux 9 (esim. frontend build Pi:llä)
   - Node.js, ReactJS, axios, reactstrap, bootstrap, react-chartjs-2, Moment, Python ja JavaScript 
