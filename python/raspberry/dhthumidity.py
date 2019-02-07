@@ -72,7 +72,7 @@ def main():
         i = 0 
         mitat = []
         while i < keskiarvo_lkm: 
-            mittaus = read_temperature()
+            mittaus = readDHTData()
             mitat.append(mittaus) 
             time.sleep(sleep_mittausvali_keskiarvoon) 
             i += 1
