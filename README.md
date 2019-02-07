@@ -2,7 +2,7 @@
 ## IoT-kaasumittari 
 Mitataan huoneessa olevia epäpuhtauksia kuten H2, LPG, CH4, CO, alkoholi, savu ja propaani MQ-2 kaasusensorilla. Laitteisto, käytetyt palvelut/ohjelmistot ja perustoiminnot ovat tarkennettu alla olevassa peruskokoonpanossa.
 
-Ilmassa olevan kaasun lisäksi mitataan ilman lämpötila (analoginen RS HW-483 ja digitaalinen Dallas DS18B20 sensoreina). Analoginen sensori kirjoittaa mittaustiedon suoraan MongoDB-tietokantaan, kuten tehdään MQ-2 kaasusensorin kanssa. DS18B20 sensori käyttää MQTT protokollaa, tässä tilanteessa mittaustieto viedään MongoDB:een backendin REST rajapinnan kautta. Kosteutta mittaa DHT11-sensori, joka vie tiedon myös REST-rajapinnan avulla MongoDB-tietokantaan. Raspberry Pi:n käyttöaste talletetaan kaasumittauksen tavoin Python -oodissa, jolla saadaan tietoa ohjelman ja palveluiden toiminnasta Raspberryssä. 
+Ilmassa olevan kaasun lisäksi mitataan ilman lämpötila (analoginen RS HW-483 ja digitaalinen Dallas DS18B20 sensoreina). Analoginen sensori kirjoittaa mittaustiedon suoraan MongoDB-tietokantaan, kuten tehdään MQ-2 kaasusensorin kanssa. DS18B20-sensori käyttää MQTT-protokollaa, tässä tilanteessa mittaustieto viedään MongoDB:een backendin REST rajapinnan kautta. Kosteutta mittaa DHT11-sensori, joka vie digitaali-lämpötilan tavoin vie tiedon REST-rajapinnan avulla MongoDB-tietokantaan. Raspberry Pi:n käyttöaste talletetaan kaasumittauksen tavoin Python-koodissa, jolla saadaan tietoa ohjelman ja palveluiden toiminnasta Raspberryssä. 
 
 Kehitysvaiheen aikana selviää antureiden (sensoreiden) tarkkuudet ja Reactin ominaisuudet, jolloin muotoutuu mittarin ominaisuudet ja käyttöliittymän muoto selaimeen.   
 
