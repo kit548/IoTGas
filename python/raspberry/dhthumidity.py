@@ -60,7 +60,7 @@ def main():
     kaasunimi = "DHT11"  
 
     sleep_mittausvali_keskiarvoon = 0.1 # s
-    keskiarvo_lkm=30
+    keskiarvo_lkm=1
     
     mittausten_vali = 120   # s
     print("Mittausnimi: " + kaasunimi)
