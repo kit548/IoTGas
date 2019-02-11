@@ -33,6 +33,9 @@ router.get('/gasnames', meso_controller.meso_getgases_distinct);
 // GET measured gases last values with gas name  
 router.get('/lastvalues', meso_controller.meso_getgases_distinct_lastmeso); 
 
+// GET measured gases last values with gas name  
+router.get('/lastvalues2', meso_controller.meso_getgases_distinct_lastmeso2); 
+
 // GET measure by gas name  
 router.get('/gases/:gasname', meso_controller.meso_getgases_get); 
 

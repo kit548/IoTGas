@@ -43,7 +43,7 @@ export default class Container extends React.Component {
 
 	autoreFreshOn() {
 		// auto refresh every 10 seconds 
-		this.interval = setInterval(() => this.autoRefresh(), (10.0 * 1000.0)); 
+		this.interval = setInterval(() => this.autoRefresh(), (30.0* 60 * 1000)); 
 	}
 
 	autoRefresh() {
@@ -87,7 +87,7 @@ export default class Container extends React.Component {
 		// undefined: no problem
 		const kaasut = gases.filter(gas => gas.kaasuid !== "temp");
 		const kaasu = kaasut.reduce((prev, current) => (prev.gagetime > current.gagetime) ? prev : current, []);
-		const lammot = gases.filter(gas => gas.kaasuid === "temp");
+		const lammot = gases.filter(gas => (gas.kaasuid === "temp" || gas.kaasuid === "90"));
 		let lampo = lammot.reduce((prev, current) => (prev.gagetime > current.gagetime) ? prev : current, []);
 		const dallas = lammot.find(gas => gas.gageid === "ds18b20");
 		if 	((typeof dallas != "undefined") &&  
@@ -241,7 +241,7 @@ export default class Container extends React.Component {
 
 	fetchDetails = (event) => {
 
-		if (event.kaasuid ==="temp") {
+		if (event.kaasuid ==="temp" || event.kaasuid === "90") {
 			if (event.kaasunimi === this.state.lamponimi) {
 				this.setState({kaasunimi: event.kaasunimi});
 			}
@@ -271,7 +271,7 @@ export default class Container extends React.Component {
 	}
 
 	temperatureRowColor(kaasuid) {
-		if (kaasuid === "temp") {
+		if (kaasuid === "temp" || kaasuid === "90") {
 			return "text-success"}
 		else { 
 			return "text-info"}
