@@ -171,8 +171,10 @@ exports.meso_getgasxintervalvalues = function (req, res, next)
 exports.meso_getabout_get = function (req, res, next) 
 {   
 	console.log("Meso_about"); 		
-	res.json("About IotGas: kit, Aapo, and Lassi. " +  
-	   "The body of this 'back end sw' is from IoT course"
+	res.json("About IotGas: kit, Aapo, and Lassi. "  +  
+	   "The body of this 'backend sw' is from IoT course, " +
+	   "read more from: " +
+	   "https://github.com/kit548/IoTGas/blob/master/README.md "
 	   );
 };
 

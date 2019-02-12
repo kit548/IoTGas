@@ -7,6 +7,13 @@
 var app = require('../app');
 var debug = require('debug')('iotserver:server');
 var http = require('http');
+const https = require('https');
+const fs = require('fs');
+
+const options = {
+  key: fs.readFileSync('/OpenSSL/keys/privatekey.pem'),
+  cert: fs.readFileSync('/OpenSSL/keys/certificate.pem')
+};
 
 /**
  * Get port from environment and store in Express.
@@ -20,7 +27,9 @@ console.log('Port: ' + port);
  * Create HTTP server.
  */
 
-var server = http.createServer(app);
+//var server = http.createServer(app);
+// https: 
+var server = https.createServer(options, app);
 
 /**
  * Listen on provided port, on all network interfaces.

@@ -7,7 +7,7 @@ var meso_controller = require('../controllers/mesoController');
 // console.log("router start");
 
 // GET entire meso 
-router.get('/', meso_controller.meso_getall_get);
+router.get('/', meso_controller.meso_getabout_get);
 
 // GET about 
 router.get('/about', meso_controller.meso_getabout_get); 
