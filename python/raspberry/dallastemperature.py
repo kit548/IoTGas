@@ -6,17 +6,20 @@ import time
 import statistics
 
 # dallas ds18b20 
+# Ladataan Linux kernel-moduulit OneWirelle.
 os.system('modprobe w1-gpio')
 os.system('modprobe w1-therm') 
-
+# OneWire-laitetiedoston osoite
 temperature_sensor = '/sys/bus/w1/devices/28-acde2b126461/w1_slave'
 
+# Luetaan laitetiedoston sisältö ja palautetaan se
 def sensor_lines():
     sensor = open(temperature_sensor, 'r')
     lines = sensor.readlines()
     sensor.close()
     return lines
-    
+
+# Parsitaan laitetiedoston sisältä lämpötilatieto    
 def read_temperature():
     lines = sensor_lines()
     while lines[0].strip()[-3:] != 'YES':
