@@ -81,15 +81,14 @@ exports.meso_getlast_get = function (req, res, next)
 	});
 };
 
-exports.meso_getgases_distinct_lastmeso = function (req, res, next) 
-{   //ugly coding
+exports.meso_getgases_distinct_lastmeso2 = function (req, res, next) 
+{   //ugly coding for 4.10.8 
 	MesoModel.distinct('kaasunimi',  function(err2, resa) 
-	{ 	console.log("Controller meso_getgases_distinct_lastmeso-gases");
+	{ 	console.log("Controller meso_getgases_distinct_lastmeso-gases2");
 		// jump away if error found
 		if (err2) { return next(err2); }
 		else
-		{	console.log(resa);
-			console.log("Controller meso_getgases_distinct_lastmeso-lastvalues"); 
+		{	console.log("Controller meso_getgases_distinct_lastmeso-lastvalues2"); 
 			let resoall = [];
 			let x = 0;
 			let y = 0; 
@@ -97,12 +96,13 @@ exports.meso_getgases_distinct_lastmeso = function (req, res, next)
 				MesoModel.findOne({ kaasunimi: resa[x]}, 
 					).sort({gagetime: -1}).limit(-1).exec(function(errb, resb)
 				{ 	// jump away if error found
-					if (errb) { return next(errb); }
+					if (errb) { 
+						return next(errb); }
 					else
-					{	//console.log(y);
+					{	
 						resoall[y] = resb; 
 						y += 1;
-						// wait for last query? sync... //ugly coding... react and express takes care!
+						// wait for last query? jeps, ugly coding, react and express takes care!
 						if (y > x) {
 							console.log(resoall);
 							res.set('Access-Control-Allow-Origin','*');
@@ -111,6 +111,30 @@ exports.meso_getgases_distinct_lastmeso = function (req, res, next)
 					}	
 				});
 			}	
+		}	
+	});
+};
+
+exports.meso_getgases_distinct_lastmeso = function (req, res, next) 
+{   //used for 4.13.8  
+	MesoModel.aggregate([
+		{	$group:{_id: '$kaasunimi', 
+			gagetime: {$last:'$gagetime'}, 
+			gageid : {$last: '$gageid'}, 
+			kaasuid : {$last: '$kaasuid'}, 
+			kaasunimi : {$last: '$kaasunimi'}, 
+			arvo : {$last: '$arvo'}, 
+			id : {$last: '$_id'}
+		}},  
+	], function(err2, res2)
+	{ 	
+		console.log("Controller meso_getgases_distinct_lastmeso"); 
+		//console.log(res2);
+		// jump away if error found
+		if (err2) { return next(err2); }
+		else
+		{	res.set('Access-Control-Allow-Origin','*');
+			res.json(res2);
 		}	
 	});
 };

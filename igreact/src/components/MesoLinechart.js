@@ -134,7 +134,7 @@ export default class GasForm extends React.Component {
 	data2Scatter(mitat, nimi) {
 		let piirtomax = 0; 
 		let piirtomin = 0; 
-		const xtasaus = 1000.0 * 60.0 * 5.0; 
+		const xtasaus = 1000.0 * 60.0 * 10.0; 
 		mitat = JSON.parse(JSON.stringify(mitat).split('"gagetime":').join('"x":')); 
 		mitat = JSON.parse(JSON.stringify(mitat).split('"arvo":').join('"y":')); 
 		console.log('Linechart: data2Scatter ') ;
@@ -150,11 +150,13 @@ export default class GasForm extends React.Component {
 		chartoptions.scales.xAxes[0].ticks.max = piirtomax; 
 		if (this.props.className === "temp") {
 			data.datasets[0].pointBorderColor = 'rgba(175,192,175,1)';
-			chartoptions.scales.yAxes[0].ticks.suggestedMax = 25;
+			chartoptions.scales.yAxes[0].ticks.suggestedMax = 26;
+			chartoptions.scales.yAxes[0].ticks.suggestedMin = 22;
 		} 
 		else {
 			data.datasets[0].pointBorderColor = 'rgba(75,150,210,1)';
 			chartoptions.scales.yAxes[0].ticks.suggestedMax = 1;
+			chartoptions.scales.yAxes[0].ticks.suggestedMin = 0.5;
 		}
 	} 
 
