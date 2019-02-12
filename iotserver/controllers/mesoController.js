@@ -81,40 +81,6 @@ exports.meso_getlast_get = function (req, res, next)
 	});
 };
 
-exports.meso_getgases_distinct_lastmeso2 = function (req, res, next) 
-{   //ugly coding for 4.10.8 
-	MesoModel.distinct('kaasunimi',  function(err2, resa) 
-	{ 	console.log("Controller meso_getgases_distinct_lastmeso-gases2");
-		// jump away if error found
-		if (err2) { return next(err2); }
-		else
-		{	console.log("Controller meso_getgases_distinct_lastmeso-lastvalues2"); 
-			let resoall = [];
-			let x = 0;
-			let y = 0; 
-			for (x in resa) {				
-				MesoModel.findOne({ kaasunimi: resa[x]}, 
-					).sort({gagetime: -1}).limit(-1).exec(function(errb, resb)
-				{ 	// jump away if error found
-					if (errb) { 
-						return next(errb); }
-					else
-					{	
-						resoall[y] = resb; 
-						y += 1;
-						// wait for last query? jeps, ugly coding, react and express takes care!
-						if (y > x) {
-							console.log(resoall);
-							res.set('Access-Control-Allow-Origin','*');
-							res.json(resoall);
-						}
-					}	
-				});
-			}	
-		}	
-	});
-};
-
 exports.meso_getgases_distinct_lastmeso = function (req, res, next) 
 {   //used for 4.13.8  
 	MesoModel.aggregate([
