@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 // DESKTOP-BBB6GQC, 192.168.0.18 192.168.43.125, iotgas
-// need to test which on is working... https or http 
+// need to test which one is working... https or http 
 const baseUrl = 'https://localhost:3010/meso'
 
 const createOne = (newObject) => {
