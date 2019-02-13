@@ -1,10 +1,9 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
 
-var meso_controller = require('../controllers/mesoController'); 
+const meso_controller = require('../controllers/mesoController'); 
 
-// meso ROUTES //
-// console.log("router start");
+// meso ROUTES console.log("router start");
 
 // GET entire meso 
 router.get('/', meso_controller.meso_getabout_get);
@@ -47,7 +46,5 @@ router.put('/update/:id', meso_controller.meso_updateone_put);
 
 // DELETE one measure
 router.delete('/delete/:id', meso_controller.meso_deleteone_delete);
-
-console.log("router...");
 
 module.exports = router;

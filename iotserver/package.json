@@ -23,6 +23,7 @@
     "mongoose": "4.13.8",
     "morgan": "~1.9.0",
     "mpath": ">=0.5.1",
+    "normalize-port": "^1.0.0",
     "pug": "~2.0.0-rc.4",
     "serve-favicon": "~2.4.5"
   },

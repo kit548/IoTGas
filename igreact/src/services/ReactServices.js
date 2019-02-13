@@ -1,11 +1,7 @@
 import axios from 'axios'
 
-/*
-const ip = window.location.host;
-console.log(ip)
-*/
-
-//DESKTOP-BBB6GQC, 192.168.0.18 192.168.43.125, iotgas
+// DESKTOP-BBB6GQC, 192.168.0.18 192.168.43.125, iotgas
+// need to test which on is working... https or http 
 const baseUrl = 'https://localhost:3010/meso'
 
 const createOne = (newObject) => {

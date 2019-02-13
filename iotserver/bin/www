@@ -1,65 +1,36 @@
 #!/usr/bin/env node
 
-/**
- * Module dependencies.
- */
-
-var app = require('../app');
-var debug = require('debug')('iotserver:server');
-var http = require('http');
+// Module dependencies
+const app = require('../app');
+const debug = require('debug')('iotserver:server');
+const http = require('http');
 const https = require('https');
+const normalizePort = require('normalize-port');
 const fs = require('fs');
 
-const options = {
-  key: fs.readFileSync('/OpenSSL/keys/privatekey.pem'),
-  cert: fs.readFileSync('/OpenSSL/keys/certificate.pem')
-};
+// https or http
+const httpsOn = fs.existsSync('/OpenSSL/keys/privatekey.pem');
+const options = (httpsOn) ? {
+  key: fs.readFileSync('/OpenSSL/keys/privatekey.pem', 'utf8'),
+  cert: fs.readFileSync('/OpenSSL/keys/certificate.pem', 'utf8')
+}: {};
 
-/**
- * Get port from environment and store in Express.
- */
-
-var port = normalizePort(process.env.PORT || '3010');
+// Get port from environment and store in Express
+const port = normalizePort(process.env.PORT || '3010');
 app.set('port', port);
-console.log('Port: ' + port);
 
-/**
- * Create HTTP server.
- */
+const server = (httpsOn) ? https.createServer(options, app) : http.createServer(app);
 
-//var server = http.createServer(app);
-// https: 
-var server = https.createServer(options, app);
-
-/**
- * Listen on provided port, on all network interfaces.
- */
-
-server.listen(port);
+// Listen on provided port, on all network interfaces
+server.listen(port, function(){
+  console.log(((httpsOn) ? "https: " : "http: ") + 
+  'listening on port ' + server.address().port);
+});
 server.on('error', onError);
 server.on('listening', onListening);
 
-/**
- * Normalize a port into a number, string, or false.
- */
-
-function normalizePort(val) {
-  var port = parseInt(val, 10);
-  if (isNaN(port)) {
-    // Named pipe
-    return val;
-  }
-  if (port >= 0) {
-    // Port number
-    return port;
-  }
-  return false;
-}
-
-/**
- * Event listener for HTTP server "error" event.
- */
-
+// and functions 
+// Event listener for HTTP(s) server "error" event
 function onError(error) {
   if (error.syscall !== 'listen') {
     throw error;
@@ -82,10 +53,7 @@ function onError(error) {
   }
 }
 
-/**
- * Event listener for HTTP server "listening" event.
- */
-
+// Event listener for HTTP server "listening" event
 function onListening() {
   var addr = server.address();
   var bind = typeof addr === 'string'
