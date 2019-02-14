@@ -1,8 +1,8 @@
 import axios from 'axios'
 
-// DESKTOP-BBB6GQC, 192.168.0.18 192.168.43.125, iotgas
-// need to test which one is working... https or http 
-const baseUrl = 'https://localhost:3010/meso'
+// REST url ... DESKTOP-BBB6GQC, 192.168.0.18 192.168.43.125, iotgas
+// use https: or http:, if you want realy use only secure or unsecure pages   
+const baseUrl = '//localhost:3010/meso'
 
 const createOne = (newObject) => {
     const request = axios.post(`${baseUrl}/create`, newObject);
