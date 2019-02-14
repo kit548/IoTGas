@@ -9,18 +9,20 @@ Kehitysvaiheen aikana selviää antureiden (sensoreiden) tarkkuudet ja Reactin o
 ### Anturi ja backend (peruskokoonpano)
 - Laitteisto: Raspberry Pi 3+, MQ-2 kaasusensori, analoginen lämpötilamittari (Rs, HW-483), digitaalinen lämpötilamittari (Dallas DS18B20), kosteusmittari (DHT11) ja A/D-muunnin ADC Pi Plus
 - Palvelut ja ohjelmistot: Raspbian GNU/Linux 9, Python, pymongo, MongoDB, Node.js, Express ja JavaScript  
--> mitattu tiedot MongoDB:n ja ym. palveluilla REST-rajapinta Raspberryyn, josta frontend hakee halutut mittaukset.  
+-> mitattu tiedot MongoDB:n ja ym. palveluilla REST-rajapinta Raspberryyn, josta frontend hakee halutut mittaukset
+- https: toimii REST rajapinnassa OpenSSL avaimilla, jos ko. avaimet ovat asennettu 
+- backend mahdollistaa Mongo DB:n käyttäjätunnuksen ja salasanan käyttön  
 
 ### Frontend ja mittaukset selaimeen (peruskokoonpano)
 - Laitteisto: PC (kannettava) ja Raspberry Pi 3+ 
 - Palvelut ja ohjelmistot: 
   - Windows 10, GNU/Linux ja Raspbian GNU/Linux 9 (esim. frontend build Pi:llä)
   - Node.js, ReactJS, axios, reactstrap, bootstrap, react-chartjs-2, Moment, Python ja JavaScript 
-- Backendin REST-rajapinnasta luetaan tarvittavat tiedot ja muodostetaan näistä mittarisivu selaimeen.
+- backendin REST-rajapinnasta luetaan tarvittavat tiedot ja muodostetaan näistä mittarisivu selaimeen
+- frontend osaa käyttää joko http: tai https: REST-rajapintaa
  
 ### ToDo
 - MQ-2 mittausten kalibrointi (python) sensorivalmistajan taulukoiden avulla. 
-- HTTPS: käyttö ja login (login ominaisuus työn alla)
 - MongoDB ilmoittaa frontendille uudesta mittauksesta, frontend päättää mitä viestin pohjalta tehdään. 
   Tällähetkellä frontend hakee uusia mittauksia 30 sekunnin välein, joka on yksinkertainen ja toimiva ratkaisu tähän sovellukseen. 
 - Mittaustietojen 'editointi' frontendistä. Nyt käytetään joko MongoDb Compass, Imsomnia ja/tai Postman työkaluja näihin tarpeisiin, (REST tukee osaksi tätä).
