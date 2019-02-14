@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 // REST url ... DESKTOP-BBB6GQC, 192.168.0.18 192.168.43.125, iotgas
-// use https: or http:, if you want realy use only secure or unsecure pages   
+// use https: or http:, if you want use only secure or unsecure pages   
 const baseUrl = '//localhost:3010/meso'
 
 const createOne = (newObject) => {
@@ -62,7 +62,7 @@ const gasvaluesinterval = (id, ibegin, iend) => {
 }
 
 const readOne = (id) => {
-    // by /id
+    // by id
     const request = axios.get(`${baseUrl}/${id}`);
     return request.then(response => response.data);
 }

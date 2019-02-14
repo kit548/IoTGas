@@ -57,9 +57,9 @@ app.use(cookieParser());
 app.use(compression()); // Compress all routes
 app.use(express.static(path.join(__dirname, 'public')));
 
-// http://localhost:port/
+// localhost:port/
 app.use('/', index);
-// http://localhost:port/mesolist/ 
+// localhost:port/mesolist/ 
 app.use('/meso', mesolist);
 console.log("router...");
 

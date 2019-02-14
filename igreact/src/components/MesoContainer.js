@@ -42,7 +42,7 @@ export default class Container extends React.Component {
 	}
 
 	autoreFreshOn() {
-		// auto refresh every 10 seconds 
+		// auto refresh every 30 seconds 
 		this.interval = setInterval(() => this.autoRefresh(), (30.0* 60 * 1000)); 
 	}
 
@@ -75,7 +75,6 @@ export default class Container extends React.Component {
 			else {
 				console.log("Container update LastMeasurements: ");
 			}
-			
 		  })
 		.catch(error => {
 			console.log("ERROR in Container / findLastMeasurements (or update)");
@@ -84,7 +83,7 @@ export default class Container extends React.Component {
 	} 
 
 	whatMeasured = (gases) => { 
-		// undefined: no problem
+		// rest undefined: no problem (only in labels in UI with empty DB) 
 		const kaasut = gases.filter(gas => gas.kaasuid !== "temp");
 		const kaasu = kaasut.reduce((prev, current) => (prev.gagetime > current.gagetime) ? prev : current, []);
 		const lammot = gases.filter(gas => (gas.kaasuid === "temp" || gas.kaasuid === "90"));
@@ -235,10 +234,6 @@ export default class Container extends React.Component {
 		this.setState({t2h: false});
 	}
 
-	sysInfo() {
-		//console.log(os.EOL); 
-	}
-
 	fetchDetails = (event) => {
 
 		if (event.kaasuid ==="temp" || event.kaasuid === "90") {
@@ -294,7 +289,6 @@ export default class Container extends React.Component {
 		</tr>
 		)
 		console.log('Container render...');
-		this.sysInfo();
 
 		return(
 		<div>

@@ -4,8 +4,6 @@ import ReactServices from '../services/ReactServices';
 import {Scatter} from 'react-chartjs-2'; 
 import moment from 'moment';
 
-//import {Label} from 'reactstrap';
-
 let data = { 
 	labels: ['Scatter'],  
 	datasets: [{
@@ -39,7 +37,7 @@ let chartoptions = {
 			ticks: {
 				//min: xAxelmin,
 				userCallback: function(label, index, labels) {
-                    return moment(label).format("hh:mm");
+          return moment(label).format("hh:mm");
 				},
 				autoSkipPadding: 20, 
 			 },
@@ -49,7 +47,7 @@ let chartoptions = {
 					function(tooltipItems, data) {
 						var sum = "test";
 						// tooltipItems.forEach(function(tooltipItem) {
-						//	sum += (data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index]);
+						//	...
 						// });
 						return sum;
 					},
@@ -95,7 +93,7 @@ export default class GasForm extends React.Component {
 	}
 
 	getScatterdata  = (nimi, alku, loppu)	=> { 
-		// alku = loppu - 1000*60*60*24*30*12;  // one year ... key 
+		// alku = loppu - 1000*60*60*24*30*12;  // one year...key 
 		ReactServices.gasvaluesinterval(nimi, alku, loppu)
 		.then(response => {
 			this.setState({ scatterList: response }); 
